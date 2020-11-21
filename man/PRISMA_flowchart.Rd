@@ -32,6 +32,8 @@ PRISMA_flowchart(
   interactive = FALSE,
   tooltips = "",
   urls = "",
+  previous = TRUE,
+  other = TRUE,
   font = "Helvetica",
   title_colour = "Goldenrod1",
   greybox_colour = "Gainsboro",
@@ -120,6 +122,12 @@ See the 'PRISMA_flow_schema.png' for details of box numbers, sequentially from
 top left to bottom across columns, from left to right. Additional URLs can be given
 for the side and top rounded panel boxes if desired.}
 
+\item{previous}{Logical argument (TRUE or FALSE) specifying whether previous
+studies were sought.}
+
+\item{other}{Logical argument (TRUE or FALSE) specifying whether other studies
+were sought.}
+
 \item{font}{The font for text in each box. The default is 'Helvetica'.}
 
 \item{title_colour}{The colour for the upper middle title box (new studies).
@@ -159,7 +167,7 @@ provided.
 \dontrun{
 data <- read.csv(file.choose());
 data <- read_PRISMAdata(data);
-attach(data);
+attach(data); 
 plot <- PRISMA_flowchart(previous_studies = previous_studies,
                 previous_reports = previous_reports,
                 register_results = register_results,
@@ -186,7 +194,9 @@ plot <- PRISMA_flowchart(previous_studies = previous_studies,
                 total_reports = total_reports,
                 interactive = TRUE,
                 tooltips = tooltips,
-                urls = urls);
+                urls = urls,
+                previous = TRUE,
+                other = TRUE);
 plot
 }
 }

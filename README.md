@@ -5,3 +5,7 @@ You can use this package to produce a flow chart that conforms to the PRISMA 202
 A static version is produced otherwise. <a href="https://srflowdiagram.github.io/template.html" target="_blank">
   
 See the interactive template here.</a>
+
+<!-- badges: start -->
+[![R build status](https://github.com/nealhaddaway/PRISMA2020/workflows/R-CMD-check/badge.svg)](https://github.com/nealhaddaway/PRISMA2020/actions)
+<!-- badges: end -->

@@ -4,7 +4,7 @@
 \alias{sr_flow_interactive}
 \title{Plot interactive flow charts for systematic reviews}
 \usage{
-sr_flow_interactive(plot, urls)
+sr_flow_interactive(plot, urls, previous, other)
 }
 \arguments{
 \item{plot}{A plot object from sr_flow().}
@@ -12,6 +12,12 @@ sr_flow_interactive(plot, urls)
 \item{urls}{A dataframe consisting of two columns: nodes and urls. The first
 column should contain 19 rows for the nodes from node1 to node19. The second
 column should contain a corresponding URL for each node.}
+
+\item{previous}{Logical argument (TRUE or FALSE) (supplied through
+PRISMA_flowchart()) specifying whether previous studies were sought.}
+
+\item{other}{Logical argument (TRUE or FALSE) (supplied through
+PRISMA_flowchart()) specifying whether other studies were sought.}
 }
 \value{
 An interactive flow diagram plot.
@@ -23,10 +29,13 @@ interactive HTML plot, for embedding links from each box.
 \examples{
 \dontrun{
 urls <- data.frame(
-    box = c('box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 'box8', 'box9', 'box10', 'box11', 'box12', 'box13', 'box14', 'box15', 'box16'), 
-    url = c('page1.html', 'page2.html', 'page3.html', 'page4.html', 'page5.html', 'page6.html', 'page7.html', 'page8.html', 'page9.html', 'page10.html', 
-            'page11.html', 'page12.html', 'page13.html', 'page14.html', 'page15.html', 'page16.html'));
-output <- sr_flow_interactive(x, urls);
+    box = c('box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 'box8', 
+            'box9', 'box10', 'box11', 'box12', 'box13', 'box14', 'box15', 'box16'), 
+    url = c('page1.html', 'page2.html', 'page3.html', 'page4.html', 'page5.html', 
+            'page6.html', 'page7.html', 'page8.html', 'page9.html', 'page10.html', 
+            'page11.html', 'page12.html', 'page13.html', 'page14.html', 'page15.html', 
+            'page16.html'));
+output <- sr_flow_interactive_p1o1(x, urls, previous = TRUE, other = TRUE);
 output
 }
 }
