@@ -702,8 +702,13 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
     # Tab 1
     tabPanel("Data upload",
         fluidRow(
+            column(12, offset = 1,
+                   tags$a(href="https://ndownloader.figshare.com/files/25401575", "Download template CSV file here"),
+                   br(),
+                   br()),
+            
             column(3, offset = 1,
-            fileInput("data", "Select PRISMA.csv file",
+            fileInput("data", "Upload your PRISMA.csv file",
                       multiple = TRUE,
                       accept = c("text/csv",
                                  "text/comma-separated-values,text/plain",
