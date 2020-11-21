@@ -535,32 +535,32 @@ theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90d
 read_PRISMAdata <- function(data){
     
     #Set parameters
-    previous_studies <- data[grep('previous_studies', data[,1]),]$k
-    previous_reports <- data[grep('previous_reports', data[,1]),]$k
-    register_results <- data[grep('register_results', data[,1]),]$k
-    database_results <- data[grep('database_results', data[,1]),]$k
-    website_results <- data[grep('website_results', data[,1]),]$k
-    organisation_results <- data[grep('organisation_results', data[,1]),]$k
-    citations_results <- data[grep('citations_results', data[,1]),]$k
-    duplicates <- data[grep('duplicates', data[,1]),]$k
-    excluded_automatic <- data[grep('excluded_automatic', data[,1]),]$k
-    excluded_other <- data[grep('excluded_other', data[,1]),]$k
-    records_screened <- data[grep('records_screened', data[,1]),]$k
-    records_excluded <- data[grep('records_excluded', data[,1]),]$k
-    dbr_sought_reports <- data[grep('dbr_sought_reports', data[,1]),]$k
-    dbr_notretrieved_reports <- data[grep('dbr_notretrieved_reports', data[,1]),]$k
-    other_sought_reports <- data[grep('other_sought_reports', data[,1]),]$k
-    other_notretrieved_reports <- data[grep('other_notretrieved_reports', data[,1]),]$k
-    dbr_assessed <- data[grep('dbr_assessed', data[,1]),]$k
-    dbr_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$k, split = '; '))), 
-                               k = gsub(".*,", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$k, split = '; '))))
-    other_assessed <- data[grep('other_assessed', data[,1]),]$k
-    other_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$k, split = '; '))), 
-                                 k = gsub(".*,", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$k, split = '; '))))
-    new_studies <- data[grep('new_studies', data[,1]),]$k
-    new_reports <- data[grep('new_reports', data[,1]),]$k
-    total_studies <- data[grep('total_studies', data[,1]),]$k
-    total_reports <- data[grep('total_reports', data[,1]),]$k
+    previous_studies <- data[grep('previous_studies', data[,1]),]$n
+    previous_reports <- data[grep('previous_reports', data[,1]),]$n
+    register_results <- data[grep('register_results', data[,1]),]$n
+    database_results <- data[grep('database_results', data[,1]),]$n
+    website_results <- data[grep('website_results', data[,1]),]$n
+    organisation_results <- data[grep('organisation_results', data[,1]),]$n
+    citations_results <- data[grep('citations_results', data[,1]),]$n
+    duplicates <- data[grep('duplicates', data[,1]),]$n
+    excluded_automatic <- data[grep('excluded_automatic', data[,1]),]$n
+    excluded_other <- data[grep('excluded_other', data[,1]),]$n
+    records_screened <- data[grep('records_screened', data[,1]),]$n
+    records_excluded <- data[grep('records_excluded', data[,1]),]$n
+    dbr_sought_reports <- data[grep('dbr_sought_reports', data[,1]),]$n
+    dbr_notretrieved_reports <- data[grep('dbr_notretrieved_reports', data[,1]),]$n
+    other_sought_reports <- data[grep('other_sought_reports', data[,1]),]$n
+    other_notretrieved_reports <- data[grep('other_notretrieved_reports', data[,1]),]$n
+    dbr_assessed <- data[grep('dbr_assessed', data[,1]),]$n
+    dbr_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$n, split = '; '))), 
+                               k = gsub(".*,", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$n, split = '; '))))
+    other_assessed <- data[grep('other_assessed', data[,1]),]$n
+    other_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$n, split = '; '))), 
+                                 k = gsub(".*,", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$n, split = '; '))))
+    new_studies <- data[grep('new_studies', data[,1]),]$n
+    new_reports <- data[grep('new_reports', data[,1]),]$n
+    total_studies <- data[grep('total_studies', data[,1]),]$n
+    total_reports <- data[grep('total_reports', data[,1]),]$n
     tooltips <- stats::na.omit(data$tooltips)
     urls <- data.frame(box = data[!duplicated(data$box), ]$box, url = data[!duplicated(data$box), ]$url)
     
