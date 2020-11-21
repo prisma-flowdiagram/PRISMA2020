@@ -1,13 +1,20 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
+library(rsvg)
+
+prisma_pdf <- function(x, filename = "prisma.pdf") {
+    utils::capture.output({
+        rsvg::rsvg_pdf(svg = charToRaw(DiagrammeRsvg::export_svg(x)),
+                       file = filename)
+    })
+    invisible()
+}
+prisma_png <- function(x, filename = "prisma.png") {
+    utils::capture.output({
+        rsvg::rsvg_png(svg = charToRaw(DiagrammeRsvg::export_svg(x)),
+                       file = filename)
+    })
+    invisible()
+}
 
 # Define UI for application that draws a histogram
 ui <- shinyUI(navbarPage("PRISMA Flow Chart",
@@ -41,7 +48,14 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
     
     tabPanel("Flow chart",
              shinyjs::useShinyjs(),
-             DiagrammeR::grVizOutput("plot")
+             DiagrammeR::grVizOutput("plot1"),
+             br(),
+             br(),
+             fluidRow(
+                 column(12, offset = 1,
+                 downloadButton('PRISMAflowchartPDF', 'Download PDF'),
+                 downloadButton('PRISMAflowchartPNG', 'Download PNG')
+                 ))
     )
 )
 )
@@ -56,7 +70,6 @@ server <- function(input, output) {
         
         data <- read.csv(input$data$datapath)
         df <- data[,3:7]
-        
         return(df)
         
     })
@@ -64,44 +77,60 @@ server <- function(input, output) {
     # Settings (to be expanded)
     interactive <- renderText({ input$interactive })
     
+    #reactive plot
+    plot <- reactive({
+        req(input$data)
+        data <- read.csv(input$data$datapath)
+        data <- read_PRISMAdata(data)
+        plot <- PRISMA_flowchart(previous_studies = data$previous_studies,
+                                 previous_reports = data$previous_reports,
+                                 register_results = data$register_results,
+                                 database_results = data$database_results,
+                                 website_results = data$website_results,
+                                 organisation_results = data$organisation_results,
+                                 citations_results = data$citations_results,
+                                 duplicates = data$duplicates,
+                                 excluded_automatic = data$excluded_automatic,
+                                 excluded_other = data$excluded_other,
+                                 records_screened = data$records_screened,
+                                 records_excluded = data$records_excluded,
+                                 dbr_sought_reports = data$dbr_sought_reports,
+                                 dbr_notretrieved_reports = data$dbr_notretrieved_reports,
+                                 other_sought_reports = data$other_sought_reports,
+                                 other_notretrieved_reports = data$other_notretrieved_reports,
+                                 dbr_assessed = data$dbr_assessed,
+                                 dbr_excluded = data$dbr_excluded,
+                                 other_assessed = data$other_assessed,
+                                 other_excluded = data$other_excluded,
+                                 new_studies = data$new_studies,
+                                 new_reports = data$new_reports,
+                                 total_studies = data$total_studies,
+                                 total_reports = data$total_reports,
+                                 interactive = FALSE,
+                                 previous = TRUE,
+                                 other = TRUE)
+    })
+    
+    
     # Display the plot
-    output$plot <- DiagrammeR::renderDiagrammeR({
-        inFile <- input$data
-        if (is.null(inFile)) {
-            return(NULL)
-        }
-        plot <- PRISMA_flowchart(previous_studies = inFile$previous_studies,
-                                 previous_reports = inFile$previous_reports,
-                                 register_results = inFile$register_results,
-                                 database_results = inFile$database_results,
-                                 website_results = inFile$website_results,
-                                 organisation_results = inFile$organisation_results,
-                                 citations_results = inFile$citations_results,
-                                 duplicates = inFile$duplicates,
-                                 excluded_automatic = inFile$excluded_automatic,
-                                 excluded_other = inFile$excluded_other,
-                                 records_screened = inFile$records_screened,
-                                 records_excluded = inFile$records_excluded,
-                                 dbr_sought_reports = inFile$dbr_sought_reports,
-                                 dbr_notretrieved_reports = inFile$dbr_notretrieved_reports,
-                                 other_sought_reports = inFile$other_sought_reports,
-                                 other_notretrieved_reports = inFile$other_notretrieved_reports,
-                                 dbr_assessed = inFile$dbr_assessed,
-                                 dbr_excluded = inFile$dbr_excluded,
-                                 other_assessed = inFile$other_assessed,
-                                 other_excluded = inFile$other_excluded,
-                                 new_studies = inFile$new_studies,
-                                 new_reports = inFile$new_reports,
-                                 total_studies = inFile$total_studies,
-                                 total_reports = inFile$total_reports,
-                                 interactive = TRUE,
-                                 tooltips = inFile$tooltips,
-                                 urls = inFile$urls,
-                                 previous = TRUE)
-        return(plot)
+    output$plot1 <- DiagrammeR::renderDiagrammeR({
+        plot <- plot()
     })
 
-    
+    output$PRISMAflowchartPDF <- downloadHandler(
+        filename = "prisma.pdf",
+        content = function(file){
+            prisma_pdf(plot(), 
+                       file)
+            }
+        )
+    output$PRISMAflowchartPNG <- downloadHandler(
+        filename = "prisma.png",
+        content = function(file){
+            prisma_png(plot(), 
+                       file)
+        }
+    )
 }
 
 # Run the application 

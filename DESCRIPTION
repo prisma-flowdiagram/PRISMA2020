@@ -21,11 +21,14 @@ Description: Systematic reviews should be described in a high degree of
     PNG or TIFF files.
 Imports:
     DiagrammeR,
+    DiagrammeRsvg,
     htmltools,
     htmlwidgets,
+    rsvg,
     shiny,
     shinyjs,
-    stats
+    stats,
+    utils
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
