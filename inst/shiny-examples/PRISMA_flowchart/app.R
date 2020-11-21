@@ -64,39 +64,42 @@ server <- function(input, output) {
     # Settings (to be expanded)
     interactive <- renderText({ input$interactive })
     
-    # Build the plot
-    #attach(data)
-    
-    plot <- PRISMA_flowchart(previous_studies = previous_studies,
-                             previous_reports = previous_reports,
-                             register_results = register_results,
-                             database_results = database_results,
-                             website_results = website_results,
-                             organisation_results = organisation_results,
-                             citations_results = citations_results,
-                             duplicates = duplicates,
-                             excluded_automatic = excluded_automatic,
-                             excluded_other = excluded_other,
-                             records_screened = records_screened,
-                             records_excluded = records_excluded,
-                             dbr_sought_reports = dbr_sought_reports,
-                             dbr_notretrieved_reports = dbr_notretrieved_reports,
-                             other_sought_reports = other_sought_reports,
-                             other_notretrieved_reports = other_notretrieved_reports,
-                             dbr_assessed = dbr_assessed,
-                             dbr_excluded = dbr_excluded,
-                             other_assessed = other_assessed,
-                             other_excluded = other_excluded,
-                             new_studies = new_studies,
-                             new_reports = new_reports,
-                             total_studies = total_studies,
-                             total_reports = total_reports,
-                             interactive = TRUE,
-                             tooltips = tooltips,
-                             urls = urls)
-    
     # Display the plot
-    output$plot <- DiagrammeR::renderDiagrammeR(plot)
+    output$plot <- DiagrammeR::renderDiagrammeR({
+        inFile <- input$data
+        if (is.null(inFile)) {
+            return(NULL)
+        }
+        plot <- PRISMA_flowchart(previous_studies = inFile$previous_studies,
+                                 previous_reports = inFile$previous_reports,
+                                 register_results = inFile$register_results,
+                                 database_results = inFile$database_results,
+                                 website_results = inFile$website_results,
+                                 organisation_results = inFile$organisation_results,
+                                 citations_results = inFile$citations_results,
+                                 duplicates = inFile$duplicates,
+                                 excluded_automatic = inFile$excluded_automatic,
+                                 excluded_other = inFile$excluded_other,
+                                 records_screened = inFile$records_screened,
+                                 records_excluded = inFile$records_excluded,
+                                 dbr_sought_reports = inFile$dbr_sought_reports,
+                                 dbr_notretrieved_reports = inFile$dbr_notretrieved_reports,
+                                 other_sought_reports = inFile$other_sought_reports,
+                                 other_notretrieved_reports = inFile$other_notretrieved_reports,
+                                 dbr_assessed = inFile$dbr_assessed,
+                                 dbr_excluded = inFile$dbr_excluded,
+                                 other_assessed = inFile$other_assessed,
+                                 other_excluded = inFile$other_excluded,
+                                 new_studies = inFile$new_studies,
+                                 new_reports = inFile$new_reports,
+                                 total_studies = inFile$total_studies,
+                                 total_reports = inFile$total_reports,
+                                 interactive = TRUE,
+                                 tooltips = inFile$tooltips,
+                                 urls = inFile$urls,
+                                 previous = TRUE)
+        return(plot)
+    })
 
     
 }
