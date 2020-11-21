@@ -738,7 +738,7 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
              br(),
              br(),
              fluidRow(
-                 column(12, offset = 1,
+                 column(12, offset = 5,
                  downloadButton('PRISMAflowchartPDF', 'Download PDF'),
                  downloadButton('PRISMAflowchartPNG', 'Download PNG')
                  ))
