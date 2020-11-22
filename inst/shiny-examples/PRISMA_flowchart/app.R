@@ -776,6 +776,7 @@ server <- function(input, output) {
         req(input$data)
         data <- read.csv(input$data$datapath)
         data <- read_PRISMAdata(data)
+        attach(data)
         plot <- PRISMA_flowchart(data,
                                  interactive = FALSE,
                                  previous = input$previous,
