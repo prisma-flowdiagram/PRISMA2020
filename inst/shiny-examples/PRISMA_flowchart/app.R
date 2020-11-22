@@ -8,57 +8,12 @@ library(rsvg)
 #' with the option to add interactivity through tooltips (mouseover popups) and 
 #' hyperlink URLs to each box. Data can be imported from the standard CSV template 
 #' provided.
-#' @param previous_studies The number of studies included in previous version of 
-#' review.
-#' @param previous_reports The number of reports of studies included in previous 
-#' version of review.
-#' @param register_results The number of records identified from registers.
-#' @param database_results The number of records identified from databases.
-#' @param website_results The number of records identified from websites.
-#' @param organisation_results The number of records identified from 
-#' organisations.
-#' @param citations_results The number of records identified from citation 
-#' searching.
-#' @param duplicates The number of duplicate records.
-#' @param excluded_automatic The number of records marked as ineligible by 
-#' automation tools.
-#' @param excluded_other The number of records removed for other reasons.
-#' @param records_screened The number of records screened for databases and 
-#' registers.
-#' @param records_excluded The number of records excluded for databases and 
-#' registers.
-#' @param dbr_sought_reports The number of reports sought for retrieval for 
-#' databases and registers.
-#' @param dbr_notretrieved_reports The number of reports not retrieved for 
-#' databases and registers.
-#' @param other_sought_reports The number of reports sought for retrieval 
-#' from other sources.
-#' @param other_notretrieved_reports The number of reports not retrieved for 
-#' retrievalfrom other sources.
-#' @param dbr_assessed The number of reports assessed for eligibility for 
-#' databases and registers.
-#' @param dbr_excluded The number of reports excluded for databases and 
-#' registers: (separate reasons and numbers using ; e.g. Reason1, xxx; 
-#' Reason2, xxx; Reason3, xxx).
-#' @param other_assessed The number of reports assessed for eligibility for 
-#' other sources.
-#' @param other_excluded The number of reports excluded for other sources: 
-#' (separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; 
-#' Reason3, xxx).
-#' @param new_studies The number of new studies included in review.
-#' @param new_reports The number of reports of new included studies.
-#' @param total_studies The number of total studies included in review.
-#' @param total_reports The number of total reports included studies.
+#' @param data List of data inputs including numbers of studies, box text, tooltips 
+#' and urls for hyperlinks. Data inputted via the `read_PRISMAdata()` function. If 
+#' inputting individually, see the necessary parameters listed in the 
+#' `read_PRISMAdata()` function and combine them in a list using `data <- list()`.
 #' @param interactive Logical argument TRUE or FALSE whether to plot interactivity 
 #' (tooltips and hyperlinked boxes).
-#' @param tooltips Mouseover popups for each box containing explanatory text. 
-#' Should be provided as a vector.
-#' @param urls A dataframe of urls to act as hyperlinks for each box, with one column 
-#' (named 'box') corresponding to the boxname ('box1', etc.) and one column (named 
-#' 'url') containing the urls. A total of 16 URLs should be provided, one for each box. 
-#' See the 'PRISMA_flow_schema.png' for details of box numbers, sequentially from 
-#' top left to bottom across columns, from left to right. Additional URLs can be given 
-#' for the side and top rounded panel boxes if desired.
 #' @param previous Logical argument (TRUE or FALSE) specifying whether previous 
 #' studies were sought.
 #' @param other Logical argument (TRUE or FALSE) specifying whether other studies 
@@ -88,65 +43,15 @@ library(rsvg)
 #' data <- read.csv(file.choose());
 #' data <- read_PRISMAdata(data);
 #' attach(data); 
-#' plot <- PRISMA_flowchart(previous_studies = previous_studies,
-#'                 previous_reports = previous_reports,
-#'                 register_results = register_results,
-#'                 database_results = database_results,
-#'                 website_results = website_results,
-#'                 organisation_results = organisation_results,
-#'                 citations_results = citations_results,
-#'                 duplicates = duplicates,
-#'                 excluded_automatic = excluded_automatic,
-#'                 excluded_other = excluded_other,
-#'                 records_screened = records_screened,
-#'                 records_excluded = records_excluded,
-#'                 dbr_sought_reports = dbr_sought_reports,
-#'                 dbr_notretrieved_reports = dbr_notretrieved_reports,
-#'                 other_sought_reports = other_sought_reports,
-#'                 other_notretrieved_reports = other_notretrieved_reports,
-#'                 dbr_assessed = dbr_assessed,
-#'                 dbr_excluded = dbr_excluded,
-#'                 other_assessed = other_assessed,
-#'                 other_excluded = other_excluded,
-#'                 new_studies = new_studies,
-#'                 new_reports = new_reports,
-#'                 total_studies = total_studies,
-#'                 total_reports = total_reports,
+#' plot <- PRISMA_flowchart(data,
 #'                 interactive = TRUE,
-#'                 tooltips = tooltips,
-#'                 urls = urls,
 #'                 previous = TRUE,
 #'                 other = TRUE);
 #' plot
 #' }
 #' @export
-PRISMA_flowchart <- function (previous_studies,
-                              previous_reports,
-                              register_results,
-                              database_results,
-                              website_results,
-                              organisation_results,
-                              citations_results,
-                              duplicates,
-                              excluded_automatic,
-                              excluded_other,
-                              records_screened,
-                              records_excluded,
-                              dbr_sought_reports,
-                              dbr_notretrieved_reports,
-                              other_sought_reports,
-                              other_notretrieved_reports,
-                              dbr_assessed,
-                              dbr_excluded,
-                              other_assessed,
-                              other_excluded,
-                              new_studies,
-                              new_reports,
-                              total_studies,
-                              total_reports,
+PRISMA_flowchart <- function (data,
                               interactive = FALSE,
-                              tooltips = '',
-                              urls = '',
                               previous = TRUE,
                               other = TRUE,
                               font = 'Helvetica',
@@ -156,12 +61,12 @@ PRISMA_flowchart <- function (previous_studies,
                               arrow_colour = 'Black',
                               arrow_head = 'normal',
                               arrow_tail = 'none') {
-    
-    if(previous == TRUE){
-        xstart <- 0
-        ystart <- 0
-        A <- paste0("A [label = '', pos='",xstart+0.5,",",ystart+0,"!', tooltip = '']")
-        Aedge <- paste0("subgraph cluster0 {
+  
+  if(previous == TRUE){
+    xstart <- 0
+    ystart <- 0
+    A <- paste0("A [label = '', pos='",xstart+0.5,",",ystart+0,"!', tooltip = '']")
+    Aedge <- paste0("subgraph cluster0 {
                   edge [color = White, 
                       arrowhead = none, 
                       arrowtail = none]
@@ -176,58 +81,71 @@ PRISMA_flowchart <- function (previous_studies,
                       constraint = FALSE]
                   A->19;
                 }")
-        bottomedge <- paste0("edge [color = ", arrow_colour, ", 
+    bottomedge <- paste0("edge [color = ", arrow_colour, ", 
   arrowhead = ", arrow_head, ", 
   arrowtail = ", arrow_tail, "]
               12->19;\n")
-        h_adj1 <- 0
-        h_adj2 <- 0
-        previous_nodes <- paste0("node [shape = box,
+    h_adj1 <- 0
+    h_adj2 <- 0
+    previous_nodes <- paste0("node [shape = box,
           fontname = ", font, ",
           color = ", greybox_colour, "]
-    1 [label = 'Previous studies', style = 'rounded,filled', width = 3, height = 0.5, pos='",xstart+0.5,",",ystart+9,"!', tooltip = '", tooltips[1], "']
+    1 [label = '", previous_text, "', style = 'rounded,filled', width = 3, height = 0.5, pos='",xstart+0.5,",",ystart+9,"!', tooltip = '", tooltips[1], "']
     
     node [shape = box,
           fontname = ", font, ",
           color = ", greybox_colour, "]
-    2 [label = '",paste0('Studies included in\nprevious version of\nreview (n = ',
-                         previous_studies, 
-                         ')\n\nReports of studies\nincluded in previous\nversion of review (n = ',
-                         previous_reports,
-                         ')'), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+0.5,",",ystart+7.5,"!', tooltip = '", tooltips[2], "']")
-        finalnode <- paste0("
+    2 [label = '",paste0(stringr::str_wrap(paste0(previous_studies_text,
+                                                  " (n = ",
+                                                  previous_studies, 
+                                                  ")"), 
+                                           width = 33),
+                         "\n\n",
+                         paste0(stringr::str_wrap(previous_reports_text, 
+                                                  width = 33),
+                                "\n(n = ",
+                                previous_reports,
+                                ')')), 
+                         "', style = 'filled', width = 3, height = 0.5, pos='",xstart+0.5,",",ystart+7.5,"!', tooltip = '", tooltips[2], "']")
+    finalnode <- paste0("
   node [shape = box,
         fontname = ", font, ",
         color = ", greybox_colour, "]
-  19 [label = '",paste0('Total studies included in review\n(n = ',
-                        total_studies,
-                        ')\n',
-                        'Reports of total included studies\n(n = ',
-                        total_reports,
-                        ')'), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+4,",",ystart+0,"!', tooltip = '", tooltips[19], "']")
-        prev_rank1 <- "{rank = same; A; 19}"
-        prevnode1 <- "1; "
-        prevnode2 <- "2; "
-        
-    } else {
-        xstart <- -3.5
-        ystart <- 0
-        A <- ""
-        Aedge <- ""
-        bottomedge <- ""
-        previous_nodes <- ""
-        finalnode <- ""
-        h_adj1 <- 0.63
-        h_adj2 <- 1.4
-        prev_rank1 <- ""
-        prevnode1 <- ""
-        prevnode2 <- ""
-        
-    }
+  19 [label = '",paste0(stringr::str_wrap(paste0(total_studies_text,
+                                                 " (n = ",
+                                                 total_studies, 
+                                                 ")"), 
+                                          width = 33),
+                        "\n",
+                        stringr::str_wrap(paste0(total_reports_text,
+                                                 " (n = ",
+                                                 total_reports,
+                                                 ')'), 
+                                          width = 33)),  
+                        "', style = 'filled', width = 3, height = 0.5, pos='",xstart+4,",",ystart+0,"!', tooltip = '", tooltips[19], "']")
+    prev_rank1 <- "{rank = same; A; 19}"
+    prevnode1 <- "1; "
+    prevnode2 <- "2; "
     
-    if(other == TRUE){
-        B <- paste0("B [label = '', pos='",xstart+11.5,",",ystart+1.5,"!', tooltip = '']")
-        cluster2 <- paste0("subgraph cluster2 {
+  } else {
+    xstart <- -3.5
+    ystart <- 0
+    A <- ""
+    Aedge <- ""
+    bottomedge <- ""
+    previous_nodes <- ""
+    finalnode <- ""
+    h_adj1 <- 0.63
+    h_adj2 <- 1.4
+    prev_rank1 <- ""
+    prevnode1 <- ""
+    prevnode2 <- ""
+    
+  }
+  
+  if(other == TRUE){
+    B <- paste0("B [label = '', pos='",xstart+11.5,",",ystart+1.5,"!', tooltip = '']")
+    cluster2 <- paste0("subgraph cluster2 {
     edge [color = White, 
           arrowhead = none, 
           arrowtail = none]
@@ -247,48 +165,57 @@ PRISMA_flowchart <- function (previous_studies,
         constraint = FALSE]
     B->12;
   }")
-        othernodes <- paste0("node [shape = box,
+    othernodes <- paste0("node [shape = box,
         fontname = ", font, ",
         color = ", greybox_colour, "]
-  13 [label = 'Identification of new studies via other methods', style = 'rounded,filled', width = 7, height = 0.5, pos='",xstart+13.5,",",ystart+9,"!', tooltip = '", tooltips[5], "']
+  13 [label = '", other_text, "', style = 'rounded,filled', width = 7, height = 0.5, pos='",xstart+13.5,",",ystart+9,"!', tooltip = '", tooltips[5], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", greybox_colour, "]
-  14 [label = '", paste0('Records identified from:\n\tWebsites (n = ',
+  14 [label = '", paste0('Records identified from:\n',
+                         website_results_text,
+                         " (n = ",
                          website_results,
-                         ')\n\tOrganisations (n = ',
+                         ')\n',
+                         organisation_results_text,
+                         " (n = ",
                          organisation_results,
-                         ')\n\tCitation searching (n = ',
+                         ')\n',
+                         citations_results_text,
+                         " (n = ",
                          citations_results,
-                         ')'), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+11.5,",",ystart+7.5,"!', tooltip = '", tooltips[6], "']
+                         ')'),
+                         "', style = 'filled', width = 3, height = 0.5, pos='",xstart+11.5,",",ystart+7.5,"!', tooltip = '", tooltips[6], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", greybox_colour, "]
-  15 [label = '", paste0('Reports sought for retrieval\n(n = ',
+  15 [label = '", paste0(other_sought_reports_text,
+                         '\n(n = ',
                          other_sought_reports,
                          ')'), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+11.5,",",ystart+4.5,"!', tooltip = '", tooltips[12], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", greybox_colour, "]
-  16 [label = '", paste0('Reports not retrieved\n(n = ',
+  16 [label = '", paste0(other_notretrieved_reports_text,'\n(n = ',
                          other_notretrieved_reports,
                          ')'), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+15.5,",",ystart+4.5,"!', tooltip = '", tooltips[13], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", greybox_colour, "]
-  17 [label = '", paste0('Reports assessed for eligibility\n(n = ',
+  17 [label = '", paste0(other_assessed_text,
+                         '\n(n = ',
                          other_assessed,
                          ')'),"', style = 'filled', width = 3, height = 0.5, pos='",xstart+11.5,",",ystart+3.5,"!', tooltip = '", tooltips[16], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", greybox_colour, "]
-  18 [label = '", paste0('Reports excluded:',
-                         paste(paste('\n\t', 
+  18 [label = '", paste0(other_excluded_text,
+                         paste(paste('\n', 
                                      other_excluded[,1], 
                                      ' (n = ', 
                                      other_excluded[,2], 
@@ -296,103 +223,124 @@ PRISMA_flowchart <- function (previous_studies,
                                      sep = ''), 
                                collapse = '')), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+15.5,",",ystart+3.5,"!', tooltip = '", tooltips[17], "']\n
                        ")
-        extraedges <- "16->18;"
-        othernode13 <- "; 13"
-        othernode14 <- "; 14"
-        othernode1516 <- "; 15; 16"
-        othernode1718 <- "; 17; 18"
-        othernodeB <- "; B"
-        
-    } else {
-        B <- ""
-        cluster2 <- ""
-        othernodes <- ""
-        extraedges <- ""
-        optnodesother <- ""
-        othernode13 <- ""
-        othernode14 <- ""
-        othernode1516 <- ""
-        othernode1718 <- ""
-        othernodeB <- ""
-        
-    }
+    extraedges <- "16->18;"
+    othernode13 <- "; 13"
+    othernode14 <- "; 14"
+    othernode1516 <- "; 15; 16"
+    othernode1718 <- "; 17; 18"
+    othernodeB <- "; B"
     
-    x <- DiagrammeR::grViz(
-        paste0("digraph TD {
+  } else {
+    B <- ""
+    cluster2 <- ""
+    othernodes <- ""
+    extraedges <- ""
+    optnodesother <- ""
+    othernode13 <- ""
+    othernode14 <- ""
+    othernode1516 <- ""
+    othernode1718 <- ""
+    othernodeB <- ""
+    
+  }
+  
+  x <- DiagrammeR::grViz(
+    paste0("digraph TD {
   
   graph[splines=ortho, layout=neato, tooltip = 'Click the boxes for further information']
   
   node [shape = box]
-  identification [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+7.93,"!', width = 0.4, height = 2.6, tooltip = '", tooltips[20], "'];
-  screening [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 3.5, tooltip = '", tooltips[21], "'];
-  included [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
+  identification [color = White, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+7.93,"!', width = 0.4, height = 2.6, tooltip = '", tooltips[20], "'];
+  screening [color = White, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 3.5, tooltip = '", tooltips[21], "'];
+  included [color = White, label='', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
   ",
-               previous_nodes,"
+           previous_nodes,"
   node [shape = box,
         fontname = ", font, ",
         color = ", title_colour, "]
-  3 [label = 'Identification of new studies via databases and registers', style = 'rounded,filled', width = 7, height = 0.5, pos='",xstart+6,",",ystart+9,"!', tooltip = '", tooltips[3], "']
+  3 [label = '", newstud_text, "', style = 'rounded,filled', width = 7, height = 0.5, pos='",xstart+6,",",ystart+9,"!', tooltip = '", tooltips[3], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  4 [label = '", paste0('Records identified from:\n\tDatabases (n = ',
+  4 [label = '", paste0('Records identified from:\n', 
+                        database_results_text, 
+                        ' (n = ',
                         database_results,
-                        ')\n\tRegisters (n = ',
+                        ')\n', 
+                        register_results_text, 
+                        ' (n = ',
                         register_results,
                         ')'), "', width = 3, width = 3, height = 0.5, height = 0.5, pos='",xstart+4,",",ystart+7.5,"!', tooltip = '", tooltips[4], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  5 [label = '", paste0('Records removed before\nscreening:\n\tDuplicate records (n = ',
-                        duplicates,
-                        ')\n\tRecords marked as ineligible\nby automation tools (n = ',
-                        excluded_automatic,
-                        ')\n\tRecords removed for other\nreasons (n = ',
-                        excluded_other,
-                        ')'), "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+7.5,"!', tooltip = '", tooltips[7], "']
+  5 [label = '", paste0('Records removed before\nscreening:\n', 
+                        stringr::str_wrap(paste0(duplicates_text,
+                                                 ' (n = ',
+                                                 duplicates,
+                                                 ')'),
+                                          width = 32),
+                        '\n',
+                        stringr::str_wrap(paste0(excluded_automatic_text,
+                                                 ' (n = ',
+                                                 excluded_automatic,
+                                                 ')'),
+                                          width = 32)
+                        ,'\n', 
+                        stringr::str_wrap(paste0(excluded_other_text, 
+                                                 ' (n = ',
+                                                 excluded_other,
+                                                 ')'),
+                                          width = 32)),
+           "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+7.5,"!', tooltip = '", tooltips[7], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  6 [label = '", paste0('Records screened\n(n = ',
+  6 [label = '", paste0(records_screened_text,
+                        '\n(n = ',
                         records_screened,
                         ')'), "', width = 3, width = 3, height = 0.5, height = 0.5, pos='",xstart+4,",",ystart+5.5,"!', tooltip = '", tooltips[8], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  7 [label = '", paste0('Records excluded*\n(n = ',
+  7 [label = '", paste0(records_excluded_text,
+                        '\n(n = ',
                         records_excluded,
                         ')'), "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+5.5,"!', tooltip = '", tooltips[9], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  8 [label = '", paste0('Reports sought for retrieval\n(n = ',
+  8 [label = '", paste0(dbr_sought_reports_text,
+                        '\n(n = ',
                         dbr_sought_reports,
                         ')'), "', width = 3, width = 3, height = 0.5, height = 0.5, pos='",xstart+4,",",ystart+4.5,"!', tooltip = '", tooltips[10], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  9 [label = '", paste0('Reports not retrieved\n(n = ',
+  9 [label = '", paste0(dbr_notretrieved_reports_text,
+                        '\n(n = ',
                         dbr_notretrieved_reports,
                         ')'), "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+4.5,"!', tooltip = '", tooltips[11], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  10 [label = '", paste0('Reports assessed for eligibility\n(n = ',
+  10 [label = '", paste0(dbr_assessed_text,
+                         '\n(n = ',
                          dbr_assessed,
                          ')'), "', width = 3, height = 0.5, pos='",xstart+4,",",ystart+3.5,"!', tooltip = '", tooltips[14], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  11 [label = '", paste0('Reports excluded:',
-                         paste(paste('\n\t', 
+  11 [label = '", paste0(dbr_excluded_text,
+                         paste(paste('\n', 
                                      dbr_excluded[,1], 
                                      ' (n = ', 
                                      dbr_excluded[,2], 
@@ -403,23 +351,25 @@ PRISMA_flowchart <- function (previous_studies,
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  12 [label = '", paste0('New studies included in review\n(n = ',
+  12 [label = '", paste0(stringr::str_wrap(new_studies_text, width = 33),
+                         '\n(n = ',
                          new_studies,
                          ')\n',
-                         'Reports of new included studies\n(n = ',
+                         stringr::str_wrap(new_reports_text, width = 33),
+                         '\n(n = ',
                          new_reports,
                          ')'), "', width = 3, height = 0.5, pos='",xstart+4,",",ystart+1.5,"!', tooltip = '", tooltips[18], "']
   
   ",othernodes,
-               
-               finalnode,"
+           
+           finalnode,"
   
   node [shape = square, width = 0, color=White]\n",
-               A,"
+           A,"
   ",B,"
   
   ",
-               Aedge,"
+           Aedge,"
   
   subgraph cluster1 {
     edge [style = invis]
@@ -444,9 +394,9 @@ PRISMA_flowchart <- function (previous_studies,
   ",cluster2,"
   
   ",
-               bottomedge,"\n\n",
-               prev_rank1,"\n",
-               "{rank = same; ",prevnode1,"3",othernode13,"} 
+           bottomedge,"\n\n",
+           prev_rank1,"\n",
+           "{rank = same; ",prevnode1,"3",othernode13,"} 
   {rank = same; ",prevnode2,"4; 5",othernode14,"} 
   {rank = same; 6; 7} 
   {rank = same; 8; 9",othernode1516,"} 
@@ -455,12 +405,12 @@ PRISMA_flowchart <- function (previous_studies,
   
   }
   ")
-    )
-    
-    # Append in vertical text on blue bars
-    if (paste0(previous,  other) == 'TRUETRUE'){
-        insertJS <- function(plot){
-            javascript <- htmltools::HTML('
+  )
+  
+  # Append in vertical text on blue bars
+  if (paste0(previous,  other) == 'TRUETRUE'){
+    insertJS <- function(plot){
+      javascript <- htmltools::HTML('
 var theDiv = document.getElementById("node1");
 theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'610\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
 var theDiv = document.getElementById("node2");
@@ -468,12 +418,12 @@ theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90d
 var theDiv = document.getElementById("node3");
 theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'105\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
                               ')
-            htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-        }
-        x <- insertJS(x)
-    } else if (paste0(previous,  other) == 'FALSETRUE'){
-        insertJS <- function(plot){
-            javascript <- htmltools::HTML('
+      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+    }
+    x <- insertJS(x)
+  } else if (paste0(previous,  other) == 'FALSETRUE'){
+    insertJS <- function(plot){
+      javascript <- htmltools::HTML('
 var theDiv = document.getElementById("node1");
 theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'502\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
 var theDiv = document.getElementById("node2");
@@ -481,12 +431,12 @@ theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90d
 var theDiv = document.getElementById("node3");
 theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'38\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
                               ')
-            htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-        }
-        x <- insertJS(x)
-    } else if (paste0(previous,  other) == 'TRUEFALSE'){
-        insertJS <- function(plot){
-            javascript <- htmltools::HTML('
+      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+    }
+    x <- insertJS(x)
+  } else if (paste0(previous,  other) == 'TRUEFALSE'){
+    insertJS <- function(plot){
+      javascript <- htmltools::HTML('
 var theDiv = document.getElementById("node1");
 theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'610\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
 var theDiv = document.getElementById("node2");
@@ -494,12 +444,12 @@ theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90d
 var theDiv = document.getElementById("node3");
 theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'105\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
                               ')
-            htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-        }
-        x <- insertJS(x)
-    } else {
-        insertJS <- function(plot){
-            javascript <- htmltools::HTML('
+      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+    }
+    x <- insertJS(x)
+  } else {
+    insertJS <- function(plot){
+      javascript <- htmltools::HTML('
 var theDiv = document.getElementById("node1");
 theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'502\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
 var theDiv = document.getElementById("node2");
@@ -507,16 +457,16 @@ theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90d
 var theDiv = document.getElementById("node3");
 theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'38\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
                               ')
-            htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-        }
-        x <- insertJS(x)
+      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
     }
-    
-    if (interactive == TRUE) {
-        x <- sr_flow_interactive(x, urls, previous = previous, other = other)
-    }
-    
-    return(x)
+    x <- insertJS(x)
+  }
+  
+  if (interactive == TRUE) {
+    x <- sr_flow_interactive(x, urls, previous = previous, other = other)
+  }
+  
+  return(x)
 }
 
 
@@ -533,66 +483,122 @@ theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90d
 #' }
 #' @export
 read_PRISMAdata <- function(data){
-    
-    #Set parameters
-    previous_studies <- data[grep('previous_studies', data[,1]),]$n
-    previous_reports <- data[grep('previous_reports', data[,1]),]$n
-    register_results <- data[grep('register_results', data[,1]),]$n
-    database_results <- data[grep('database_results', data[,1]),]$n
-    website_results <- data[grep('website_results', data[,1]),]$n
-    organisation_results <- data[grep('organisation_results', data[,1]),]$n
-    citations_results <- data[grep('citations_results', data[,1]),]$n
-    duplicates <- data[grep('duplicates', data[,1]),]$n
-    excluded_automatic <- data[grep('excluded_automatic', data[,1]),]$n
-    excluded_other <- data[grep('excluded_other', data[,1]),]$n
-    records_screened <- data[grep('records_screened', data[,1]),]$n
-    records_excluded <- data[grep('records_excluded', data[,1]),]$n
-    dbr_sought_reports <- data[grep('dbr_sought_reports', data[,1]),]$n
-    dbr_notretrieved_reports <- data[grep('dbr_notretrieved_reports', data[,1]),]$n
-    other_sought_reports <- data[grep('other_sought_reports', data[,1]),]$n
-    other_notretrieved_reports <- data[grep('other_notretrieved_reports', data[,1]),]$n
-    dbr_assessed <- data[grep('dbr_assessed', data[,1]),]$n
-    dbr_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$n, split = '; '))), 
-                               k = gsub(".*,", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$n, split = '; '))))
-    other_assessed <- data[grep('other_assessed', data[,1]),]$n
-    other_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$n, split = '; '))), 
-                                 k = gsub(".*,", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$n, split = '; '))))
-    new_studies <- data[grep('new_studies', data[,1]),]$n
-    new_reports <- data[grep('new_reports', data[,1]),]$n
-    total_studies <- data[grep('total_studies', data[,1]),]$n
-    total_reports <- data[grep('total_reports', data[,1]),]$n
-    tooltips <- stats::na.omit(data$tooltips)
-    urls <- data.frame(box = data[!duplicated(data$box), ]$box, url = data[!duplicated(data$box), ]$url)
-    
-    x <- list(previous_studies = previous_studies,
-              previous_reports = previous_reports,
-              register_results = register_results,
-              database_results = database_results,
-              website_results = website_results,
-              organisation_results = organisation_results,
-              citations_results = citations_results,
-              duplicates = duplicates,
-              excluded_automatic = excluded_automatic,
-              excluded_other = excluded_other,
-              records_screened = records_screened,
-              records_excluded = records_excluded,
-              dbr_sought_reports = dbr_sought_reports,
-              dbr_notretrieved_reports = dbr_notretrieved_reports,
-              other_sought_reports = other_sought_reports,
-              other_notretrieved_reports = other_notretrieved_reports,
-              dbr_assessed = dbr_assessed,
-              dbr_excluded = dbr_excluded,
-              other_assessed = other_assessed,
-              other_excluded = other_excluded,
-              new_studies = new_studies,
-              new_reports = new_reports,
-              total_studies = total_studies,
-              total_reports = total_reports,
-              tooltips = tooltips,
-              urls = urls)
-    
-    return(x)
-    
+  
+  #Set parameters
+  previous_studies <- data[grep('previous_studies', data[,1]),]$n
+  previous_reports <- data[grep('previous_reports', data[,1]),]$n
+  register_results <- data[grep('register_results', data[,1]),]$n
+  database_results <- data[grep('database_results', data[,1]),]$n
+  website_results <- data[grep('website_results', data[,1]),]$n
+  organisation_results <- data[grep('organisation_results', data[,1]),]$n
+  citations_results <- data[grep('citations_results', data[,1]),]$n
+  duplicates <- data[grep('duplicates', data[,1]),]$n
+  excluded_automatic <- data[grep('excluded_automatic', data[,1]),]$n
+  excluded_other <- data[grep('excluded_other', data[,1]),]$n
+  records_screened <- data[grep('records_screened', data[,1]),]$n
+  records_excluded <- data[grep('records_excluded', data[,1]),]$n
+  dbr_sought_reports <- data[grep('dbr_sought_reports', data[,1]),]$n
+  dbr_notretrieved_reports <- data[grep('dbr_notretrieved_reports', data[,1]),]$n
+  other_sought_reports <- data[grep('other_sought_reports', data[,1]),]$n
+  other_notretrieved_reports <- data[grep('other_notretrieved_reports', data[,1]),]$n
+  dbr_assessed <- data[grep('dbr_assessed', data[,1]),]$n
+  dbr_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$n, split = '; '))), 
+                             n = gsub(".*,", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$n, split = '; '))))
+  other_assessed <- data[grep('other_assessed', data[,1]),]$n
+  other_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$n, split = '; '))), 
+                               n = gsub(".*,", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$n, split = '; '))))
+  new_studies <- data[grep('new_studies', data[,1]),]$n
+  new_reports <- data[grep('new_reports', data[,1]),]$n
+  total_studies <- data[grep('total_studies', data[,1]),]$n
+  total_reports <- data[grep('total_reports', data[,1]),]$n
+  tooltips <- stats::na.omit(data$tooltips)
+  urls <- data.frame(box = data[!duplicated(data$box), ]$box, url = data[!duplicated(data$box), ]$url)
+  
+  #set text - if text >33 characters, 
+  previous_text <- data[grep('prevstud', data[,3]),]$boxtext
+  newstud_text <- data[grep('newstud', data[,3]),]$boxtext
+  other_text <- data[grep('othstud', data[,3]),]$boxtext
+  previous_studies_text <- data[grep('previous_studies', data[,1]),]$boxtext
+  previous_reports_text <- data[grep('previous_reports', data[,1]),]$boxtext
+  register_results_text <- data[grep('register_results', data[,1]),]$boxtext
+  database_results_text <- data[grep('database_results', data[,1]),]$boxtext
+  website_results_text <- data[grep('website_results', data[,1]),]$boxtext
+  organisation_results_text <- data[grep('organisation_results', data[,1]),]$boxtext
+  citations_results_text <- data[grep('citations_results', data[,1]),]$boxtext
+  duplicates_text <- data[grep('duplicates', data[,1]),]$boxtext
+  excluded_automatic_text <- data[grep('excluded_automatic', data[,1]),]$boxtext
+  excluded_other_text <- data[grep('excluded_other', data[,1]),]$boxtext
+  records_screened_text <- data[grep('records_screened', data[,1]),]$boxtext
+  records_excluded_text <- data[grep('records_excluded', data[,1]),]$boxtext
+  dbr_sought_reports_text <- data[grep('dbr_sought_reports', data[,1]),]$boxtext
+  dbr_notretrieved_reports_text <- data[grep('dbr_notretrieved_reports', data[,1]),]$boxtext
+  other_sought_reports_text <- data[grep('other_sought_reports', data[,1]),]$boxtext
+  other_notretrieved_reports_text <- data[grep('other_notretrieved_reports', data[,1]),]$boxtext
+  dbr_assessed_text <- data[grep('dbr_assessed', data[,1]),]$boxtext
+  dbr_excluded_text <- data[grep('dbr_excluded', data[,1]),]$boxtext
+  other_assessed_text <- data[grep('other_assessed', data[,1]),]$boxtext
+  other_excluded_text <- data[grep('other_excluded', data[,1]),]$boxtext
+  new_studies_text <- data[grep('new_studies', data[,1]),]$boxtext
+  new_reports_text <- data[grep('new_reports', data[,1]),]$boxtext
+  total_studies_text <- data[grep('total_studies', data[,1]),]$boxtext
+  total_reports_text <- data[grep('total_reports', data[,1]),]$boxtext
+  
+  x <- list(previous_studies = previous_studies,
+            previous_reports = previous_reports,
+            register_results = register_results,
+            database_results = database_results,
+            website_results = website_results,
+            organisation_results = organisation_results,
+            citations_results = citations_results,
+            duplicates = duplicates,
+            excluded_automatic = excluded_automatic,
+            excluded_other = excluded_other,
+            records_screened = records_screened,
+            records_excluded = records_excluded,
+            dbr_sought_reports = dbr_sought_reports,
+            dbr_notretrieved_reports = dbr_notretrieved_reports,
+            other_sought_reports = other_sought_reports,
+            other_notretrieved_reports = other_notretrieved_reports,
+            dbr_assessed = dbr_assessed,
+            dbr_excluded = dbr_excluded,
+            other_assessed = other_assessed,
+            other_excluded = other_excluded,
+            new_studies = new_studies,
+            new_reports = new_reports,
+            total_studies = total_studies,
+            total_reports = total_reports,
+            previous_text = previous_text,
+            newstud_text = newstud_text,
+            other_text = other_text,
+            previous_studies_text = previous_studies_text,
+            previous_reports_text = previous_reports_text,
+            register_results_text = register_results_text,
+            database_results_text = database_results_text,
+            website_results_text = website_results_text,
+            organisation_results_text = organisation_results_text,
+            citations_results_text = citations_results_text,
+            duplicates_text = duplicates_text,
+            excluded_automatic_text = excluded_automatic_text,
+            excluded_other_text = excluded_other_text,
+            records_screened_text = records_screened_text,
+            records_excluded_text = records_excluded_text,
+            dbr_sought_reports_text = dbr_sought_reports_text,
+            dbr_notretrieved_reports_text = dbr_notretrieved_reports_text,
+            other_sought_reports_text = other_sought_reports_text,
+            other_notretrieved_reports_text = other_notretrieved_reports_text,
+            dbr_assessed_text = dbr_assessed_text,
+            dbr_excluded_text = dbr_excluded_text,
+            other_assessed_text = other_assessed_text,
+            other_excluded_text = other_excluded_text,
+            new_studies_text = new_studies_text,
+            new_reports_text = new_reports_text,
+            total_studies_text = total_studies_text,
+            total_reports_text = total_reports_text,
+            tooltips = tooltips,
+            urls = urls)
+  
+  return(x)
+  
 }
 
 
@@ -626,56 +632,58 @@ sr_flow_interactive <- function(plot,
                                 urls,
                                 previous,
                                 other) {
-    
-    if(paste0(previous, other) == 'TRUETRUE'){
-        link <- data.frame(boxname = c('identification', 'screening', 'included', 'prevstud', 'box1', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
-                                       'box8', 'box9', 'box10', 'othstud', 'box11', 'box12', 'box13', 'box14', 'box15', 'box16', 'A', 'B'), 
-                           node = paste0('node', seq(1, 24)))
-        target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node23', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 
-                    'node15', 'node22', 'node16', 'node17', 'node18', 'node19', 'node20', 'node21', 'node24')
-    } else if(paste0(previous, other) == 'FALSETRUE'){
-        link <- data.frame(boxname = c('identification', 'screening', 'included', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
-                                       'box8', 'box9', 'box10', 'othstud', 'box11', 'box12', 'box13', 'box14', 'box15', 'B'), 
-                           node = paste0('node', seq(1, 20)))
-        target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 'node15', 
-                    'node16', 'node17', 'node18', 'node19', 'node20')
-    }
-    else if(paste0(previous, other) == 'TRUEFALSE'){
-        link <- data.frame(boxname = c('identification', 'screening', 'included', 'prevstud', 'box1', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
-                                       'box8', 'box9', 'box10', 'box16', 'A'), 
-                           node = paste0('node', seq(1, 17)))
-        target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 'node15', 
-                    'node16', 'node17')
-    }
-    else {
-        link <- data.frame(boxname = c('identification', 'screening', 'included', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
-                                       'box8', 'box9', 'box10'), 
-                           node = paste0('node', seq(1, 13)))
-        target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13')
-    }
-    
-    
-    link <- merge(link, urls, by.x = 'boxname', by.y = 'box', all.x = TRUE)
-    link <- link[match(target, link$node),]
-    node <- link$node
-    url <- link$url
-    
-    #the following function produces three lines of JavaScript per node to add a specified hyperlink for the node, pulled in from nodes.csv
-    myfun <- function(node, 
-                      url){
-        t <- paste0('const ', node, ' = document.getElementById("', node, '");
+  
+  if(paste0(previous, other) == 'TRUETRUE'){
+    link <- data.frame(boxname = c('identification', 'screening', 'included', 'prevstud', 'box1', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
+                                   'box8', 'box9', 'box10', 'othstud', 'box11', 'box12', 'box13', 'box14', 'box15', 'box16', 'A', 'B'), 
+                       node = paste0('node', seq(1, 24)))
+    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node23', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 
+                'node15', 'node22', 'node16', 'node17', 'node18', 'node19', 'node20', 'node21', 'node24')
+  } else if(paste0(previous, other) == 'FALSETRUE'){
+    link <- data.frame(boxname = c('identification', 'screening', 'included', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
+                                   'box8', 'box9', 'box10', 'othstud', 'box11', 'box12', 'box13', 'box14', 'box15', 'B'), 
+                       node = paste0('node', seq(1, 20)))
+    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 'node15', 
+                'node16', 'node17', 'node18', 'node19', 'node20')
+  }
+  else if(paste0(previous, other) == 'TRUEFALSE'){
+    link <- data.frame(boxname = c('identification', 'screening', 'included', 'prevstud', 'box1', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
+                                   'box8', 'box9', 'box10', 'box16', 'A'), 
+                       node = paste0('node', seq(1, 17)))
+    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 'node15', 
+                'node16', 'node17')
+  }
+  else {
+    link <- data.frame(boxname = c('identification', 'screening', 'included', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
+                                   'box8', 'box9', 'box10'), 
+                       node = paste0('node', seq(1, 13)))
+    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13')
+  }
+  
+  
+  link <- merge(link, urls, by.x = 'boxname', by.y = 'box', all.x = TRUE)
+  link <- link[match(target, link$node),]
+  node <- link$node
+  url <- link$url
+  
+  #the following function produces three lines of JavaScript per node to add a specified hyperlink for the node, pulled in from nodes.csv
+  myfun <- function(node, 
+                    url){
+    t <- paste0('const ', node, ' = document.getElementById("', node, '");
   var link', node, ' = "<a href=\'', url, '\' target=\'_blank\'>" + ', node, '.innerHTML + "</a>";
   ', node, '.innerHTML = link', node, ';
   ')
-    }
-    #the following code adds the location link for the new window
-    javascript <- htmltools::HTML(paste(mapply(myfun, 
-                                               node, 
-                                               url), 
-                                        collapse = '\n'))  
-    htmlwidgets::prependContent(plot, 
-                                htmlwidgets::onStaticRenderComplete(javascript))
+  }
+  #the following code adds the location link for the new window
+  javascript <- htmltools::HTML(paste(mapply(myfun, 
+                                             node, 
+                                             url), 
+                                      collapse = '\n'))  
+  htmlwidgets::prependContent(plot, 
+                              htmlwidgets::onStaticRenderComplete(javascript))
 }
+
+
 
 
 
@@ -768,30 +776,7 @@ server <- function(input, output) {
         req(input$data)
         data <- read.csv(input$data$datapath)
         data <- read_PRISMAdata(data)
-        plot <- PRISMA_flowchart(previous_studies = data$previous_studies,
-                                 previous_reports = data$previous_reports,
-                                 register_results = data$register_results,
-                                 database_results = data$database_results,
-                                 website_results = data$website_results,
-                                 organisation_results = data$organisation_results,
-                                 citations_results = data$citations_results,
-                                 duplicates = data$duplicates,
-                                 excluded_automatic = data$excluded_automatic,
-                                 excluded_other = data$excluded_other,
-                                 records_screened = data$records_screened,
-                                 records_excluded = data$records_excluded,
-                                 dbr_sought_reports = data$dbr_sought_reports,
-                                 dbr_notretrieved_reports = data$dbr_notretrieved_reports,
-                                 other_sought_reports = data$other_sought_reports,
-                                 other_notretrieved_reports = data$other_notretrieved_reports,
-                                 dbr_assessed = data$dbr_assessed,
-                                 dbr_excluded = data$dbr_excluded,
-                                 other_assessed = data$other_assessed,
-                                 other_excluded = data$other_excluded,
-                                 new_studies = data$new_studies,
-                                 new_reports = data$new_reports,
-                                 total_studies = data$total_studies,
-                                 total_reports = data$total_reports,
+        plot <- PRISMA_flowchart(data,
                                  interactive = FALSE,
                                  previous = input$previous,
                                  other = input$other)
