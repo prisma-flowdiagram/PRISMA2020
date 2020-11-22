@@ -28,6 +28,7 @@ Imports:
     shiny,
     shinyjs,
     stats,
+    stringr,
     utils
 License: GPL-3
 Encoding: UTF-8
