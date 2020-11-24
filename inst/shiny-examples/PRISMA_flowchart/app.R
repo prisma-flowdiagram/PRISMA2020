@@ -765,7 +765,7 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
     
     tabPanel("Flow chart",
              shinyjs::useShinyjs(),
-             DiagrammeR::grVizOutput("plot1"),
+             DiagrammeR::grVizOutput(outputId = "plot1", width = "100%", height = "700px"),
              br(),
              br(),
              fluidRow(
