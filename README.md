@@ -11,9 +11,9 @@ A static version is produced otherwise. <a href="https://srflowdiagram.github.io
 See the interactive template here.</a>
 
 <!-- badges: start -->
-[![R build status](https://github.com/nealhaddaway/PRISMA2020/workflows/R-CMD-check/badge.svg)](https://github.com/nealhaddaway/PRISMA2020/actions)
-[![HitCount](http://hits.dwyl.com/nealhaddaway/nealhaddaway/PRISMA2020.svg)](http://hits.dwyl.com/nealhaddaway/nealhaddaway/PRISMA2020)
-![GitHub all releases](https://img.shields.io/github/downloads/nealhaddaway/PRISMA2020/total?style=plastic)
-![GitHub](https://img.shields.io/github/license/nealhaddaway/PRISMA2020)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/nealhaddaway/PRISMA2020)
+[![R build status](https://github.com/nealhaddaway/PRISMA2020/workflows/R-CMD-check/badge.svg/)](https://github.com/nealhaddaway/PRISMA2020/actions/)
+[![HitCount](https://hits.dwyl.com/nealhaddaway/nealhaddaway/PRISMA2020.svg/)](https://hits.dwyl.com/nealhaddaway/nealhaddaway/PRISMA2020/)
+![GitHub all releases](https://img.shields.io/github/downloads/nealhaddaway/PRISMA2020/total?style=plastic/)
+![GitHub](https://img.shields.io/github/license/nealhaddaway/PRISMA2020/)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/nealhaddaway/PRISMA2020/)
 <!-- badges: end -->
