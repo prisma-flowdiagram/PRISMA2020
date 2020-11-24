@@ -763,7 +763,7 @@ server <- function(input, output) {
         req(input$data)
         
         data <- read.csv(input$data$datapath)
-        df <- data[,3:7]
+        df <- data[,3:8]
         return(df)
         
     })
