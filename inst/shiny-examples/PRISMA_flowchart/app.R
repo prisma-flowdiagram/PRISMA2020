@@ -709,7 +709,26 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
 
     # Tab 1
     tabPanel("Data upload",
-        fluidRow(
+         fluidRow(
+            column(10, offset = 1,
+                   'Systematic reviews should be described in a high degree of methodological detail. The PRISMA Statement calls for a high level of 
+                   reporting detail in systematic reviews and meta-analyses. An integral part of the methodological description of a review is a flow diagram/chart.',
+                   br(),
+                   br(),
+                   'This tool allows you to produce a flow chart for your own review that conforms to the PRISMA2020 Statement. You can provide the numbers and texts 
+                   for the boxes in the CSV template below. Upload your own version and select whether to include the "previous" and "other" studies arms, then proceed 
+                   to the "Flow chart" tab to see and download your figure.',
+                   br(),
+                   br(),
+                   "At present, this version of the tool doesn't support embedding tooltips and hyperlinks in the plot. For this functionality, please use the", 
+                   tags$a(href="https://github.com/nealhaddaway/PRISMA2020", "PRISMA2020 flow chart R package on Github."),
+                   br(),
+                   br(),
+                   'Please let us know if you have any feedback or if you encounter an error by sending an email to ', tags$a(href="mailto:neal.haddaway@sei.org", "neal.haddaway@sei.org"),
+                   br(),
+                   br(),
+                   hr()),
+               
             column(12, offset = 1,
                    tags$a(href="https://ndownloader.figshare.com/files/25556051", "Download template CSV file here"),
                    br(),
@@ -735,7 +754,11 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
         # Show a plot of the generated distribution
         fluidRow(
             column(12, 
-            tableOutput("contents")
+            tableOutput("contents")),
+            column(10, offset = 1,
+            br(),
+            hr(),
+            'This package was developed by Neal R Haddaway in 2020'
             )
         )
     ),
