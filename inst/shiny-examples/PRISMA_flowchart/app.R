@@ -731,7 +731,7 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
                    hr()),
                
             column(12, offset = 1,
-                   tags$a(href="https://ndownloader.figshare.com/files/25556051", "Download template CSV file here"),
+                   tags$a(href="https://ndownloader.figshare.com/files/25593458", "Download template CSV file here"),
                    br(),
                    br()),
             
