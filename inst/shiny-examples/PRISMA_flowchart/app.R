@@ -711,13 +711,14 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
     tabPanel("Data upload",
          fluidRow(
             column(10, offset = 1,
-                   'Systematic reviews should be described in a high degree of methodological detail. The PRISMA Statement calls for a high level of 
-                   reporting detail in systematic reviews and meta-analyses. An integral part of the methodological description of a review is a flow diagram/chart.',
+                   'Systematic reviews should be described in a high degree of methodological detail. ', tags$a(href="http://prisma-statement.org/", "The PRISMA Statement"), 
+                   'calls for a high level of reporting detail in systematic reviews and meta-analyses. An integral part of the methodological description of a review 
+                   is a flow diagram/chart.',
                    br(),
                    br(),
-                   'This tool allows you to produce a flow chart for your own review that conforms to the PRISMA2020 Statement. You can provide the numbers and texts 
-                   for the boxes in the CSV template below. Upload your own version and select whether to include the "previous" and "other" studies arms, then proceed 
-                   to the "Flow chart" tab to see and download your figure.',
+                   'This tool allows you to produce a flow chart for your own review that conforms to ', tags$a(href="https://osf.io/preprints/metaarxiv/v7gm2/", "the PRISMA2020 Statement."), 
+                   'You can provide the numbers and texts for the boxes in the CSV template below. Upload your own version and select whether to include the "previous" and 
+                   "other" studies arms, then proceed to the "Flow chart" tab to see and download your figure.',
                    br(),
                    br(),
                    "At present, this version of the tool doesn't support embedding tooltips and hyperlinks in the plot. For this functionality, please use the", 
@@ -758,7 +759,15 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
             column(10, offset = 1,
             br(),
             hr(),
-            'This package was developed by Neal R Haddaway in 2020'
+            'Credits:',
+            br(),
+            'Neal R Haddaway (creator)', br(),
+            'Matthew J Page (advisor)', br(),
+            'Luke McGuiness (advisor)', br(),
+            'Jack Wasey (advisor)', br(),
+            br(),
+            tags$a(href="https://github.com/nealhaddaway/PRISMA2020", tags$img(height = 40, width = 40, src = "https://pngimg.com/uploads/github/github_PNG40.png")), 
+            'Created November 2020'
             )
         )
     ),
