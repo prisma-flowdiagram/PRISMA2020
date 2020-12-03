@@ -1,6 +1,6 @@
-#' Plot interactive flow charts for systematic reviews
+#' Plot interactive flow diagrams for systematic reviews
 #' 
-#' @description Produces a PRISMA2020 style flow chart for systematic reviews, 
+#' @description Produces a PRISMA2020 style flow diagram for systematic reviews, 
 #' with the option to add interactivity through tooltips (mouseover popups) and 
 #' hyperlink URLs to each box. Data can be imported from the standard CSV template 
 #' provided.
@@ -33,30 +33,30 @@
 #' @param arrow_tail The tail shape for the line connectors. The default is 
 #' 'none'. See DiagrammeR arrow shape specification 
 #' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes>.
-#' @return A flow chart plot.
+#' @return A flow diagram plot.
 #' @examples 
 #' \dontrun{
 #' data <- read.csv(file.choose());
 #' data <- read_PRISMAdata(data);
 #' attach(data); 
-#' plot <- PRISMA_flowchart(data,
+#' plot <- PRISMA_flowdiagram(data,
 #'                 interactive = TRUE,
 #'                 previous = TRUE,
 #'                 other = TRUE);
 #' plot
 #' }
 #' @export
-PRISMA_flowchart <- function (data,
-                             interactive = FALSE,
-                             previous = TRUE,
-                             other = TRUE,
-                             font = 'Helvetica',
-                             title_colour = 'Goldenrod1',
-                             greybox_colour = 'Gainsboro',
-                             main_colour = 'Black',
-                             arrow_colour = 'Black',
-                             arrow_head = 'normal',
-                             arrow_tail = 'none') {
+PRISMA_flowdiagram <- function (data,
+                              interactive = FALSE,
+                              previous = TRUE,
+                              other = TRUE,
+                              font = 'Helvetica',
+                              title_colour = 'Goldenrod1',
+                              greybox_colour = 'Gainsboro',
+                              main_colour = 'Black',
+                              arrow_colour = 'Black',
+                              arrow_head = 'normal',
+                              arrow_tail = 'none') {
   
   if(nrow(dbr_excluded) > 3){
     dbr_excludedh <- 3.5 - ((nrow(dbr_excluded)-4)/9)
@@ -110,9 +110,9 @@ PRISMA_flowchart <- function (data,
                          "\n\n",
                          paste0(stringr::str_wrap(previous_reports_text, 
                                                   width = 33),
-                                           "\n(n = ",
-                                           previous_reports,
-                                           ')')), 
+                                "\n(n = ",
+                                previous_reports,
+                                ')')), 
                          "', style = 'filled', width = 3, height = 0.5, pos='",xstart+0.5,",",ystart+7.5,"!', tooltip = '", tooltips[2], "']")
     finalnode <- paste0("
   node [shape = box,
@@ -181,18 +181,18 @@ PRISMA_flowchart <- function (data,
         fontname = ", font, ",
         color = ", greybox_colour, "]
   14 [label = '", paste0('Records identified from:\n',
-                                                  website_results_text,
-                                                  " (n = ",
-                                                  website_results,
-                                                  ')\n',
-                                                  organisation_results_text,
-                                                  " (n = ",
-                                                  organisation_results,
-                                                  ')\n',
-                                                  citations_results_text,
-                                                  " (n = ",
-                                                  citations_results,
-                                                  ')'),
+                         website_results_text,
+                         " (n = ",
+                         website_results,
+                         ')\n',
+                         organisation_results_text,
+                         " (n = ",
+                         organisation_results,
+                         ')\n',
+                         citations_results_text,
+                         " (n = ",
+                         citations_results,
+                         ')'),
                          "', style = 'filled', width = 3, height = 0.5, pos='",xstart+11.5,",",ystart+7.5,"!', tooltip = '", tooltips[6], "']
   
   node [shape = box,
@@ -257,9 +257,9 @@ PRISMA_flowchart <- function (data,
   graph[splines=ortho, layout=neato, tooltip = 'Click the boxes for further information']
   
   node [shape = box]
-  identification [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+7.93,"!', width = 0.4, height = 2.6, tooltip = '", tooltips[20], "'];
-  screening [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 3.5, tooltip = '", tooltips[21], "'];
-  included [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
+  identification [color = White, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+7.93,"!', width = 0.4, height = 2.6, tooltip = '", tooltips[20], "'];
+  screening [color = White, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 3.5, tooltip = '", tooltips[21], "'];
+  included [color = White, label='', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
   ",
            previous_nodes,"
   node [shape = box,
@@ -301,7 +301,7 @@ PRISMA_flowchart <- function (data,
                                                  excluded_other,
                                                  ')'),
                                           width = 32)),
-                        "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+7.5,"!', tooltip = '", tooltips[7], "']
+           "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+7.5,"!', tooltip = '", tooltips[7], "']
   
   node [shape = box,
         fontname = ", font, ",
@@ -414,74 +414,15 @@ PRISMA_flowchart <- function (data,
   ")
   )
   
-  # Append in vertical text on blue bars
-  if (paste0(previous,  other) == 'TRUETRUE'){
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'610\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'365\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'105\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-    } else if (paste0(previous,  other) == 'FALSETRUE'){
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'502\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'257\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'38\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-  } else if (paste0(previous,  other) == 'TRUEFALSE'){
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'610\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'365\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'105\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-  } else {
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'502\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'257\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'38\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-    }
-  
-  if (interactive == TRUE) {
-    x <- sr_flow_interactive(x, urls, previous = previous, other = other)
-  }
-  
   return(x)
 }
 
 
-#' Read in PRISMA flow chart data
+#' Read in PRISMA flow diagram data
 #' 
-#' @description Read in a template CSV containing data for the flow chart.
+#' @description Read in a template CSV containing data for the flow diagram
 #' @param data File to read in.
-#' @return A list of objects needed to plot the flow chart.
+#' @return A list of objects needed to plot the flow diagram
 #' @examples 
 #' \dontrun{
 #' data <- read.csv(file.choose());
@@ -551,67 +492,67 @@ read_PRISMAdata <- function(data){
   total_reports_text <- data[grep('total_reports', data[,1]),]$boxtext
   
   x <- list(previous_studies = previous_studies,
-           previous_reports = previous_reports,
-           register_results = register_results,
-           database_results = database_results,
-           website_results = website_results,
-           organisation_results = organisation_results,
-           citations_results = citations_results,
-           duplicates = duplicates,
-           excluded_automatic = excluded_automatic,
-           excluded_other = excluded_other,
-           records_screened = records_screened,
-           records_excluded = records_excluded,
-           dbr_sought_reports = dbr_sought_reports,
-           dbr_notretrieved_reports = dbr_notretrieved_reports,
-           other_sought_reports = other_sought_reports,
-           other_notretrieved_reports = other_notretrieved_reports,
-           dbr_assessed = dbr_assessed,
-           dbr_excluded = dbr_excluded,
-           other_assessed = other_assessed,
-           other_excluded = other_excluded,
-           new_studies = new_studies,
-           new_reports = new_reports,
-           total_studies = total_studies,
-           total_reports = total_reports,
-           previous_text = previous_text,
-           newstud_text = newstud_text,
-           other_text = other_text,
-           previous_studies_text = previous_studies_text,
-           previous_reports_text = previous_reports_text,
-           register_results_text = register_results_text,
-           database_results_text = database_results_text,
-           website_results_text = website_results_text,
-           organisation_results_text = organisation_results_text,
-           citations_results_text = citations_results_text,
-           duplicates_text = duplicates_text,
-           excluded_automatic_text = excluded_automatic_text,
-           excluded_other_text = excluded_other_text,
-           records_screened_text = records_screened_text,
-           records_excluded_text = records_excluded_text,
-           dbr_sought_reports_text = dbr_sought_reports_text,
-           dbr_notretrieved_reports_text = dbr_notretrieved_reports_text,
-           other_sought_reports_text = other_sought_reports_text,
-           other_notretrieved_reports_text = other_notretrieved_reports_text,
-           dbr_assessed_text = dbr_assessed_text,
-           dbr_excluded_text = dbr_excluded_text,
-           other_assessed_text = other_assessed_text,
-           other_excluded_text = other_excluded_text,
-           new_studies_text = new_studies_text,
-           new_reports_text = new_reports_text,
-           total_studies_text = total_studies_text,
-           total_reports_text = total_reports_text,
-           tooltips = tooltips,
-           urls = urls)
+            previous_reports = previous_reports,
+            register_results = register_results,
+            database_results = database_results,
+            website_results = website_results,
+            organisation_results = organisation_results,
+            citations_results = citations_results,
+            duplicates = duplicates,
+            excluded_automatic = excluded_automatic,
+            excluded_other = excluded_other,
+            records_screened = records_screened,
+            records_excluded = records_excluded,
+            dbr_sought_reports = dbr_sought_reports,
+            dbr_notretrieved_reports = dbr_notretrieved_reports,
+            other_sought_reports = other_sought_reports,
+            other_notretrieved_reports = other_notretrieved_reports,
+            dbr_assessed = dbr_assessed,
+            dbr_excluded = dbr_excluded,
+            other_assessed = other_assessed,
+            other_excluded = other_excluded,
+            new_studies = new_studies,
+            new_reports = new_reports,
+            total_studies = total_studies,
+            total_reports = total_reports,
+            previous_text = previous_text,
+            newstud_text = newstud_text,
+            other_text = other_text,
+            previous_studies_text = previous_studies_text,
+            previous_reports_text = previous_reports_text,
+            register_results_text = register_results_text,
+            database_results_text = database_results_text,
+            website_results_text = website_results_text,
+            organisation_results_text = organisation_results_text,
+            citations_results_text = citations_results_text,
+            duplicates_text = duplicates_text,
+            excluded_automatic_text = excluded_automatic_text,
+            excluded_other_text = excluded_other_text,
+            records_screened_text = records_screened_text,
+            records_excluded_text = records_excluded_text,
+            dbr_sought_reports_text = dbr_sought_reports_text,
+            dbr_notretrieved_reports_text = dbr_notretrieved_reports_text,
+            other_sought_reports_text = other_sought_reports_text,
+            other_notretrieved_reports_text = other_notretrieved_reports_text,
+            dbr_assessed_text = dbr_assessed_text,
+            dbr_excluded_text = dbr_excluded_text,
+            other_assessed_text = other_assessed_text,
+            other_excluded_text = other_excluded_text,
+            new_studies_text = new_studies_text,
+            new_reports_text = new_reports_text,
+            total_studies_text = total_studies_text,
+            total_reports_text = total_reports_text,
+            tooltips = tooltips,
+            urls = urls)
   
   return(x)
   
 }
 
 
-#' Plot interactive flow charts for systematic reviews
+#' Plot interactive flow diagram for systematic reviews
 #' 
-#' @description Converts a PRISMA systematic review flow chart into an 
+#' @description Converts a PRISMA systematic review flow diagram into an 
 #' interactive HTML plot, for embedding links from each box.
 #' @param plot A plot object from sr_flow().
 #' @param urls A dataframe consisting of two columns: nodes and urls. The first
@@ -619,9 +560,9 @@ read_PRISMAdata <- function(data){
 #' column should contain a corresponding URL for each node.
 #' @return An interactive flow diagram plot.
 #' @param previous Logical argument (TRUE or FALSE) (supplied through 
-#' PRISMA_flowchart()) specifying whether previous studies were sought.
+#' PRISMA_flowdiagram()) specifying whether previous studies were sought.
 #' @param other Logical argument (TRUE or FALSE) (supplied through 
-#' PRISMA_flowchart()) specifying whether other studies were sought.
+#' PRISMA_flowdiagram()) specifying whether other studies were sought.
 #' @examples 
 #' \dontrun{
 #' urls <- data.frame(
@@ -690,3 +631,23 @@ sr_flow_interactive <- function(plot,
                               htmlwidgets::onStaticRenderComplete(javascript))
 }
 
+
+
+
+
+
+
+prisma_pdf <- function(x, filename = "prisma.pdf") {
+  utils::capture.output({
+    rsvg::rsvg_pdf(svg = charToRaw(DiagrammeRsvg::export_svg(x)),
+                   file = filename)
+  })
+  invisible()
+}
+prisma_png <- function(x, filename = "prisma.png") {
+  utils::capture.output({
+    rsvg::rsvg_png(svg = charToRaw(DiagrammeRsvg::export_svg(x)),
+                   file = filename)
+  })
+  invisible()
+}

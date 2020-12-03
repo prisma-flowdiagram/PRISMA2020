@@ -1,5 +1,5 @@
 Package: PRISMA2020
-Title: Make Interactive 'PRISMA' Flow Charts
+Title: Make Interactive 'PRISMA' Flow Diagrams
 Version: 0.0.1
 Authors@R: 
     person(given = "Neal",
@@ -10,8 +10,8 @@ Authors@R:
 Description: Systematic reviews should be described in a high degree of 
     methodological detail. The 'PRISMA' Statement calls for a high level of 
     reporting detail in systematic reviews and meta-analyses. An integral part 
-    of the methodological description of a review is a flow diagram/chart. 
-    This package produces an interactive flow chart that conforms to the 
+    of the methodological description of a review is a flow diagram. 
+    This package produces an interactive flow diagram that conforms to the 
     'PRISMA2020' pre-print. When made interactive, the reader/user can click 
     on each box and be directed to another website or file online (e.g. a 
     detailed description of the screening methods, or a list of excluded full 

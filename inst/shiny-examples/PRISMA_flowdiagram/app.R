@@ -8,7 +8,7 @@ source("functions.R")
 template <- read.csv("www/PRISMA.csv",stringsAsFactors = FALSE)
 
 # Define UI for application that draws a histogram
-ui <- shinyUI(navbarPage("PRISMA Flow Chart",
+ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                          
                          # Tab 1 ----
                          tabPanel("Home",
@@ -16,16 +16,16 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
                                     column(10, offset = 1,
                                            'Systematic reviews should be described in a high degree of methodological detail. ', tags$a(href="http://prisma-statement.org/", "The PRISMA Statement"), 
                                            'calls for a high level of reporting detail in systematic reviews and meta-analyses. An integral part of the methodological description of a review 
-                   is a flow diagram/chart.',
+                   is a flow diagram.',
                                            br(),
                                            br(),
-                                           'This tool allows you to produce a flow chart for your own review that conforms to ', tags$a(href="https://osf.io/preprints/metaarxiv/v7gm2/", "the PRISMA2020 Statement."), 
+                                           'This tool allows you to produce a flow diagram for your own review that conforms to ', tags$a(href="https://osf.io/preprints/metaarxiv/v7gm2/", "the PRISMA2020 Statement."), 
                                            'You can provide the numbers and texts for the boxes in the CSV template below. Upload your own version and select whether to include the "previous" and 
-                   "other" studies arms, then proceed to the "Flow chart" tab to see and download your figure.',
+                   "other" studies arms, then proceed to the "Flow diagram" tab to see and download your figure.',
                                            br(),
                                            br(),
                                            "At present, this version of the tool doesn't support embedding tooltips and hyperlinks in the plot. For this functionality, please use the", 
-                                           tags$a(href="https://github.com/nealhaddaway/PRISMA2020", "PRISMA2020 flow chart R package on Github."),
+                                           tags$a(href="https://github.com/nealhaddaway/PRISMA2020", "PRISMA2020 flow diagram R package on Github."),
                                            br(),
                                            br(),
                                            'Please let us know if you have any feedback or if you encounter an error by sending an email to ', tags$a(href="mailto:neal.haddaway@sei.org", "neal.haddaway@sei.org"),
@@ -63,7 +63,7 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
                          ),
                          
                          # Tab 2 ----
-                         tabPanel("Create flow chart",
+                         tabPanel("Create flow diagram",
                                   shinyjs::useShinyjs(),
                                   sidebarLayout(
                                     sidebarPanel(style = "overflow-y:scroll; max-height: 900px; position:relative;",
@@ -122,8 +122,8 @@ ui <- shinyUI(navbarPage("PRISMA Flow Chart",
                                            hr(),
                                            
                                            h3("Download"),
-                                           downloadButton('PRISMAflowchartPDF', 'Download PDF'),
-                                           downloadButton('PRISMAflowchartPNG', 'Download PNG')
+                                           downloadButton('PRISMAflowdiagramPDF', 'Download PDF'),
+                                           downloadButton('PRISMAflowdiagramPNG', 'Download PNG')
                                     ), 
                                     mainPanel(
                                            DiagrammeR::grVizOutput(outputId = "plot1", width = "100%", height = "700px"))
@@ -263,7 +263,7 @@ server <- function(input, output) {
     } else {
       include_other = FALSE
     }
-    plot <- PRISMA_flowchart(data,
+    plot <- PRISMA_flowdiagram(data,
                              interactive = FALSE,
                              previous = include_previous,
                              other = include_other)
@@ -277,14 +277,14 @@ server <- function(input, output) {
   
   
   # Handle downloads ----
-  output$PRISMAflowchartPDF <- downloadHandler(
+  output$PRISMAflowdiagramPDF <- downloadHandler(
     filename = "prisma.pdf",
     content = function(file){
       prisma_pdf(plot(), 
                  file)
     }
   )
-  output$PRISMAflowchartPNG <- downloadHandler(
+  output$PRISMAflowdiagramPNG <- downloadHandler(
     filename = "prisma.png",
     content = function(file){
       prisma_png(plot(), 
