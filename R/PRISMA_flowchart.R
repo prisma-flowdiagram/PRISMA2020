@@ -58,6 +58,17 @@ PRISMA_flowchart <- function (data,
                              arrow_head = 'normal',
                              arrow_tail = 'none') {
   
+  if(nrow(dbr_excluded) > 3){
+    dbr_excludedh <- 3.5 - ((nrow(dbr_excluded)-4)/9)
+  } else {
+    dbr_excludedh <- 3.5
+  }
+  if(nrow(other_excluded) > 3){
+    other_excludedh <- 3.5 - ((nrow(other_excluded)-4)/9)
+  } else {
+    other_excludedh <- 3.5
+  }
+  
   if(previous == TRUE){
     xstart <- 0
     ystart <- 0
@@ -217,7 +228,7 @@ PRISMA_flowchart <- function (data,
                                      other_excluded[,2], 
                                      ')', 
                                      sep = ''), 
-                               collapse = '')), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+15.5,",",ystart+3.5,"!', tooltip = '", tooltips[17], "']\n
+                               collapse = '')), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+15.5,",",ystart+other_excludedh,"!', tooltip = '", tooltips[17], "']\n
                        ")
     extraedges <- "16->18;"
     othernode13 <- "; 13"
@@ -342,7 +353,7 @@ PRISMA_flowchart <- function (data,
                                      dbr_excluded[,2], 
                                      ')', 
                                      sep = ''), 
-                               collapse = '')), "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+3.5,"!', tooltip = '", tooltips[15], "']
+                               collapse = '')), "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+dbr_excludedh,"!', tooltip = '", tooltips[15], "']
   
   node [shape = box,
         fontname = ", font, ",
