@@ -11,7 +11,7 @@ A static version is produced otherwise. <a href="https://srflowdiagram.github.io
 See the interactive template here.</a><br>
 
 Please cite as:<br>
-Neal R Haddaway, 2020. PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams. doi:<a href="https://doi.org/10.5281/zenodo.4287835" target="_blank">10.5281/zenodo.4287835</a>
+Neal R Haddaway, Luke A McGuinness. 2020. PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams. doi:<a href="https://doi.org/10.5281/zenodo.4287835" target="_blank">10.5281/zenodo.4287835</a>
 
 <!-- badges: start -->
 [![R build status](https://github.com/nealhaddaway/PRISMA2020/workflows/R-CMD-check/badge.svg/)](https://github.com/nealhaddaway/PRISMA2020/actions/)
