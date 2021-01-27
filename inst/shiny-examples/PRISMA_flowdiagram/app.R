@@ -88,8 +88,8 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            h3("Identification"),
                                            conditionalPanel(
                                              condition = "input.previous == 'Included'",
-                                             splitLayout(textInput("previous_studies", label = "Previous studies", value = rv$data$n[2]),
-                                             textInput("previous_reports", label = "Previous reports", value = rv$data$n[3]))),
+                                             splitLayout(uiOutput('previous_studies_input'),
+                                                         uiOutput('previous_reports_input'))),
                                            splitLayout(textInput("database_results", label = "Databases", value = rv$data$n[5]),
                                                        textInput("register_results", label = "Registers", value = rv$data$n[6])),
                                            conditionalPanel(
@@ -97,7 +97,7 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                              splitLayout(textInput("website_results", label = "Websites", value = rv$data$n[8]),
                                                          textInput("organisation_results", label = "Organisations", value = rv$data$n[9])),
                                              textInput("citations_results", label = "Citations", value = rv$data$n[10])
-                                             ),
+                                           ),
                                            textInput("duplicates", label = "Duplicates removed", value = rv$data$n[11]),
                                            splitLayout(textInput("excluded_automatic", label = "Automatically excluded", value = rv$data$n[12]),
                                                        textInput("excluded_other", label = "Other exclusions", value = rv$data$n[13])),
@@ -149,12 +149,20 @@ server <- function(input, output) {
   
   # Use template data to populate editable table
   observeEvent(input$indicator_question, {
-    if(indicator_question == "csv"){
+    if(input$indicator_question == "csv"){
       req(input$data)
       rv$data <- read.csv(input$data$datapath, stringsAsFactors = FALSE)
     } else {
       rv$data <- template
     }
+  })
+  
+  # reactive inputs
+  output$previous_studies_input <- renderUI({
+    textInput("previous_studies", label = "Previous studies", value = rv$data$n[2])
+  })
+  output$previous_reports_input <- renderUI({
+  textInput("previous_reports", label = "Previous reports", value = rv$data$n[3])
   })
   
   # Text box
