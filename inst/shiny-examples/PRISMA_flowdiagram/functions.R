@@ -16,16 +16,16 @@
 #' were sought.
 #' @param font The font for text in each box. The default is 'Helvetica'.
 #' @param title_colour The colour for the upper middle title box (new studies). 
-#' The default is 'Goldenrod1'. See DiagrammeR colour scheme 
+#' The default is 'Goldenrod1'. See 'DiagrammeR' colour scheme 
 #' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors>.
 #' @param greybox_colour The colour for the left and right column boxes. The 
-#' default is 'Gainsboro'. See DiagrammeR colour scheme 
+#' default is 'Gainsboro'. See 'DiagrammeR' colour scheme 
 #' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors>.
 #' @param main_colour The colour for the main box borders. The default is 
-#' 'Black'. See DiagrammeR colour scheme 
+#' 'Black'. See 'DiagrammeR' colour scheme 
 #' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors>.
 #' @param arrow_colour The colour for the connecting lines. The default
-#' is 'Black'. See DiagrammeR colour scheme 
+#' is 'Black'. See 'DiagrammeR' colour scheme 
 #' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors>.
 #' @param arrow_head The head shape for the line connectors. The default is 
 #' 'normal'. See DiagrammeR arrow shape specification 
@@ -40,6 +40,7 @@
 #' data <- read_PRISMAdata(data);
 #' attach(data); 
 #' plot <- PRISMA_flowdiagram(data,
+#'                 fontsize = 12,
 #'                 interactive = TRUE,
 #'                 previous = TRUE,
 #'                 other = TRUE);
@@ -47,19 +48,26 @@
 #' }
 #' @export
 PRISMA_flowdiagram <- function (data,
-                              interactive = FALSE,
-                              previous = TRUE,
-                              other = TRUE,
-                              font = 'Helvetica',
-                              title_colour = 'Goldenrod1',
-                              greybox_colour = 'Gainsboro',
-                              main_colour = 'Black',
-                              arrow_colour = 'Black',
-                              arrow_head = 'normal',
-                              arrow_tail = 'none') {
+                                interactive = FALSE,
+                                previous = TRUE,
+                                other = TRUE,
+                                fontsize = 12,
+                                font = 'Helvetica',
+                                title_colour = 'Goldenrod1',
+                                greybox_colour = 'Gainsboro',
+                                main_colour = 'Black',
+                                arrow_colour = 'Black',
+                                arrow_head = 'normal',
+                                arrow_tail = 'none') {
   
-  if(nrow(dbr_excluded) > 3){
-    dbr_excludedh <- 3.5 - ((nrow(dbr_excluded)-4)/9)
+  #wrap exclusion reasons
+  dbr_excluded[,1] <- stringr::str_wrap(dbr_excluded[,1], 
+                                        width = 35)
+  other_excluded[,1] <- stringr::str_wrap(other_excluded[,1], 
+                                          width = 35)
+  
+  if(stringr::str_count(paste(dbr_excluded[,1], collapse = "\n"), "\n") > 3){
+    dbr_excludedh <- 3.5 - ((stringr::str_count(paste(dbr_excluded[,1], collapse = "\n"), "\n")-4)/9)
   } else {
     dbr_excludedh <- 3.5
   }
@@ -72,7 +80,7 @@ PRISMA_flowdiagram <- function (data,
   if(previous == TRUE){
     xstart <- 0
     ystart <- 0
-    A <- paste0("A [label = '', pos='",xstart+0.5,",",ystart+0,"!', tooltip = '']")
+    A <- paste0("A [label = '', pos='",xstart+1,",",ystart+0,"!', tooltip = '']")
     Aedge <- paste0("subgraph cluster0 {
                   edge [color = White, 
                       arrowhead = none, 
@@ -95,9 +103,10 @@ PRISMA_flowdiagram <- function (data,
     h_adj1 <- 0
     h_adj2 <- 0
     previous_nodes <- paste0("node [shape = box,
+          fontsize = ", fontsize,",
           fontname = ", font, ",
           color = ", greybox_colour, "]
-    1 [label = '", previous_text, "', style = 'rounded,filled', width = 3, height = 0.5, pos='",xstart+0.5,",",ystart+9,"!', tooltip = '", tooltips[1], "']
+    1 [label = '", previous_text, "', style = 'rounded,filled', width = 3.5, height = 0.5, pos='",xstart+1,",",ystart+8.25,"!', tooltip = '", tooltips[1], "']
     
     node [shape = box,
           fontname = ", font, ",
@@ -106,14 +115,14 @@ PRISMA_flowdiagram <- function (data,
                                                   " (n = ",
                                                   previous_studies, 
                                                   ")"), 
-                                           width = 33),
+                                           width = 40),
                          "\n\n",
                          paste0(stringr::str_wrap(previous_reports_text, 
-                                                  width = 33),
+                                                  width = 40),
                                 "\n(n = ",
                                 previous_reports,
                                 ')')), 
-                         "', style = 'filled', width = 3, height = 0.5, pos='",xstart+0.5,",",ystart+7.5,"!', tooltip = '", tooltips[2], "']")
+                         "', style = 'filled', width = 3.5, height = 0.5, pos='",xstart+1,",",ystart+7,"!', tooltip = '", tooltips[2], "']")
     finalnode <- paste0("
   node [shape = box,
         fontname = ", font, ",
@@ -129,7 +138,7 @@ PRISMA_flowdiagram <- function (data,
                                                  total_reports,
                                                  ')'), 
                                           width = 33)),  
-                        "', style = 'filled', width = 3, height = 0.5, pos='",xstart+4,",",ystart+0,"!', tooltip = '", tooltips[19], "']")
+                        "', style = 'filled', width = 3.5, height = 0.5, pos='",xstart+5,",",ystart+0,"!', tooltip = '", tooltips[19], "']")
     prev_rank1 <- "{rank = same; A; 19}"
     prevnode1 <- "1; "
     prevnode2 <- "2; "
@@ -151,7 +160,19 @@ PRISMA_flowdiagram <- function (data,
   }
   
   if(other == TRUE){
-    B <- paste0("B [label = '', pos='",xstart+11.5,",",ystart+1.5,"!', tooltip = '']")
+    if (is.data.frame(other_excluded) == TRUE){
+      other_excluded_data <- paste0(':',
+                                    paste(paste('\n', 
+                                                other_excluded[,1], 
+                                                ' (n = ', 
+                                                other_excluded[,2], 
+                                                ')', 
+                                                sep = ''), 
+                                          collapse = ''))
+    } else {
+      other_excluded_data <- paste0('\n', '(n = ', other_excluded, ')')
+    }
+    B <- paste0("B [label = '', pos='",xstart+13,",",ystart+1.5,"!', tooltip = '']")
     cluster2 <- paste0("subgraph cluster2 {
     edge [color = White, 
           arrowhead = none, 
@@ -175,7 +196,7 @@ PRISMA_flowdiagram <- function (data,
     othernodes <- paste0("node [shape = box,
         fontname = ", font, ",
         color = ", greybox_colour, "]
-  13 [label = '", other_text, "', style = 'rounded,filled', width = 7, height = 0.5, pos='",xstart+13.5,",",ystart+9,"!', tooltip = '", tooltips[5], "']
+  13 [label = '", other_text, "', style = 'rounded,filled', width = 7.5, height = 0.5, pos='",xstart+15,",",ystart+8.25,"!', tooltip = '", tooltips[5], "']
   
   node [shape = box,
         fontname = ", font, ",
@@ -193,7 +214,7 @@ PRISMA_flowdiagram <- function (data,
                          " (n = ",
                          citations_results,
                          ')'),
-                         "', style = 'filled', width = 3, height = 0.5, pos='",xstart+11.5,",",ystart+7.5,"!', tooltip = '", tooltips[6], "']
+                         "', style = 'filled', width = 3.5, height = 0.5, pos='",xstart+13,",",ystart+7,"!', tooltip = '", tooltips[6], "']
   
   node [shape = box,
         fontname = ", font, ",
@@ -201,14 +222,14 @@ PRISMA_flowdiagram <- function (data,
   15 [label = '", paste0(other_sought_reports_text,
                          '\n(n = ',
                          other_sought_reports,
-                         ')'), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+11.5,",",ystart+4.5,"!', tooltip = '", tooltips[12], "']
+                         ')'), "', style = 'filled', width = 3.5, height = 0.5, pos='",xstart+13,",",ystart+4.5,"!', tooltip = '", tooltips[12], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", greybox_colour, "]
   16 [label = '", paste0(other_notretrieved_reports_text,'\n(n = ',
                          other_notretrieved_reports,
-                         ')'), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+15.5,",",ystart+4.5,"!', tooltip = '", tooltips[13], "']
+                         ')'), "', style = 'filled', width = 3.5, height = 0.5, pos='",xstart+17,",",ystart+4.5,"!', tooltip = '", tooltips[13], "']
   
   node [shape = box,
         fontname = ", font, ",
@@ -216,19 +237,13 @@ PRISMA_flowdiagram <- function (data,
   17 [label = '", paste0(other_assessed_text,
                          '\n(n = ',
                          other_assessed,
-                         ')'),"', style = 'filled', width = 3, height = 0.5, pos='",xstart+11.5,",",ystart+3.5,"!', tooltip = '", tooltips[16], "']
+                         ')'),"', style = 'filled', width = 3.5, height = 0.5, pos='",xstart+13,",",ystart+3.5,"!', tooltip = '", tooltips[16], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", greybox_colour, "]
   18 [label = '", paste0(other_excluded_text,
-                         paste(paste('\n', 
-                                     other_excluded[,1], 
-                                     ' (n = ', 
-                                     other_excluded[,2], 
-                                     ')', 
-                                     sep = ''), 
-                               collapse = '')), "', style = 'filled', width = 3, height = 0.5, pos='",xstart+15.5,",",ystart+other_excludedh,"!', tooltip = '", tooltips[17], "']\n
+                         other_excluded_data), "', style = 'filled', width = 3.5, height = 0.5, pos='",xstart+17,",",ystart+other_excludedh,"!', tooltip = '", tooltips[17], "']\n
                        ")
     extraedges <- "16->18;"
     othernode13 <- "; 13"
@@ -254,18 +269,15 @@ PRISMA_flowdiagram <- function (data,
   x <- DiagrammeR::grViz(
     paste0("digraph TD {
   
-  graph[splines=ortho, layout=neato, tooltip = 'Click the boxes for further information']
+  graph[splines=ortho, layout=neato, tooltip = 'Click the boxes for further information', outputorder=edgesfirst]
   
-  node [shape = box]
-  identification [color = White, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+7.93,"!', width = 0.4, height = 2.6, tooltip = '", tooltips[20], "'];
-  screening [color = White, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 3.5, tooltip = '", tooltips[21], "'];
-  included [color = White, label='', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
   ",
            previous_nodes,"
   node [shape = box,
+        fontsize = ", fontsize,",
         fontname = ", font, ",
         color = ", title_colour, "]
-  3 [label = '", newstud_text, "', style = 'rounded,filled', width = 7, height = 0.5, pos='",xstart+6,",",ystart+9,"!', tooltip = '", tooltips[3], "']
+  3 [label = '", newstud_text, "', style = 'rounded,filled', width = 7.5, height = 0.5, pos='",xstart+7,",",ystart+8.25,"!', tooltip = '", tooltips[3], "']
   
   node [shape = box,
         fontname = ", font, ",
@@ -278,30 +290,30 @@ PRISMA_flowdiagram <- function (data,
                         register_results_text, 
                         ' (n = ',
                         register_results,
-                        ')'), "', width = 3, width = 3, height = 0.5, height = 0.5, pos='",xstart+4,",",ystart+7.5,"!', tooltip = '", tooltips[4], "']
+                        ')'), "', width = 3.5, height = 0.5, height = 0.5, pos='",xstart+5,",",ystart+7,"!', tooltip = '", tooltips[4], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  5 [label = '", paste0('Records removed before\nscreening:\n', 
+  5 [label = '", paste0('Records removed before screening:\n', 
                         stringr::str_wrap(paste0(duplicates_text,
                                                  ' (n = ',
                                                  duplicates,
                                                  ')'),
-                                          width = 32),
+                                          width = 42),
                         '\n',
                         stringr::str_wrap(paste0(excluded_automatic_text,
                                                  ' (n = ',
                                                  excluded_automatic,
                                                  ')'),
-                                          width = 32)
+                                          width = 42)
                         ,'\n', 
                         stringr::str_wrap(paste0(excluded_other_text, 
                                                  ' (n = ',
                                                  excluded_other,
                                                  ')'),
-                                          width = 32)),
-           "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+7.5,"!', tooltip = '", tooltips[7], "']
+                                          width = 42)),
+           "', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+7,"!', tooltip = '", tooltips[7], "']
   
   node [shape = box,
         fontname = ", font, ",
@@ -309,7 +321,7 @@ PRISMA_flowdiagram <- function (data,
   6 [label = '", paste0(records_screened_text,
                         '\n(n = ',
                         records_screened,
-                        ')'), "', width = 3, width = 3, height = 0.5, height = 0.5, pos='",xstart+4,",",ystart+5.5,"!', tooltip = '", tooltips[8], "']
+                        ')'), "', width = 3.5, height = 0.5, height = 0.5, pos='",xstart+5,",",ystart+5.5,"!', tooltip = '", tooltips[8], "']
   
   node [shape = box,
         fontname = ", font, ",
@@ -317,7 +329,7 @@ PRISMA_flowdiagram <- function (data,
   7 [label = '", paste0(records_excluded_text,
                         '\n(n = ',
                         records_excluded,
-                        ')'), "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+5.5,"!', tooltip = '", tooltips[9], "']
+                        ')'), "', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+5.5,"!', tooltip = '", tooltips[9], "']
   
   node [shape = box,
         fontname = ", font, ",
@@ -325,7 +337,7 @@ PRISMA_flowdiagram <- function (data,
   8 [label = '", paste0(dbr_sought_reports_text,
                         '\n(n = ',
                         dbr_sought_reports,
-                        ')'), "', width = 3, width = 3, height = 0.5, height = 0.5, pos='",xstart+4,",",ystart+4.5,"!', tooltip = '", tooltips[10], "']
+                        ')'), "', width = 3.5, height = 0.5, height = 0.5, pos='",xstart+5,",",ystart+4.5,"!', tooltip = '", tooltips[10], "']
   
   node [shape = box,
         fontname = ", font, ",
@@ -333,7 +345,7 @@ PRISMA_flowdiagram <- function (data,
   9 [label = '", paste0(dbr_notretrieved_reports_text,
                         '\n(n = ',
                         dbr_notretrieved_reports,
-                        ')'), "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+4.5,"!', tooltip = '", tooltips[11], "']
+                        ')'), "', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+4.5,"!', tooltip = '", tooltips[11], "']
   
   node [shape = box,
         fontname = ", font, ",
@@ -341,11 +353,13 @@ PRISMA_flowdiagram <- function (data,
   10 [label = '", paste0(dbr_assessed_text,
                          '\n(n = ',
                          dbr_assessed,
-                         ')'), "', width = 3, height = 0.5, pos='",xstart+4,",",ystart+3.5,"!', tooltip = '", tooltips[14], "']
+                         ')'), "', width = 3.5, height = 0.5, pos='",xstart+5,",",ystart+3.5,"!', tooltip = '", tooltips[14], "']
   
   node [shape = box,
         fontname = ", font, ",
-        color = ", main_colour, "]
+        color = ", main_colour, ", 
+        fillcolor = White,
+        style = filled]
   11 [label = '", paste0(dbr_excluded_text,
                          paste(paste('\n', 
                                      dbr_excluded[,1], 
@@ -353,19 +367,19 @@ PRISMA_flowdiagram <- function (data,
                                      dbr_excluded[,2], 
                                      ')', 
                                      sep = ''), 
-                               collapse = '')), "', width = 3, height = 0.5, pos='",xstart+8,",",ystart+dbr_excludedh,"!', tooltip = '", tooltips[15], "']
+                               collapse = '')), "', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+dbr_excludedh,"!', tooltip = '", tooltips[15], "']
   
   node [shape = box,
         fontname = ", font, ",
-        color = ", main_colour, "]
-  12 [label = '", paste0(stringr::str_wrap(new_studies_text, width = 33),
+        color = ", main_colour, ", fillcolor = '', style = solid]
+  12 [label = '", paste0(stringr::str_wrap(new_studies_text, width = 40),
                          '\n(n = ',
                          new_studies,
                          ')\n',
-                         stringr::str_wrap(new_reports_text, width = 33),
+                         stringr::str_wrap(new_reports_text, width = 40),
                          '\n(n = ',
                          new_reports,
-                         ')'), "', width = 3, height = 0.5, pos='",xstart+4,",",ystart+1.5,"!', tooltip = '", tooltips[18], "']
+                         ')'), "', width = 3.5, height = 0.5, pos='",xstart+5,",",ystart+1.5,"!', tooltip = '", tooltips[18], "']
   
   ",othernodes,
            
@@ -378,6 +392,9 @@ PRISMA_flowdiagram <- function (data,
   ",
            Aedge,"
   
+  node [shape = square, width = 0, style=invis]
+  C [label = '', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+3.5,"!', tooltip = '']
+  
   subgraph cluster1 {
     edge [style = invis]
     3->4; 3->5;
@@ -389,7 +406,7 @@ PRISMA_flowdiagram <- function (data,
     4->5;
     4->6; 6->7;
     6->8; 8->9;
-    8->10; 10->11;
+    8->10; 10->C;
     10->12;
     edge [style = invis]
     5->7;
@@ -414,6 +431,65 @@ PRISMA_flowdiagram <- function (data,
   ")
   )
   
+  # Append in vertical text on blue bars
+  if (paste0(previous,  other) == 'TRUETRUE'){
+    insertJS <- function(plot){
+      javascript <- htmltools::HTML('
+var theDiv = document.getElementById("node1");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'537\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
+var theDiv = document.getElementById("node2");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'356\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
+var theDiv = document.getElementById("node3");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'95\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
+                              ')
+      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+    }
+    x <- insertJS(x)
+  } else if (paste0(previous,  other) == 'FALSETRUE'){
+    insertJS <- function(plot){
+      javascript <- htmltools::HTML('
+var theDiv = document.getElementById("node1");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'497\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
+var theDiv = document.getElementById("node2");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'315\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
+var theDiv = document.getElementById("node3");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'100\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
+                              ')
+      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+    }
+    x <- insertJS(x)
+  } else if (paste0(previous,  other) == 'TRUEFALSE'){
+    insertJS <- function(plot){
+      javascript <- htmltools::HTML('
+var theDiv = document.getElementById("node1");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'536\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
+var theDiv = document.getElementById("node2");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'357\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
+var theDiv = document.getElementById("node3");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'95\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
+                              ')
+      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+    }
+    x <- insertJS(x)
+  } else {
+    insertJS <- function(plot){
+      javascript <- htmltools::HTML('
+var theDiv = document.getElementById("node1");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'497\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
+var theDiv = document.getElementById("node2");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'315\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
+var theDiv = document.getElementById("node3");
+theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'100\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
+                              ')
+      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+    }
+    x <- insertJS(x)
+  }
+  
+  if (interactive == TRUE) {
+    x <- sr_flow_interactive(x, urls, previous = previous, other = other)
+  }
+  
   return(x)
 }
 
@@ -433,32 +509,32 @@ PRISMA_flowdiagram <- function (data,
 read_PRISMAdata <- function(data){
   
   #Set parameters
-  previous_studies <- data[grep('previous_studies', data[,1]),]$n
-  previous_reports <- data[grep('previous_reports', data[,1]),]$n
-  register_results <- data[grep('register_results', data[,1]),]$n
-  database_results <- data[grep('database_results', data[,1]),]$n
-  website_results <- data[grep('website_results', data[,1]),]$n
-  organisation_results <- data[grep('organisation_results', data[,1]),]$n
-  citations_results <- data[grep('citations_results', data[,1]),]$n
-  duplicates <- data[grep('duplicates', data[,1]),]$n
-  excluded_automatic <- data[grep('excluded_automatic', data[,1]),]$n
-  excluded_other <- data[grep('excluded_other', data[,1]),]$n
-  records_screened <- data[grep('records_screened', data[,1]),]$n
-  records_excluded <- data[grep('records_excluded', data[,1]),]$n
-  dbr_sought_reports <- data[grep('dbr_sought_reports', data[,1]),]$n
-  dbr_notretrieved_reports <- data[grep('dbr_notretrieved_reports', data[,1]),]$n
-  other_sought_reports <- data[grep('other_sought_reports', data[,1]),]$n
-  other_notretrieved_reports <- data[grep('other_notretrieved_reports', data[,1]),]$n
-  dbr_assessed <- data[grep('dbr_assessed', data[,1]),]$n
+  previous_studies <- scales::comma(as.numeric(data[grep('previous_studies', data[,1]),]$n))
+  previous_reports <- scales::comma(as.numeric(data[grep('previous_reports', data[,1]),]$n))
+  register_results <- scales::comma(as.numeric(data[grep('register_results', data[,1]),]$n))
+  database_results <- scales::comma(as.numeric(data[grep('database_results', data[,1]),]$n))
+  website_results <- scales::comma(as.numeric(data[grep('website_results', data[,1]),]$n))
+  organisation_results <- scales::comma(as.numeric(data[grep('organisation_results', data[,1]),]$n))
+  citations_results <- scales::comma(as.numeric(data[grep('citations_results', data[,1]),]$n))
+  duplicates <- scales::comma(as.numeric(data[grep('duplicates', data[,1]),]$n))
+  excluded_automatic <- scales::comma(as.numeric(data[grep('excluded_automatic', data[,1]),]$n))
+  excluded_other <- scales::comma(as.numeric(data[grep('excluded_other', data[,1]),]$n))
+  records_screened <- scales::comma(as.numeric(data[grep('records_screened', data[,1]),]$n))
+  records_excluded <- scales::comma(as.numeric(data[grep('records_excluded', data[,1]),]$n))
+  dbr_sought_reports <- scales::comma(as.numeric(data[grep('dbr_sought_reports', data[,1]),]$n))
+  dbr_notretrieved_reports <- scales::comma(as.numeric(data[grep('dbr_notretrieved_reports', data[,1]),]$n))
+  other_sought_reports <- scales::comma(as.numeric(data[grep('other_sought_reports', data[,1]),]$n))
+  other_notretrieved_reports <- scales::comma(as.numeric(data[grep('other_notretrieved_reports', data[,1]),]$n))
+  dbr_assessed <- scales::comma(as.numeric(data[grep('dbr_assessed', data[,1]),]$n))
   dbr_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$n, split = '; '))), 
                              n = gsub(".*,", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$n, split = '; '))))
-  other_assessed <- data[grep('other_assessed', data[,1]),]$n
+  other_assessed <- scales::comma(as.numeric(data[grep('other_assessed', data[,1]),]$n))
   other_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$n, split = '; '))), 
                                n = gsub(".*,", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$n, split = '; '))))
-  new_studies <- data[grep('new_studies', data[,1]),]$n
-  new_reports <- data[grep('new_reports', data[,1]),]$n
-  total_studies <- data[grep('total_studies', data[,1]),]$n
-  total_reports <- data[grep('total_reports', data[,1]),]$n
+  new_studies <- scales::comma(as.numeric(data[grep('new_studies', data[,1]),]$n))
+  new_reports <- scales::comma(as.numeric(data[grep('new_reports', data[,1]),]$n))
+  total_studies <- scales::comma(as.numeric(data[grep('total_studies', data[,1]),]$n))
+  total_reports <- scales::comma(as.numeric(data[grep('total_reports', data[,1]),]$n))
   tooltips <- stats::na.omit(data$tooltips)
   urls <- data.frame(box = data[!duplicated(data$box), ]$box, url = data[!duplicated(data$box), ]$url)
   
@@ -631,23 +707,3 @@ sr_flow_interactive <- function(plot,
                               htmlwidgets::onStaticRenderComplete(javascript))
 }
 
-
-
-
-
-
-
-prisma_pdf <- function(x, filename = "prisma.pdf") {
-  utils::capture.output({
-    rsvg::rsvg_pdf(svg = charToRaw(DiagrammeRsvg::export_svg(x)),
-                   file = filename)
-  })
-  invisible()
-}
-prisma_png <- function(x, filename = "prisma.png") {
-  utils::capture.output({
-    rsvg::rsvg_png(svg = charToRaw(DiagrammeRsvg::export_svg(x)),
-                   file = filename)
-  })
-  invisible()
-}

@@ -82,43 +82,43 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                                  h3("Identification"),
                                                  conditionalPanel(
                                                    condition = "input.previous == 'Included'",
-                                                   splitLayout(textInput("previous_studies", label = "Previous studies", value = template$n[5]),
-                                                               textInput("previous_reports", label = "Previous reports", value = template$n[5]))),
+                                                   splitLayout(textInput("previous_studies", label = "Previous studies", value = template$n[2]),
+                                                               textInput("previous_reports", label = "Previous reports", value = template$n[3]))),
                                                  splitLayout(textInput("database_results", label = "Databases", value = template$n[5]),
-                                                             textInput("register_results", label = "Registers", value = template$n[5])),
+                                                             textInput("register_results", label = "Registers", value = template$n[6])),
                                                  conditionalPanel(
                                                    condition = "input.other == 'Included'",
-                                                   splitLayout(textInput("website_results", label = "Websites", value = template$n[5]),
-                                                               textInput("organisation_results", label = "Organisations", value = template$n[5])),
-                                                   textInput("citations_results", label = "Citations", value = template$n[5])
+                                                   splitLayout(textInput("website_results", label = "Websites", value = template$n[8]),
+                                                               textInput("organisation_results", label = "Organisations", value = template$n[9])),
+                                                   textInput("citations_results", label = "Citations", value = template$n[10])
                                                  ),
-                                                 textInput("duplicates", label = "Duplicates removed", value = template$n[5]),
-                                                 splitLayout(textInput("excluded_automatic", label = "Automatically excluded", value = template$n[5]),
-                                                             textInput("excluded_other", label = "Other exclusions", value = template$n[5])),
+                                                 textInput("duplicates", label = "Duplicates removed", value = template$n[11]),
+                                                 splitLayout(textInput("excluded_automatic", label = "Automatically excluded", value = template$n[12]),
+                                                             textInput("excluded_other", label = "Other exclusions", value = template$n[13])),
                                                  h3("Screening"),
-                                                 splitLayout(textInput("records_screened", label = "Records screened", value = template$n[5]),
-                                                             textInput("records_excluded", label = "Records excluded", value = template$n[5])),
-                                                 splitLayout(textInput("dbr_sought_reports", label = "Reports sought", value = template$n[5]),
-                                                             textInput("dbr_notretrieved_reports", label = "Reports not retrieved", value = template$n[5])),
+                                                 splitLayout(textInput("records_screened", label = "Records screened", value = template$n[14]),
+                                                             textInput("records_excluded", label = "Records excluded", value = template$n[15])),
+                                                 splitLayout(textInput("dbr_sought_reports", label = "Reports sought", value = template$n[16]),
+                                                             textInput("dbr_notretrieved_reports", label = "Reports not retrieved", value = template$n[17])),
                                                  conditionalPanel(
                                                    condition = "input.other == 'Included'",
-                                                   splitLayout(textInput("other_sought_reports", label = "Other reports sought", value = template$n[5]),
-                                                               textInput("other_notretrieved_reports", label = "Other reports not retrieved", value = template$n[5]))
+                                                   splitLayout(textInput("other_sought_reports", label = "Other reports sought", value = template$n[18]),
+                                                               textInput("other_notretrieved_reports", label = "Other reports not retrieved", value = template$n[19]))
                                                  ),
-                                                 splitLayout(textInput("dbr_assessed", label = "Reports assessed", value = template$n[5]),
-                                                             textInput("dbr_excluded", label = "Reports excluded", value = template$n[5])),
+                                                 splitLayout(textInput("dbr_assessed", label = "Reports assessed", value = template$n[20]),
+                                                             textInput("dbr_excluded", label = "Reports excluded", value = template$n[21])),
                                                  conditionalPanel(
                                                    condition = "input.other == 'Included'",
-                                                   splitLayout(textInput("other_assessed", label = "Other reports assessed", value = template$n[5]),
-                                                               textInput("other_excluded", label = "Other reports excluded", value = template$n[5]))
+                                                   splitLayout(textInput("other_assessed", label = "Other reports assessed", value = template$n[22]),
+                                                               textInput("other_excluded", label = "Other reports excluded", value = template$n[23]))
                                                  ),
                                                  h3("Included"),
-                                                 splitLayout(textInput("new_studies", label = "New studies", value = template$n[5]),
-                                                             textInput("new_reports", label = "New reports", value = template$n[5])),
+                                                 splitLayout(textInput("new_studies", label = "New studies", value = template$n[24]),
+                                                             textInput("new_reports", label = "New reports", value = template$n[25])),
                                                  conditionalPanel(
                                                    condition = "input.previous == 'Included'",
-                                                   splitLayout(textInput("total_studies", label = "Total studies", value = template$n[5]),
-                                                               textInput("total_reports", label = "Total reports", value = template$n[5]))
+                                                   splitLayout(textInput("total_studies", label = "Total studies", value = template$n[26]),
+                                                               textInput("total_reports", label = "Total reports", value = template$n[27]))
                                                  ),
                                                  hr(),
                                                  

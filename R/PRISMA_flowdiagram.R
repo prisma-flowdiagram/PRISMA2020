@@ -161,13 +161,14 @@ PRISMA_flowdiagram <- function (data,
   
   if(other == TRUE){
     if (is.data.frame(other_excluded) == TRUE){
-      other_excluded_data <- paste(paste(':\n', 
+      other_excluded_data <- paste0(':',
+                                    paste(paste('\n', 
                                          other_excluded[,1], 
                                          ' (n = ', 
                                          other_excluded[,2], 
                                          ')', 
                                          sep = ''), 
-                                   collapse = '')
+                                   collapse = ''))
     } else {
       other_excluded_data <- paste0('\n', '(n = ', other_excluded, ')')
     }
