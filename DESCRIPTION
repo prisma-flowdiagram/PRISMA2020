@@ -25,6 +25,7 @@ Imports:
     htmltools,
     htmlwidgets,
     rsvg,
+    scales,
     shiny,
     shinyjs,
     stats,

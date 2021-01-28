@@ -9,6 +9,7 @@ PRISMA_flowdiagram(
   interactive = FALSE,
   previous = TRUE,
   other = TRUE,
+  fontsize = 7,
   font = "Helvetica",
   title_colour = "Goldenrod1",
   greybox_colour = "Gainsboro",
@@ -32,6 +33,8 @@ studies were sought.}
 
 \item{other}{Logical argument (TRUE or FALSE) specifying whether other studies
 were sought.}
+
+\item{fontsize}{The font size for text in each box. The default is '12'.}
 
 \item{font}{The font for text in each box. The default is 'Helvetica'.}
 
@@ -74,6 +77,7 @@ data <- read.csv(file.choose());
 data <- read_PRISMAdata(data);
 attach(data); 
 plot <- PRISMA_flowdiagram(data,
+                fontsize = 12,
                 interactive = TRUE,
                 previous = TRUE,
                 other = TRUE);
