@@ -31,23 +31,18 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            'Please let us know if you have any feedback or if you encounter an error by sending an email to ', tags$a(href="mailto:neal.haddaway@sei.org", "neal.haddaway@sei.org"),
                                            br(),
                                            br(),
-                                           hr()),
-                                    
-                                    column(10, offset = 1,
-                                           tags$a(href="https://ndownloader.figshare.com/files/25593458", "Download template CSV file here"),
+                                           hr(),
+                                           'Please cite as:',
                                            br(),
-                                           br()),
-                                    
-                                    column(10, offset = 1,
-                                           '',
-                                           selectInput("indicator_question", "How would you like to input data?", choices = c('manual', 'csv')),
+                                           'Neal R Haddaway, Luke A McGuinness. (2020). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams (Version 0.0.1). Zenodo.', 
+                                           tags$a(href="http://doi.org/10.5281/zenodo.4287835", "http://doi.org/10.5281/zenodo.4287835"),
                                            br(),
-                                           fileInput("data", "Upload your PRISMA.csv file",
-                                                     multiple = TRUE,
-                                                     accept = c("text/csv",
-                                                                "text/comma-separated-values,text/plain",
-                                                                ".csv")
-                                           )
+                                           tags$a(href="citation.ris", "Download citation (.ris)", download=NA, target="_blank")
+                                           ),
+                                    
+                                    column(3, offset = 1,
+                                    ),
+                                    fluidRow(
                                     ),
                                   ),
                                   
@@ -55,12 +50,11 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                   fluidRow(
                                     column(10, offset = 1,
                                            br(),
-                                           hr(),
                                            'Credits:',
                                            br(),
-                                           'Neal R Haddaway (creator)', br(),
+                                           'Neal R Haddaway (creator, coder)', br(),
+                                           'Luke A McGuinness (coder, advisor)', br(),
                                            'Matthew J Page (advisor)', br(),
-                                           'Luke McGuinness (advisor)', br(),
                                            'Jack Wasey (advisor)', br(),
                                            br(),
                                            tags$a(href="https://github.com/nealhaddaway/PRISMA2020", tags$img(height = 40, width = 40, src = "https://pngimg.com/uploads/github/github_PNG40.png")), 
@@ -74,72 +68,72 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                   shinyjs::useShinyjs(),
                                   sidebarLayout(
                                     sidebarPanel(style = "overflow-y:scroll; max-height: 900px; position:relative;",
-                                           h3("Main options"),
-                                           splitLayout(selectInput("previous", "Previous studies", choices = c('Not included', 'Included')),
-                                                       selectInput("other", "Other searches for studies", choices = c('Included', 'Not included')),
-                                                       tags$head(tags$style(HTML("
+                                                 h3("Main options"),
+                                                 splitLayout(selectInput("previous", "Previous studies", choices = c('Not included', 'Included')),
+                                                             selectInput("other", "Other searches for studies", choices = c('Included', 'Not included')),
+                                                             tags$head(tags$style(HTML("
                                                        .shiny-split-layout > div {
                                                        overflow: visible;
                                                        }
                               ")))
-                                                       ),
-                                           hr(),
-                                           
-                                           h3("Identification"),
-                                           conditionalPanel(
-                                             condition = "input.previous == 'Included'",
-                                             splitLayout(uiOutput('previous_studies_input'),
-                                                         uiOutput('previous_reports_input'))),
-                                           splitLayout(textInput("database_results", label = "Databases", value = rv$data$n[5]),
-                                                       textInput("register_results", label = "Registers", value = rv$data$n[6])),
-                                           conditionalPanel(
-                                             condition = "input.other == 'Included'",
-                                             splitLayout(textInput("website_results", label = "Websites", value = rv$data$n[8]),
-                                                         textInput("organisation_results", label = "Organisations", value = rv$data$n[9])),
-                                             textInput("citations_results", label = "Citations", value = rv$data$n[10])
-                                           ),
-                                           textInput("duplicates", label = "Duplicates removed", value = rv$data$n[11]),
-                                           splitLayout(textInput("excluded_automatic", label = "Automatically excluded", value = rv$data$n[12]),
-                                                       textInput("excluded_other", label = "Other exclusions", value = rv$data$n[13])),
-                                           h3("Screening"),
-                                           splitLayout(textInput("records_screened", label = "Records screened", value = rv$data$n[14]),
-                                                       textInput("records_excluded", label = "Records excluded", value = rv$data$n[15])),
-                                           splitLayout(textInput("dbr_sought_reports", label = "Reports sought", value = rv$data$n[16]),
-                                                       textInput("dbr_notretrieved_reports", label = "Reports not retrieved", value = rv$data$n[17])),
-                                           conditionalPanel(
-                                             condition = "input.other == 'Included'",
-                                             splitLayout(textInput("other_sought_reports", label = "Other reports sought", value = rv$data$n[18]),
-                                                         textInput("other_notretrieved_reports", label = "Other reports not retrieved", value = rv$data$n[19]))
-                                           ),
-                                           splitLayout(textInput("dbr_assessed", label = "Reports assessed", value = rv$data$n[20]),
-                                                       textInput("dbr_excluded", label = "Reports excluded", value = rv$data$n[21])),
-                                           conditionalPanel(
-                                             condition = "input.other == 'Included'",
-                                             splitLayout(textInput("other_assessed", label = "Other reports assessed", value = rv$data$n[22]),
-                                                         textInput("other_excluded", label = "Other reports excluded", value = rv$data$n[23]))
-                                           ),
-                                           h3("Included"),
-                                           splitLayout(textInput("new_studies", label = "New studies", value = rv$data$n[24]),
-                                                       textInput("new_reports", label = "New reports", value = rv$data$n[25])),
-                                           conditionalPanel(
-                                             condition = "input.previous == 'Included'",
-                                             splitLayout(textInput("total_studies", label = "Total studies", value = rv$data$n[26]),
-                                                         textInput("total_reports", label = "Total reports", value = rv$data$n[27]))
-                                           ),
-                                           hr(),
-                                           
-                                           h3("Download"),
-                                           downloadButton('PRISMAflowdiagramPDF', 'Download PDF'),
-                                           downloadButton('PRISMAflowdiagramPNG', 'Download PNG')
+                                                 ),
+                                                 hr(),
+                                                 
+                                                 h3("Identification"),
+                                                 conditionalPanel(
+                                                   condition = "input.previous == 'Included'",
+                                                   splitLayout(textInput("previous_studies", label = "Previous studies", value = template$n[5]),
+                                                               textInput("previous_reports", label = "Previous reports", value = template$n[5]))),
+                                                 splitLayout(textInput("database_results", label = "Databases", value = template$n[5]),
+                                                             textInput("register_results", label = "Registers", value = template$n[5])),
+                                                 conditionalPanel(
+                                                   condition = "input.other == 'Included'",
+                                                   splitLayout(textInput("website_results", label = "Websites", value = template$n[5]),
+                                                               textInput("organisation_results", label = "Organisations", value = template$n[5])),
+                                                   textInput("citations_results", label = "Citations", value = template$n[5])
+                                                 ),
+                                                 textInput("duplicates", label = "Duplicates removed", value = template$n[5]),
+                                                 splitLayout(textInput("excluded_automatic", label = "Automatically excluded", value = template$n[5]),
+                                                             textInput("excluded_other", label = "Other exclusions", value = template$n[5])),
+                                                 h3("Screening"),
+                                                 splitLayout(textInput("records_screened", label = "Records screened", value = template$n[5]),
+                                                             textInput("records_excluded", label = "Records excluded", value = template$n[5])),
+                                                 splitLayout(textInput("dbr_sought_reports", label = "Reports sought", value = template$n[5]),
+                                                             textInput("dbr_notretrieved_reports", label = "Reports not retrieved", value = template$n[5])),
+                                                 conditionalPanel(
+                                                   condition = "input.other == 'Included'",
+                                                   splitLayout(textInput("other_sought_reports", label = "Other reports sought", value = template$n[5]),
+                                                               textInput("other_notretrieved_reports", label = "Other reports not retrieved", value = template$n[5]))
+                                                 ),
+                                                 splitLayout(textInput("dbr_assessed", label = "Reports assessed", value = template$n[5]),
+                                                             textInput("dbr_excluded", label = "Reports excluded", value = template$n[5])),
+                                                 conditionalPanel(
+                                                   condition = "input.other == 'Included'",
+                                                   splitLayout(textInput("other_assessed", label = "Other reports assessed", value = template$n[5]),
+                                                               textInput("other_excluded", label = "Other reports excluded", value = template$n[5]))
+                                                 ),
+                                                 h3("Included"),
+                                                 splitLayout(textInput("new_studies", label = "New studies", value = template$n[5]),
+                                                             textInput("new_reports", label = "New reports", value = template$n[5])),
+                                                 conditionalPanel(
+                                                   condition = "input.previous == 'Included'",
+                                                   splitLayout(textInput("total_studies", label = "Total studies", value = template$n[5]),
+                                                               textInput("total_reports", label = "Total reports", value = template$n[5]))
+                                                 ),
+                                                 hr(),
+                                                 
+                                                 h3("Download"),
+                                                 downloadButton('PRISMAflowdiagramPDF', 'Download PDF'),
+                                                 downloadButton('PRISMAflowdiagramPNG', 'Download PNG')
                                     ), 
                                     mainPanel(
-                                           DiagrammeR::grVizOutput(outputId = "plot1", width = "100%", height = "700px"))
+                                      DiagrammeR::grVizOutput(outputId = "plot1", width = "100%", height = "700px"))
                                   ))
-                         ))
+))
 
 
 
-
+# Define server logic required to draw a histogram
 server <- function(input, output) {
   
   # Define reactive values
@@ -148,21 +142,8 @@ server <- function(input, output) {
   # Data Handling ----
   
   # Use template data to populate editable table
-  observeEvent(input$indicator_question, {
-    if(input$indicator_question == "csv"){
-      req(input$data)
-      rv$data <- read.csv(input$data$datapath, stringsAsFactors = FALSE)
-    } else {
-      rv$data <- template
-    }
-  })
-  
-  # reactive inputs
-  output$previous_studies_input <- renderUI({
-    textInput("previous_studies", label = "Previous studies", value = rv$data$n[2])
-  })
-  output$previous_reports_input <- renderUI({
-  textInput("previous_reports", label = "Previous reports", value = rv$data$n[3])
+  observe({
+    rv$data <- template
   })
   
   # Text box
@@ -284,9 +265,9 @@ server <- function(input, output) {
       include_other = FALSE
     }
     plot <- PRISMA_flowdiagram(data,
-                             interactive = FALSE,
-                             previous = include_previous,
-                             other = include_other)
+                               interactive = FALSE,
+                               previous = include_previous,
+                               other = include_other)
   })
   
   
@@ -311,6 +292,7 @@ server <- function(input, output) {
                  file)
     }
   )
+
 }
 
 # Run the application 
