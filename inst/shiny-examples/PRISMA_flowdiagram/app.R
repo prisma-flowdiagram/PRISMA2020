@@ -20,8 +20,7 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            br(),
                                            br(),
                                            'This tool allows you to produce a flow diagram for your own review that conforms to ', tags$a(href="https://osf.io/preprints/metaarxiv/v7gm2/", "the PRISMA2020 Statement."), 
-                                           'You can provide the numbers and texts for the boxes in the CSV template below. Upload your own version and select whether to include the "previous" and 
-                   "other" studies arms, then proceed to the "Flow diagram" tab to see and download your figure.',
+                                           'You can provide the numbers and texts for the boxes in the data entry section of the \'Create flow diagram\' tab. Alternatively, you can add your own values using the template file below.',
                                            br(),
                                            br(),
                                            "At present, this version of the tool doesn't support embedding tooltips and hyperlinks in the plot. For this functionality, please use the", 
@@ -31,6 +30,15 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            'Please let us know if you have any feedback or if you encounter an error by sending an email to ', tags$a(href="mailto:neal.haddaway@sei.org", "neal.haddaway@sei.org"),
                                            br(),
                                            br(),
+                                           tags$a(href="PRISMA.csv", "Download the template CSV file", download=NA, target="_blank"),
+                                           br(),
+                                           'Upload your edited file here:',
+                                           br(),
+                                           fileInput("data_upload", "Choose CSV File",
+                                                     multiple = FALSE,
+                                                     accept = c("text/csv",
+                                                                "text/comma-separated-values,text/plain",
+                                                                ".csv")),
                                            hr(),
                                            'Please cite as:',
                                            br(),
@@ -38,12 +46,7 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            tags$a(href="http://doi.org/10.5281/zenodo.4287835", "http://doi.org/10.5281/zenodo.4287835"),
                                            br(),
                                            tags$a(href="citation.ris", "Download citation (.ris)", download=NA, target="_blank")
-                                           ),
-                                    
-                                    column(3, offset = 1,
-                                    ),
-                                    fluidRow(
-                                    ),
+                                    )
                                   ),
                                   
                                   # Show a plot of the generated distribution
@@ -143,7 +146,11 @@ server <- function(input, output) {
   
   # Use template data to populate editable table
   observe({
-    rv$data <- template
+    if (is.null(input$data_upload)) {
+      rv$data <- template
+    } else {
+      rv$data <- read.csv(input$data_upload$datapath)
+    }
   })
   
   # Text box
