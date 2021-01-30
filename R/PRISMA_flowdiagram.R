@@ -639,11 +639,11 @@ read_PRISMAdata <- function(data){
 #' @param urls A dataframe consisting of two columns: nodes and urls. The first
 #' column should contain 19 rows for the nodes from node1 to node19. The second 
 #' column should contain a corresponding URL for each node.
-#' @return An interactive flow diagram plot.
 #' @param previous Logical argument (TRUE or FALSE) (supplied through 
 #' PRISMA_flowdiagram()) specifying whether previous studies were sought.
 #' @param other Logical argument (TRUE or FALSE) (supplied through 
 #' PRISMA_flowdiagram()) specifying whether other studies were sought.
+#' @return An interactive flow diagram plot.
 #' @examples 
 #' \dontrun{
 #' urls <- data.frame(
@@ -712,3 +712,28 @@ sr_flow_interactive <- function(plot,
                               htmlwidgets::onStaticRenderComplete(javascript))
 }
 
+
+#' Save PRISMA2020 flow diagram
+#' 
+#' @description Save the html output from PRISMA_flowdiagram() to the 
+#' working directory.
+#' @param plotobj A plot produced using PRISMA_flowdiagram().
+#' @return A flow diagram plot as an html file, with embedded links and 
+#' tooltips if interactive=TRUE in PRISMA_flowdiagram() and if tooltips 
+#' are provided in the data upload, respectively.
+#' @example
+#' \dontrun{
+#' data <- read.csv(file.choose());
+#' data <- read_PRISMAdata(data);
+#' attach(data); 
+#' plot <- PRISMA_flowdiagram(data,
+#'                 fontsize = 12,
+#'                 interactive = TRUE,
+#'                 previous = TRUE,
+#'                 other = TRUE)
+#' PRISMA_save(plot, format = 'pdf')
+#' }
+#' @export
+PRISMA_save <- function(plotobj){
+  htmlwidgets::saveWidget(plotobj, file="PRISMA2020_flowdiagram.html")
+}
