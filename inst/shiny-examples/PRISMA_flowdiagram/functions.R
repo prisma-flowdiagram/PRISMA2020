@@ -708,3 +708,19 @@ sr_flow_interactive <- function(plot,
                               htmlwidgets::onStaticRenderComplete(javascript))
 }
 
+
+
+prisma_pdf <- function(x, filename = "prisma.pdf") {
+  utils::capture.output({
+    rsvg::rsvg_pdf(svg = charToRaw(DiagrammeRsvg::export_svg(x)),
+                   file = filename)
+  })
+  invisible()
+}
+prisma_png <- function(x, filename = "prisma.png") {
+  utils::capture.output({
+    rsvg::rsvg_png(svg = charToRaw(DiagrammeRsvg::export_svg(x)),
+                   file = filename)
+  })
+  invisible()
+}
