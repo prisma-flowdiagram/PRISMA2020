@@ -18,3 +18,16 @@ are provided in the data upload, respectively.
 Save the html output from PRISMA_flowdiagram() to the
 working directory.
 }
+\examples{
+\dontrun{
+data <- read.csv(file.choose());
+data <- read_PRISMAdata(data);
+attach(data); 
+plot <- PRISMA_flowdiagram(data,
+                fontsize = 12,
+                interactive = TRUE,
+                previous = TRUE,
+                other = TRUE)
+PRISMA_save(plot, format = 'pdf')
+}
+}

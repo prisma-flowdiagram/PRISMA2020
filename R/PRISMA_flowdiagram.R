@@ -721,7 +721,7 @@ sr_flow_interactive <- function(plot,
 #' @return A flow diagram plot as an html file, with embedded links and 
 #' tooltips if interactive=TRUE in PRISMA_flowdiagram() and if tooltips 
 #' are provided in the data upload, respectively.
-#' @example
+#' @examples
 #' \dontrun{
 #' data <- read.csv(file.choose());
 #' data <- read_PRISMAdata(data);
