@@ -1,31 +1,31 @@
 data,node,box,description,boxtext,tooltips,url,n
 NA,node4,prevstud,Grey title box; Previous studies,Previous studies,Grey title box; Previous studies,prevstud.html,
-previous_studies,node5,box1,Studies included in previous version of review,Studies included in previous version of review,Studies included in previous version of review,previous_studies.html,xxx
-previous_reports,NA,box1,Reports of studies included in previous version of review,Reports of studies included in previous version of review,NA,previous_reports.html,xxx
+previous_studies,node5,box1,Studies included in previous version of review,Studies included in previous version of review,Studies included in previous version of review,previous_studies.html,0
+previous_reports,NA,box1,Reports of studies included in previous version of review,Reports of studies included in previous version of review,NA,previous_reports.html,0
 NA,node6,newstud,Yellow title box; Identification of new studies via databases and registers,Identification of new studies via databases and registers,Yellow title box; Identification of new studies via databases and registers,newstud.html,
-database_results,node7,box2,Records identified from: Databases,Databases,Records identified from: Databases,database_results.html,xxx
-register_results,NA,box2,Records identified from: Registers,Registers,NA,NA,xxx
+database_results,node7,box2,Records identified from: Databases,Databases,Records identified from: Databases,database_results.html,0
+register_results,NA,box2,Records identified from: Registers,Registers,NA,NA,0
 NA,node16,othstud,Grey title box; Identification of new studies via other methods,Identification of new studies via other methods,Grey title box; Identification of new studies via other methods,othstud.html,
-website_results,node17,box11,Records identified from: Websites,Websites,Records identified from: Websites,website_results.html,xxx
-organisation_results,,box11,Records identified from: Organisations,Organisations,NA,NA,xxx
-citations_results,NA,box11,Records identified from: Citation searching,Citation searching,NA,NA,xxx
-duplicates,node8,box3,Duplicate records,Duplicate records,Duplicate records,duplicates.html,xxx
-excluded_automatic,NA,box3,Records marked as ineligible by automation tools,Records marked as ineligible by automation tools,NA,NA,xxx
-excluded_other,NA,box3,Records removed for other reasons,Records removed for other reasons,NA,NA,xxx
-records_screened,node9,box4,Records screened (databases and registers),Records screened,Records screened (databases and registers),records_screened.html,xxx
-records_excluded,node10,box5,Records excluded (databases and registers),Records excluded,Records excluded (databases and registers),records_excluded.html,xxx
-dbr_sought_reports,node11,box6,Reports sought for retrieval (databases and registers),Reports sought for retrieval,Reports sought for retrieval (databases and registers),dbr_sought_reports.html,xxx
-dbr_notretrieved_reports,node12,box7,Reports not retrieved (databases and registers),Reports not retrieved,Reports not retrieved (databases and registers),dbr_notretrieved_reports.html,xxx
-other_sought_reports,node18,box12,Reports sought for retrieval (other),Reports sought for retrieval,Reports sought for retrieval (other),other_sought_reports.html,xxx
-other_notretrieved_reports,node19,box13,Reports not retrieved (other),Reports not retrieved,Reports not retrieved (other),other_notretrieved_reports.html,xxx
-dbr_assessed,node13,box8,Reports assessed for eligibility (databases and registers),Reports assessed for eligibility,Reports assessed for eligibility (databases and registers),dbr_assessed.html,xxx
-dbr_excluded,node14,box9,"Reports excluded (databases and registers): [separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; Reason3, xxx",Reports excluded:,"Reports excluded (databases and registers): [separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; Reason3, xxx",dbrexcludedrecords.html,"Reason1, xxx; Reason2, xxx; Reason3, xxx"
-other_assessed,node20,box14,Reports assessed for eligibility (other),Reports assessed for eligibility,Reports assessed for eligibility (other),other_assessed.html,xxx
+website_results,node17,box11,Records identified from: Websites,Websites,Records identified from: Websites,website_results.html,0
+organisation_results,,box11,Records identified from: Organisations,Organisations,NA,NA,0
+citations_results,NA,box11,Records identified from: Citation searching,Citation searching,NA,NA,0
+duplicates,node8,box3,Duplicate records,Duplicate records,Duplicate records,duplicates.html,0
+excluded_automatic,NA,box3,Records marked as ineligible by automation tools,Records marked as ineligible by automation tools,NA,NA,0
+excluded_other,NA,box3,Records removed for other reasons,Records removed for other reasons,NA,NA,0
+records_screened,node9,box4,Records screened (databases and registers),Records screened,Records screened (databases and registers),records_screened.html,0
+records_excluded,node10,box5,Records excluded (databases and registers),Records excluded,Records excluded (databases and registers),records_excluded.html,0
+dbr_sought_reports,node11,box6,Reports sought for retrieval (databases and registers),Reports sought for retrieval,Reports sought for retrieval (databases and registers),dbr_sought_reports.html,0
+dbr_notretrieved_reports,node12,box7,Reports not retrieved (databases and registers),Reports not retrieved,Reports not retrieved (databases and registers),dbr_notretrieved_reports.html,0
+other_sought_reports,node18,box12,Reports sought for retrieval (other),Reports sought for retrieval,Reports sought for retrieval (other),other_sought_reports.html,0
+other_notretrieved_reports,node19,box13,Reports not retrieved (other),Reports not retrieved,Reports not retrieved (other),other_notretrieved_reports.html,0
+dbr_assessed,node13,box8,Reports assessed for eligibility (databases and registers),Reports assessed for eligibility,Reports assessed for eligibility (databases and registers),dbr_assessed.html,0
+dbr_excluded,node14,box9,"Reports excluded (databases and registers): [separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; Reason3, xxx",Reports excluded,"Reports excluded (databases and registers): [separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; Reason3, xxx",dbrexcludedrecords.html,"Reason1, xxx; Reason2, xxx; Reason3, xxx"
+other_assessed,node20,box14,Reports assessed for eligibility (other),Reports assessed for eligibility,Reports assessed for eligibility (other),other_assessed.html,0
 other_excluded,node21,box15,"Reports excluded (other): [separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; Reason3, xxx",Reports excluded,"Reports excluded (other): [separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; Reason3, xxx",other_excluded.html,"Reason1, xxx; Reason2, xxx; Reason3, xxx"
-new_studies,node15,box10,New studies included in review,New studies included in review,New studies included in review,new_studies.html,xxx
-new_reports,NA,box10,Reports of new included studies,Reports of new included studies,NA,NA,xxx
-total_studies,node22,box16,Total studies included in review,Total studies included in review,Total studies included in review,total_studies.html,xxx
-total_reports,NA,box16,Reports of total included studies,Reports of total included studies,NA,NA,xxx
+new_studies,node15,box10,New studies included in review,New studies included in review,New studies included in review,new_studies.html,0
+new_reports,NA,box10,Reports of new included studies,Reports of new included studies,NA,NA,0
+total_studies,node22,box16,Total studies included in review,Total studies included in review,Total studies included in review,total_studies.html,0
+total_reports,NA,box16,Reports of total included studies,Reports of total included studies,NA,NA,0
 identification,node1,identification,Blue identification box,NA,Blue identification box,identification.html,
 screening,node2,screening,Blue screening box,NA,Blue screening box,screening.html,
 included,node3,included,Blue included box,NA,Blue included box,included.html,

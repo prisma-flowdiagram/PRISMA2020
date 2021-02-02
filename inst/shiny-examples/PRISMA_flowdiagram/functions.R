@@ -79,7 +79,7 @@ PRISMA_flowdiagram <- function (data,
   }
   
   #remove previous box if both values are zero
-  if (identical(previous_studies, '0') && identical(previous_reports, '0') == TRUE) {
+  if (is.na(previous_studies) == TRUE && is.na(previous_reports) == TRUE) {
     previous <- FALSE
   }
   
@@ -110,7 +110,7 @@ PRISMA_flowdiagram <- function (data,
     h_adj2 <- 0
     
     #conditional studies and reports - empty text if blank
-    if(identical(previous_studies, '0') == TRUE) {
+    if(is.na(previous_studies) == TRUE) {
       cond_prevstud <- ''
     } else {
       cond_prevstud <- stringr::str_wrap(paste0(previous_studies_text,
@@ -119,7 +119,7 @@ PRISMA_flowdiagram <- function (data,
                                                 ")"), 
                                          width = 40)
     }
-    if(identical(previous_reports, '0') == TRUE) {
+    if(is.na(previous_reports) == TRUE) {
       cond_prevrep <- ''
     } else {
       cond_prevrep <- paste0(stringr::str_wrap(previous_reports_text, 
@@ -128,7 +128,7 @@ PRISMA_flowdiagram <- function (data,
                              previous_reports,
                              ')')
     }
-    if (identical(previous_studies, '0') || identical(previous_reports, '0') == TRUE) {
+    if (is.na(previous_studies) == TRUE || is.na(previous_reports) == TRUE) {
       dbl_br <- ''
     } else {
       dbl_br <- "\n\n"
@@ -183,7 +183,7 @@ PRISMA_flowdiagram <- function (data,
     
   }
   
-  if (identical(website_results, '0') == TRUE && identical(organisation_results, '0') == TRUE && identical(citations_results, '0') == TRUE) {
+  if (is.na(website_results) == TRUE && is.na(organisation_results) == TRUE && is.na(citations_results) == TRUE) {
     other <- FALSE
   }
   
@@ -202,7 +202,7 @@ PRISMA_flowdiagram <- function (data,
     }
     B <- paste0("B [label = '', pos='",xstart+13,",",ystart+1.5,"!', tooltip = '']")
     
-    if (identical(website_results, '0') == FALSE) {
+    if (is.na(website_results) == FALSE) {
       cond_websites <- paste0(website_results_text,
                               " (n = ",
                               website_results,
@@ -210,7 +210,7 @@ PRISMA_flowdiagram <- function (data,
     } else {
       cond_websites <- ''
     }
-    if (identical(organisation_results, '0') == FALSE) {
+    if (is.na(organisation_results) == FALSE) {
       cond_organisation <- paste0(organisation_results_text,
                                   " (n = ",
                                   organisation_results,
@@ -218,7 +218,7 @@ PRISMA_flowdiagram <- function (data,
     } else {
       cond_organisation <- ''
     }
-    if (identical(citations_results, '0') == FALSE) {
+    if (is.na(citations_results) == FALSE) {
       cond_citation <- paste0(citations_results_text,
                               " (n = ",
                               citations_results,
@@ -324,7 +324,7 @@ PRISMA_flowdiagram <- function (data,
     dbr_excluded_data <- paste0('\n', '(n = ', dbr_excluded, ')')
   }
   
-  if (identical(database_results, '0') == FALSE) {
+  if (is.na(database_results) == FALSE) {
     cond_database <- paste0(database_results_text, 
                             ' (n = ',
                             database_results,
@@ -332,7 +332,7 @@ PRISMA_flowdiagram <- function (data,
   } else {
     cond_database <- ''
   }
-  if (identical(register_results, '0') == FALSE) {
+  if (is.na(register_results) == FALSE) {
     cond_register <- paste0(register_results_text, 
                             ' (n = ',
                             register_results,
@@ -341,7 +341,7 @@ PRISMA_flowdiagram <- function (data,
     cond_register <- ''
   }
   
-  if (identical(duplicates, '0') == FALSE) {
+  if (is.na(duplicates) == FALSE) {
     cond_duplicates <- paste0(stringr::str_wrap(paste0(duplicates_text,
                                                        ' (n = ',
                                                        duplicates,
@@ -351,7 +351,7 @@ PRISMA_flowdiagram <- function (data,
   } else {
     cond_duplicates <- ''
   }
-  if (identical(excluded_automatic, '0') == FALSE) {
+  if (is.na(excluded_automatic) == FALSE) {
     cond_automatic <- paste0(stringr::str_wrap(paste0(excluded_automatic_text,
                                                        ' (n = ',
                                                        excluded_automatic,
@@ -361,7 +361,7 @@ PRISMA_flowdiagram <- function (data,
   } else {
     cond_automatic <- ''
   }
-  if (identical(excluded_other, '0') == FALSE) {
+  if (is.na(excluded_other) == FALSE) {
     cond_exclother <- paste0(stringr::str_wrap(paste0(excluded_other_text, 
                                                       ' (n = ',
                                                       excluded_other,
@@ -370,11 +370,11 @@ PRISMA_flowdiagram <- function (data,
   } else {
     cond_exclother <- ''
   }
-  if (identical(duplicates, '0') == TRUE && identical(excluded_automatic, '0') == TRUE && identical(excluded_other, '0') == TRUE) {
+  if (is.na(duplicates) == TRUE && is.na(excluded_automatic) == TRUE && is.na(excluded_other) == TRUE) {
     cond_duplicates <- paste0('(n = 0)')
   }
   
-  if(identical(new_studies, '0') == FALSE) {
+  if(is.na(new_studies) == FALSE) {
     cond_newstud <- paste0(stringr::str_wrap(new_studies_text, width = 40),
                            '\n(n = ',
                            new_studies,
@@ -382,7 +382,7 @@ PRISMA_flowdiagram <- function (data,
   } else {
     cond_newstud <- ''
   }
-  if(identical(new_reports, '0') == FALSE) {
+  if(is.na(new_reports) == FALSE) {
     cond_newreports <- paste0(stringr::str_wrap(new_reports_text, width = 40),
                            '\n(n = ',
                            new_reports,
