@@ -115,6 +115,7 @@ server <- function(input, output) {
     }
   })
   
+  
   # Set up default values in data entry boxes
   output$selection <- renderUI({
     tagList(conditionalPanel(
