@@ -83,6 +83,7 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                                  ),
                                                  hr(),
                                                  actionButton("update", "Click to update"),
+                                                 actionButton("reset", "Click to reset"),
                                                  h3("Identification"),
                                                  uiOutput("selection"),
                                                  hr(),
@@ -210,6 +211,12 @@ server <- function(input, output) {
                 rv$data,
                 resetPaging = FALSE,
                 rownames = FALSE)  # important
+  })
+  
+  
+  # Reset button
+  observeEvent(input$reset,{
+    rv$data <- read.csv("www/PRISMA.csv",stringsAsFactors = FALSE)
   })
   
   
