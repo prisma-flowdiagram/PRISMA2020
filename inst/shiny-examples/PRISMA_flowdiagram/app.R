@@ -82,8 +82,11 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                                  ),
                                                  hr(),
                                                  
+                                                 actionButton("reset", "Click to reset"),
+                                                 div(id = "inputs",
                                                  h3("Identification"),
-                                                 uiOutput("selection"),
+                                                 uiOutput("selection")
+                                                 ),
                                                  hr(),
                                                  
                                                  h3("Download"),
@@ -118,6 +121,19 @@ server <- function(input, output) {
       # Create version that is edited and passed to graphing function
       rv$data <- read.csv(input$data_upload$datapath)
     }
+  })
+  
+  # Reset button
+  observeEvent(input$reset,{
+    if (is.null(input$data_upload)) {
+      # Create version that is edited and passed to graphing function
+      rv$data <- template
+    } else {
+      # Create version that is edited and passed to graphing function
+      rv$data <- read.csv(input$data_upload$datapath)
+    }
+    
+    shinyjs::reset("inputs")
   })
   
   # Set up default values in data entry boxes
