@@ -108,8 +108,14 @@ server <- function(input, output) {
   # Use template data to populate editable table
   observe({
     if (is.null(input$data_upload)) {
+      # Create inital value that is passed to UI
+      rv$data_initial <- template
+      # Create version that is edited and passed to graphing function
       rv$data <- template
     } else {
+      # Create inital value that is passed to UI
+      rv$data_initial <- read.csv(input$data_upload$datapath)
+      # Create version that is edited and passed to graphing function
       rv$data <- read.csv(input$data_upload$datapath)
     }
   })
@@ -118,43 +124,43 @@ server <- function(input, output) {
   output$selection <- renderUI({
     tagList(conditionalPanel(
       condition = "input.previous == 'Included'",
-      splitLayout(textInput("previous_studies", label = "Previous studies", value = rv$data$n[2]),
-                  textInput("previous_reports", label = "Previous reports", value = rv$data$n[3]))),
-    splitLayout(textInput("database_results", label = "Databases", value = rv$data$n[5]),
-                textInput("register_results", label = "Registers", value = rv$data$n[6])),
+      splitLayout(textInput("previous_studies", label = "Previous studies", value = rv$data_initial$n[2]),
+                  textInput("previous_reports", label = "Previous reports", value = rv$data_initial$n[3]))),
+    splitLayout(textInput("database_results", label = "Databases", value = rv$data_initial$n[5]),
+                textInput("register_results", label = "Registers", value = rv$data_initial$n[6])),
     conditionalPanel(
       condition = "input.other == 'Included'",
-      splitLayout(textInput("website_results", label = "Websites", value = rv$data$n[8]),
-                  textInput("organisation_results", label = "Organisations", value = rv$data$n[9])),
-      textInput("citations_results", label = "Citations", value = rv$data$n[10])
+      splitLayout(textInput("website_results", label = "Websites", value = rv$data_initial$n[8]),
+                  textInput("organisation_results", label = "Organisations", value = rv$data_initial$n[9])),
+      textInput("citations_results", label = "Citations", value = rv$data_initial$n[10])
     ),
-    textInput("duplicates", label = "Duplicates removed", value = rv$data$n[11]),
-    splitLayout(textInput("excluded_automatic", label = "Automatically excluded", value = rv$data$n[12]),
-                textInput("excluded_other", label = "Other exclusions", value = rv$data$n[13])),
+    textInput("duplicates", label = "Duplicates removed", value = rv$data_initial$n[11]),
+    splitLayout(textInput("excluded_automatic", label = "Automatically excluded", value = rv$data_initial$n[12]),
+                textInput("excluded_other", label = "Other exclusions", value = rv$data_initial$n[13])),
     h3("Screening"),
-    splitLayout(textInput("records_screened", label = "Records screened", value = rv$data$n[14]),
-                textInput("records_excluded", label = "Records excluded", value = rv$data$n[15])),
-    splitLayout(textInput("dbr_sought_reports", label = "Reports sought", value = rv$data$n[16]),
-                textInput("dbr_notretrieved_reports", label = "Reports not retrieved", value = rv$data$n[17])),
+    splitLayout(textInput("records_screened", label = "Records screened", value = rv$data_initial$n[14]),
+                textInput("records_excluded", label = "Records excluded", value = rv$data_initial$n[15])),
+    splitLayout(textInput("dbr_sought_reports", label = "Reports sought", value = rv$data_initial$n[16]),
+                textInput("dbr_notretrieved_reports", label = "Reports not retrieved", value = rv$data_initial$n[17])),
     conditionalPanel(
       condition = "input.other == 'Included'",
-      splitLayout(textInput("other_sought_reports", label = "Other reports sought", value = rv$data$n[18]),
-                  textInput("other_notretrieved_reports", label = "Other reports not retrieved", value = rv$data$n[19]))
+      splitLayout(textInput("other_sought_reports", label = "Other reports sought", value = rv$data_initial$n[18]),
+                  textInput("other_notretrieved_reports", label = "Other reports not retrieved", value = rv$data_initial$n[19]))
     ),
-    splitLayout(textInput("dbr_assessed", label = "Reports assessed", value = rv$data$n[20]),
-                textInput("dbr_excluded", label = "Reports excluded", value = rv$data$n[21])),
+    splitLayout(textInput("dbr_assessed", label = "Reports assessed", value = rv$data_initial$n[20]),
+                textInput("dbr_excluded", label = "Reports excluded", value = rv$data_initial$n[21])),
     conditionalPanel(
       condition = "input.other == 'Included'",
-      splitLayout(textInput("other_assessed", label = "Other reports assessed", value = rv$data$n[22]),
-                  textInput("other_excluded", label = "Other reports excluded", value = rv$data$n[23]))
+      splitLayout(textInput("other_assessed", label = "Other reports assessed", value = rv$data_initial$n[22]),
+                  textInput("other_excluded", label = "Other reports excluded", value = rv$data_initial$n[23]))
     ),
     h3("Included"),
-    splitLayout(textInput("new_studies", label = "New studies", value = rv$data$n[24]),
-                textInput("new_reports", label = "New reports", value = rv$data$n[25])),
+    splitLayout(textInput("new_studies", label = "New studies", value = rv$data_initial$n[24]),
+                textInput("new_reports", label = "New reports", value = rv$data_initial$n[25])),
     conditionalPanel(
       condition = "input.previous == 'Included'",
-      splitLayout(textInput("total_studies", label = "Total studies", value = rv$data$n[26]),
-                  textInput("total_reports", label = "Total reports", value = rv$data$n[27]))
+      splitLayout(textInput("total_studies", label = "Total studies", value = rv$data_initial$n[26]),
+                  textInput("total_reports", label = "Total reports", value = rv$data_initial$n[27]))
     ))
   })
   
