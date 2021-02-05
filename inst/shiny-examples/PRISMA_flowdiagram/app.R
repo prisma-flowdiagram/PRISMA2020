@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyjs)
 library(rsvg)
 library(DT)
 library(rio)
