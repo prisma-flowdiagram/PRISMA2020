@@ -33,6 +33,7 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            br(),
                                            tags$a(href="PRISMA.csv", "Download the template CSV file", download=NA, target="_blank"),
                                            br(),
+                                           br(),
                                            'Upload your edited file here:',
                                            br(),
                                            fileInput("data_upload", "Choose CSV File",
@@ -40,13 +41,16 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                                      accept = c("text/csv",
                                                                 "text/comma-separated-values,text/plain",
                                                                 ".csv")),
+                                           # actionButton("reset_data_upload", "Click to clear uploaded data",
+                                           # style="color: #fff; background-color: #e86868; border-color: #e86868"),
+                                           # br(),
                                            hr(),
                                            'Please cite as:',
                                            br(),
                                            'Neal R Haddaway, Luke A McGuinness. (2020). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams (Version 0.0.1). Zenodo.', 
                                            tags$a(href="http://doi.org/10.5281/zenodo.4287835", "http://doi.org/10.5281/zenodo.4287835"),
                                            br(),
-                                           tags$a(href="citation.ris", "Download citation (.ris)", download=NA, target="_blank")
+                                           tags$a(href="Haddaway_and_McGuinness2020.ris", "Download citation (.ris)", download=NA, target="_blank")
                                     )
                                   ),
                                   
@@ -56,8 +60,8 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            br(),
                                            'Credits:',
                                            br(),
-                                           'Neal R Haddaway (creator, coder)', br(),
-                                           'Luke A McGuinness (coder, advisor)', br(),
+                                           'Neal R Haddaway (creator, author)', br(),
+                                           'Luke A McGuinness (coder, contributor)', br(),
                                            'Matthew J Page (advisor)', br(),
                                            'Jack Wasey (advisor)', br(),
                                            br(),
@@ -124,7 +128,7 @@ server <- function(input, output) {
     }
   })
   
-  # Reset button
+  # Reset to upload button
   observeEvent(input$reset,{
     if (is.null(input$data_upload)) {
       # Create version that is edited and passed to graphing function
@@ -135,6 +139,11 @@ server <- function(input, output) {
     }
     
     shinyjs::reset("inputs")
+  })
+  
+  # Reset to blank button
+  observeEvent(input$reset_data_upload,{
+    shinyjs::reset("data_upload")
   })
   
   # Set up default values in data entry boxes
