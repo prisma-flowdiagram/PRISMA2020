@@ -37,7 +37,7 @@
 #' @return A flow diagram plot.
 #' @examples 
 #' \dontrun{
-#' data <- read.csv(file.choose());
+#' data <- read.csv(file.choose(), stringsAsFactors=FALSE);
 #' data <- read_PRISMAdata(data);
 #' attach(data); 
 #' plot <- PRISMA_flowdiagram(data,
@@ -506,7 +506,7 @@ theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90d
 #' @return A list of objects needed to plot the flow diagram
 #' @examples 
 #' \dontrun{
-#' data <- read.csv(file.choose());
+#' data <- read.csv(file.choose(), stringsAsFactors=FALSE);
 #' data <- read_PRISMAdata(data);
 #' attach(data);
 #' }
@@ -531,11 +531,11 @@ read_PRISMAdata <- function(data){
   other_sought_reports <- scales::comma(as.numeric(data[grep('other_sought_reports', data[,1]),]$n))
   other_notretrieved_reports <- scales::comma(as.numeric(data[grep('other_notretrieved_reports', data[,1]),]$n))
   dbr_assessed <- scales::comma(as.numeric(data[grep('dbr_assessed', data[,1]),]$n))
-  dbr_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$n, split = '; '))), 
-                             n = gsub(".*,", "", unlist(strsplit(data[grep('dbr_excluded', data[,1]),]$n, split = '; '))))
+  dbr_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(as.character(data[grep('dbr_excluded', data[,1]),]$n), split = '; '))), 
+                             n = gsub(".*,", "", unlist(strsplit(as.character(data[grep('dbr_excluded', data[,1]),]$n), split = '; '))))
   other_assessed <- scales::comma(as.numeric(data[grep('other_assessed', data[,1]),]$n))
-  other_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$n, split = '; '))), 
-                               n = gsub(".*,", "", unlist(strsplit(data[grep('other_excluded', data[,1]),]$n, split = '; '))))
+  other_excluded <- data.frame(reason = gsub(",.*$", "", unlist(strsplit(as.character(data[grep('other_excluded', data[,1]),]$n), split = '; '))), 
+                               n = gsub(".*,", "", unlist(strsplit(as.character(data[grep('other_excluded', data[,1]),]$n), split = '; '))))
   new_studies <- scales::comma(as.numeric(data[grep('new_studies', data[,1]),]$n))
   new_reports <- scales::comma(as.numeric(data[grep('new_reports', data[,1]),]$n))
   total_studies <- scales::comma(as.numeric(data[grep('total_studies', data[,1]),]$n))
