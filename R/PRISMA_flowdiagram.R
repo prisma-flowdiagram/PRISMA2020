@@ -61,12 +61,25 @@ PRISMA_flowdiagram <- function (data,
                                 arrow_head = 'normal',
                                 arrow_tail = 'none') {
   
+  add_newline_between_chars_ <- function(x) {
+    return(gsub("(.)(?!$)", "\\1\n", x, perl=TRUE))
+  }
+
+  id_side_label='Identification'
+  scr_side_label='Screening'
+  inc_side_label='Included'
+
+  id_side_label <- add_newline_between_chars_(id_side_label)
+  scr_side_label <- add_newline_between_chars_(scr_side_label)
+  inc_side_label <- add_newline_between_chars_(inc_side_label)
+  
+
   #wrap exclusion reasons
   dbr_excluded[,1] <- stringr::str_wrap(dbr_excluded[,1], 
                     width = 35)
   other_excluded[,1] <- stringr::str_wrap(other_excluded[,1], 
                     width = 35)
-  
+
   if(stringr::str_count(paste(dbr_excluded[,1], collapse = "\n"), "\n") > 3){
     dbr_excludedh <- 3.5 - ((stringr::str_count(paste(dbr_excluded[,1], collapse = "\n"), "\n")-4)/9)
   } else {
@@ -272,10 +285,14 @@ PRISMA_flowdiagram <- function (data,
   
   graph[splines=ortho, layout=neato, tooltip = 'Click the boxes for further information', outputorder=edgesfirst]
   
-  node [shape = box]
-  identification [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+7,"!', width = 0.4, height = 1.5, tooltip = '", tooltips[20], "'];
-  screening [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 2.5, tooltip = '", tooltips[21], "'];
-  included [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
+  node [shape = box,
+        fontsize = ", fontsize,",
+        fontname = ", font, ",
+        color = ", title_colour, ",
+        labelangle = 90 ]
+  identification [color = LightSteelBlue2, label='",id_side_label,"', style = 'filled,rounded', pos='",-1.4,",",ystart+7,"!', width = 0.4, height = 1.5, tooltip = '", tooltips[20], "'];
+  screening [color = LightSteelBlue2, label='",scr_side_label,"', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 2.5, tooltip = '", tooltips[21], "'];
+  included [color = LightSteelBlue2, label='",inc_side_label,"', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
   ",
            previous_nodes,"
   node [shape = box,
@@ -436,60 +453,60 @@ PRISMA_flowdiagram <- function (data,
   ")
   )
   
-  # Append in vertical text on blue bars
-  if (paste0(previous,  other) == 'TRUETRUE'){
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'537\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'356\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'95\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-    } else if (paste0(previous,  other) == 'FALSETRUE'){
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'497\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'315\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'100\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-  } else if (paste0(previous,  other) == 'TRUEFALSE'){
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'536\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'357\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'95\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-  } else {
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'497\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'315\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'100\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-    }
+#   # Append in vertical text on blue bars
+#   if (paste0(previous,  other) == 'TRUETRUE'){
+#     insertJS <- function(plot){
+#       javascript <- htmltools::HTML('
+# var theDiv = document.getElementById("node1");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'537\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
+# var theDiv = document.getElementById("node2");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'356\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
+# var theDiv = document.getElementById("node3");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'95\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
+#                               ')
+#       htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+#     }
+#     x <- insertJS(x)
+#     } else if (paste0(previous,  other) == 'FALSETRUE'){
+#     insertJS <- function(plot){
+#       javascript <- htmltools::HTML('
+# var theDiv = document.getElementById("node1");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'497\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
+# var theDiv = document.getElementById("node2");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'315\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
+# var theDiv = document.getElementById("node3");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'100\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
+#                               ')
+#       htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+#     }
+#     x <- insertJS(x)
+#   } else if (paste0(previous,  other) == 'TRUEFALSE'){
+#     insertJS <- function(plot){
+#       javascript <- htmltools::HTML('
+# var theDiv = document.getElementById("node1");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'536\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
+# var theDiv = document.getElementById("node2");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'357\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
+# var theDiv = document.getElementById("node3");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'95\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
+#                               ')
+#       htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+#     }
+#     x <- insertJS(x)
+#   } else {
+#     insertJS <- function(plot){
+#       javascript <- htmltools::HTML('
+# var theDiv = document.getElementById("node1");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'497\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
+# var theDiv = document.getElementById("node2");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'315\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
+# var theDiv = document.getElementById("node3");
+# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'100\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
+#                               ')
+#       htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+#     }
+#     x <- insertJS(x)
+#     }
   
   if (interactive == TRUE) {
     x <- sr_flow_interactive(x, urls, previous = previous, other = other)
