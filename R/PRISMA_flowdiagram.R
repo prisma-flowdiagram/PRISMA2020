@@ -14,7 +14,7 @@
 #' studies were sought.
 #' @param other Logical argument (TRUE or FALSE) specifying whether other studies 
 #' were sought.
-#' @param font The font for text in each box. The default is 'Helvetica'.
+#' @param font Theor text in each box. The default is 'Helvetica'.
 #' @param fontsize The font size for text in each box. The default is '12'.
 #' @param title_colour The colour for the upper middle title box (new studies). 
 #' The default is 'Goldenrod1'. See 'DiagrammeR' colour scheme 
@@ -65,15 +65,14 @@ PRISMA_flowdiagram <- function (data,
     return(gsub("(.)(?!$)", "\\1\n", x, perl=TRUE))
   }
 
-  id_side_label='Identification'
-  scr_side_label='Screening'
-  inc_side_label='Included'
+  id_side_label <- "Identification"
+  scr_side_label <- "Screening"
+  inc_side_label <- "Included"
 
-  id_side_label <- add_newline_between_chars_(id_side_label)
-  scr_side_label <- add_newline_between_chars_(scr_side_label)
-  inc_side_label <- add_newline_between_chars_(inc_side_label)
+  #id_side_label <- add_newline_between_chars_(id_side_label)
+  #scr_side_label <- add_newline_between_chars_(scr_side_label)
+  #inc_side_label <- add_newline_between_chars_(inc_side_label)
   
-
   #wrap exclusion reasons
   dbr_excluded[,1] <- stringr::str_wrap(dbr_excluded[,1], 
                     width = 35)
@@ -288,11 +287,11 @@ PRISMA_flowdiagram <- function (data,
   node [shape = box,
         fontsize = ", fontsize,",
         fontname = ", font, ",
-        color = ", title_colour, ",
-        labelangle = 90 ]
-  identification [color = LightSteelBlue2, label='",id_side_label,"', style = 'filled,rounded', pos='",-1.4,",",ystart+7,"!', width = 0.4, height = 1.5, tooltip = '", tooltips[20], "'];
-  screening [color = LightSteelBlue2, label='",scr_side_label,"', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 2.5, tooltip = '", tooltips[21], "'];
-  included [color = LightSteelBlue2, label='",inc_side_label,"', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
+        color = ", title_colour, "
+        ]
+  identification [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+7,"!', width = 0.4, height = 1.5, tooltip = '", tooltips[20], "'];
+  screening [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 2.5, tooltip = '", tooltips[21], "'];
+  included [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
   ",
            previous_nodes,"
   node [shape = box,
@@ -453,65 +452,51 @@ PRISMA_flowdiagram <- function (data,
   ")
   )
   
-#   # Append in vertical text on blue bars
-#   if (paste0(previous,  other) == 'TRUETRUE'){
-#     insertJS <- function(plot){
-#       javascript <- htmltools::HTML('
-# var theDiv = document.getElementById("node1");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'537\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-# var theDiv = document.getElementById("node2");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'356\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-# var theDiv = document.getElementById("node3");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'95\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-#                               ')
-#       htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-#     }
-#     x <- insertJS(x)
-#     } else if (paste0(previous,  other) == 'FALSETRUE'){
-#     insertJS <- function(plot){
-#       javascript <- htmltools::HTML('
-# var theDiv = document.getElementById("node1");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'497\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-# var theDiv = document.getElementById("node2");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'315\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-# var theDiv = document.getElementById("node3");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'100\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-#                               ')
-#       htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-#     }
-#     x <- insertJS(x)
-#   } else if (paste0(previous,  other) == 'TRUEFALSE'){
-#     insertJS <- function(plot){
-#       javascript <- htmltools::HTML('
-# var theDiv = document.getElementById("node1");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'536\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-# var theDiv = document.getElementById("node2");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'357\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-# var theDiv = document.getElementById("node3");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'95\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-#                               ')
-#       htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-#     }
-#     x <- insertJS(x)
-#   } else {
-#     insertJS <- function(plot){
-#       javascript <- htmltools::HTML('
-# var theDiv = document.getElementById("node1");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'497\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-# var theDiv = document.getElementById("node2");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'315\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-# var theDiv = document.getElementById("node3");
-# theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'100\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-#                               ')
-#       htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-#     }
-#     x <- insertJS(x)
-#     }
+  # Append in vertical text on blue bars
+  switch (
+    paste0(previous, other),
+    'TRUETRUE' = {
+      y = '19'
+      node1x <- '537'
+      node2x <- '356'
+      node3x <- '95'
+    },
+    'FALSETRUE' = {
+      y = '19'
+      node1x <- '497'
+      node2x <- '315'
+      node3x <- '100'
+    },
+    'TRUEFALSE' = {
+      y = '19'
+      node1x <- '536'
+      node2x <- '357'
+      node3x <- '95'
+    },
+    'FALSEFALSE' = {
+      y = '19'
+      node1x <- '440'
+      node2x <- '260'
+      node3x <- '40'
+    }
+  )
+
+  insertJS_ <- function (plot) {
+    javascript <- htmltools::HTML(paste0('
+      var theDiv = document.getElementById("node1");
+      theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'',node1x,'\' y=\'',y,'\' font-family=\'',font,',sans-Serif\' font-size=\'',fontsize,'\'>',id_side_label,'</text>";
+      var theDiv = document.getElementById("node2");
+      theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'',node2x,'\' y=\'',y,'\' font-family=\'',font,',sans-Serif\' font-size=\'',fontsize,'\'>',scr_side_label,'</text>";
+      var theDiv = document.getElementById("node3");
+      theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'',node3x,'\' y=\'',y,'\' font-family=\'',font,',sans-Serif\' font-size=\'',fontsize,'\'>',inc_side_label,'</text>";
+    '))
+    htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+  }
+  x <- insertJS_(x)
   
   if (interactive == TRUE) {
     x <- sr_flow_interactive(x, urls, previous = previous, other = other)
   }
-  
   return(x)
 }
 
@@ -732,9 +717,11 @@ sr_flow_interactive <- function(plot,
 
 #' Save PRISMA2020 flow diagram
 #' 
-#' @description Save the html output from PRISMA_flowdiagram() to the 
+#' @description Save the output from PRISMA_flowdiagram() to the 
 #' working directory.
 #' @param plotobj A plot produced using PRISMA_flowdiagram().
+#' @param format The format to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP
+#' @param filename The filename to save 
 #' @return A flow diagram plot as an html file, with embedded links and 
 #' tooltips if interactive=TRUE in PRISMA_flowdiagram() and if tooltips 
 #' are provided in the data upload, respectively.
@@ -751,6 +738,42 @@ sr_flow_interactive <- function(plot,
 #' PRISMA_save(plot, format = 'pdf')
 #' }
 #' @export
-PRISMA_save <- function(plotobj){
-  htmlwidgets::saveWidget(plotobj, file="PRISMA2020_flowdiagram.html")
+PRISMA_save <- function(plotobj, format = 'HTML', filename = 'PRISMA2020_flowdiagram'){
+  gen_tmp_svg_ <- function(obj) {
+    #xpathsvg = "//*[name() = 'svg']"
+    tmpfilehtml <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".html" )
+    tmpfilesvg <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".svg" )
+    htmlwidgets::saveWidget(obj, file=tmpfilehtml)
+    htmldata <- xml2::read_html(tmpfilehtml)
+    js <- xml2::xml_find_first(htmldata,'//div[contains(@class, "grViz")]//following-sibling::script')    
+    svg <- DiagrammeRsvg::export_svg(plotobj)
+    writeLines(svg,tmpfilesvg)
+    return(tmpfilesvg)
+  }
+  switch(
+    format,
+    "HTML" = {
+      htmlwidgets::saveWidget(plotobj, file=filename)      
+    },
+    "PDF" = {
+      tmp_svg <- gen_tmp_svg_(plotobj)
+      rsvg::rsvg_pdf(tmp_svg, paste0(filename,'.pdf'))
+    },
+    "PNG" = {
+      tmp_svg <- gen_tmp_svg_(plotobj)
+      rsvg::rsvg_png(tmp_svg, paste0(filename,'.png'))
+    },
+    "SVG" = {
+      tmp_svg <- gen_tmp_svg_(plotobj)
+      rsvg::rsvg_svg(tmp_svg, paste0(filename,'.svg'))
+    },
+    "PS" = {
+      tmp_svg <- gen_tmp_svg_(plotobj)
+      rsvg::rsvg_ps(tmp_svg, paste0(filename,'.ps'))
+    },
+    "WEBP" = {
+      tmp_svg <- gen_tmp_svg_(plotobj)
+      rsvg::rsvg_webp(tmp_svg, paste0(filename,'.webp'))
+    },
+  )
 }
