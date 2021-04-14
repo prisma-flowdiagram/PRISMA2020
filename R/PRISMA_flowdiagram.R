@@ -14,7 +14,7 @@
 #' studies were sought.
 #' @param other Logical argument (TRUE or FALSE) specifying whether other studies 
 #' were sought.
-#' @param font Theor text in each box. The default is 'Helvetica'.
+#' @param font The font for text in each box. The default is 'Helvetica'.
 #' @param fontsize The font size for text in each box. The default is '12'.
 #' @param title_colour The colour for the upper middle title box (new studies). 
 #' The default is 'Goldenrod1'. See 'DiagrammeR' colour scheme 
@@ -61,17 +61,9 @@ PRISMA_flowdiagram <- function (data,
                                 arrow_head = 'normal',
                                 arrow_tail = 'none') {
   
-  add_newline_between_chars_ <- function(x) {
-    return(gsub("(.)(?!$)", "\\1\n", x, perl=TRUE))
-  }
-
   id_side_label <- "Identification"
   scr_side_label <- "Screening"
   inc_side_label <- "Included"
-
-  #id_side_label <- add_newline_between_chars_(id_side_label)
-  #scr_side_label <- add_newline_between_chars_(scr_side_label)
-  #inc_side_label <- add_newline_between_chars_(inc_side_label)
   
   #wrap exclusion reasons
   dbr_excluded[,1] <- stringr::str_wrap(dbr_excluded[,1], 
@@ -117,7 +109,7 @@ PRISMA_flowdiagram <- function (data,
     h_adj2 <- 0
     previous_nodes <- paste0("node [shape = box,
           fontsize = ", fontsize,",
-          fontname = ", font, ",
+          fontname = ", font,",
           color = ", greybox_colour, "]
     1 [label = '", previous_text, "', style = 'rounded,filled', width = 3.5, height = 0.5, pos='",xstart+1,",",ystart+8.25,"!', tooltip = '", tooltips[1], "']
     
@@ -289,9 +281,9 @@ PRISMA_flowdiagram <- function (data,
         fontname = ", font, ",
         color = ", title_colour, "
         ]
-  identification [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+7,"!', width = 0.4, height = 1.5, tooltip = '", tooltips[20], "'];
-  screening [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 2.5, tooltip = '", tooltips[21], "'];
-  included [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
+  identification [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",ystart+7,"!', width = 0.4, height = 1.5, tooltip = '", tooltips[20], "'];
+  screening [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 2.5, tooltip = '", tooltips[21], "'];
+  included [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
   ",
            previous_nodes,"
   node [shape = box,
@@ -451,48 +443,24 @@ PRISMA_flowdiagram <- function (data,
   }
   ")
   )
-  
-  # Append in vertical text on blue bars
-  switch (
-    paste0(previous, other),
-    'TRUETRUE' = {
-      y = '19'
-      node1x <- '537'
-      node2x <- '356'
-      node3x <- '95'
-    },
-    'FALSETRUE' = {
-      y = '19'
-      node1x <- '497'
-      node2x <- '315'
-      node3x <- '100'
-    },
-    'TRUEFALSE' = {
-      y = '19'
-      node1x <- '536'
-      node2x <- '357'
-      node3x <- '95'
-    },
-    'FALSEFALSE' = {
-      y = '19'
-      node1x <- '440'
-      node2x <- '260'
-      node3x <- '40'
-    }
-  )
 
   insertJS_ <- function (plot) {
-    javascript <- htmltools::HTML(paste0('
-      var theDiv = document.getElementById("node1");
-      theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'',node1x,'\' y=\'',y,'\' font-family=\'',font,',sans-Serif\' font-size=\'',fontsize,'\'>',id_side_label,'</text>";
-      var theDiv = document.getElementById("node2");
-      theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'',node2x,'\' y=\'',y,'\' font-family=\'',font,',sans-Serif\' font-size=\'',fontsize,'\'>',scr_side_label,'</text>";
-      var theDiv = document.getElementById("node3");
-      theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'',node3x,'\' y=\'',y,'\' font-family=\'',font,',sans-Serif\' font-size=\'',fontsize,'\'>',inc_side_label,'</text>";
-    '))
-    htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-  }
-  x <- insertJS_(x)
+     javascript <- htmltools::HTML(paste0('
+        const nodeMap = new Map([["node1","',id_side_label,'"], ["node2","',scr_side_label,'"], ["node3","',inc_side_label,'"]]);
+        for (const [node, label] of nodeMap) {
+          var theDiv = document.getElementById(node);
+          var theText = theDiv.querySelector("text");
+          var attrX = theText.getAttribute("x");
+          var attrY = theText.getAttribute("y");
+          theText.setAttribute("y",1+parseFloat(attrX))
+          theText.setAttribute("x",-1*parseFloat(attrY))
+          theText.setAttribute("style","transform: rotate(-90deg);")
+          theText.innerHTML = label;
+        }
+     '))
+     htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
+   }
+   x <- insertJS_(x)
   
   if (interactive == TRUE) {
     x <- sr_flow_interactive(x, urls, previous = previous, other = other)
@@ -740,14 +708,45 @@ sr_flow_interactive <- function(plot,
 #' @export
 PRISMA_save <- function(plotobj, format = 'HTML', filename = 'PRISMA2020_flowdiagram'){
   gen_tmp_svg_ <- function(obj) {
-    #xpathsvg = "//*[name() = 'svg']"
+    # generate temporary filenames
     tmpfilehtml <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".html" )
     tmpfilesvg <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".svg" )
+    # save the widget as HTML and read it into a variable
     htmlwidgets::saveWidget(obj, file=tmpfilehtml)
     htmldata <- xml2::read_html(tmpfilehtml)
-    js <- xml2::xml_find_first(htmldata,'//div[contains(@class, "grViz")]//following-sibling::script')    
+    # extract our labelling javascript using xml_find_first and xpath
+    # it finds the first script element follwing the grViz class - this looks to be quite fragile if we change our injected JS
+    js <- xml2::xml_text(xml2::xml_find_first(htmldata,'//div[contains(@class, "grViz")]//following-sibling::script'))
+    # use DiagrammeRsvg to export an SVG from the htmlwidgets code - this uses the V8 engine in the background so takes a little bit of time to run
+    # then read the SVG's XML into a variable
     svg <- DiagrammeRsvg::export_svg(plotobj)
-    writeLines(svg,tmpfilesvg)
+    svg <- xml2::read_xml(svg)
+    # we need to extract the node names and the label values from our JS, so find the appropriate part of the code (again, sensitive to script changes)
+    # we then extract the node names and labels and insert them into the SVG, in a similar manner to the original JS code
+    jsnode <- stringr::str_split(
+      stringr::str_remove_all(
+        stringr::str_match(
+          js, "const nodeMap = new Map\\(\\[(.*)\\]\\);"
+        )[1,2],
+        "\\[|\"|]"
+      ),
+      ",\\s",
+      simplify = TRUE
+    )
+    len <- length(jsnode)
+    for (i in 1:len) {
+      matsp <- stringr::str_split_fixed(jsnode[i],",",2)
+      namespace <- xml2::xml_ns(svg)
+      xml_text_node <- xml2::xml_find_first(svg, paste0('//d1:g[@id="',matsp[,1],'"]//d1:text'), namespace)
+      attrX <- xml2::xml_attr(xml_text_node, "x")
+      attrY <- xml2::xml_attr(xml_text_node, "y")
+      xml2::xml_attr(xml_text_node, "x") <- as.double(attrY)*-1
+      xml2::xml_attr(xml_text_node, "y") <- as.double(attrX)+1
+      # libRSVG does not support css transforms, so we need to use the native SVG transform attribute
+      xml2::xml_attr(xml_text_node, "transform") <- "rotate(-90)"
+      xml2::xml_text(xml_text_node) <- matsp[,2]
+    }
+    xml2::write_xml(svg, file = tmpfilesvg)
     return(tmpfilesvg)
   }
   switch(
@@ -757,6 +756,7 @@ PRISMA_save <- function(plotobj, format = 'HTML', filename = 'PRISMA2020_flowdia
     },
     "PDF" = {
       tmp_svg <- gen_tmp_svg_(plotobj)
+      message(tmp_svg)
       rsvg::rsvg_pdf(tmp_svg, paste0(filename,'.pdf'))
     },
     "PNG" = {
@@ -775,5 +775,6 @@ PRISMA_save <- function(plotobj, format = 'HTML', filename = 'PRISMA2020_flowdia
       tmp_svg <- gen_tmp_svg_(plotobj)
       rsvg::rsvg_webp(tmp_svg, paste0(filename,'.webp'))
     },
+    stop("Please choose one of the supported file types")
   )
 }
