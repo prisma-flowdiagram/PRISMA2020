@@ -689,7 +689,7 @@ sr_flow_interactive <- function(plot,
 #' working directory.
 #' @param plotobj A plot produced using PRISMA_flowdiagram().
 #' @param format The format to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP
-#' @param filename The filename to save 
+#' @param filename The filename to save (without extension)
 #' @return A flow diagram plot as an html file, with embedded links and 
 #' tooltips if interactive=TRUE in PRISMA_flowdiagram() and if tooltips 
 #' are provided in the data upload, respectively.
@@ -765,7 +765,7 @@ PRISMA_save <- function(plotobj, format = 'HTML', filename = 'PRISMA2020_flowdia
     },
     "SVG" = {
       tmp_svg <- gen_tmp_svg_(plotobj)
-      rsvg::rsvg_svg(tmp_svg, paste0(filename,'.svg'))
+      xml2::write_xml(tmp_svg,paste0(filename,'.svg'))
     },
     "PS" = {
       tmp_svg <- gen_tmp_svg_(plotobj)
