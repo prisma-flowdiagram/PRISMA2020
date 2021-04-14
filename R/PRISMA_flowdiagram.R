@@ -765,7 +765,9 @@ PRISMA_save <- function(plotobj, format = 'HTML', filename = 'PRISMA2020_flowdia
     },
     "SVG" = {
       tmp_svg <- gen_tmp_svg_(plotobj)
-      xml2::write_xml(tmp_svg,file = paste0(filename,'.svg'))
+      if (!(file.copy(tmp_svg, paste0(filename,'.svg'), overwrite = TRUE))){
+        stop("Error saving SVG")
+      }
     },
     "PS" = {
       tmp_svg <- gen_tmp_svg_(plotobj)
