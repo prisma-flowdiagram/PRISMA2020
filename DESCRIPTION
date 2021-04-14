@@ -30,7 +30,8 @@ Imports:
     shinyjs,
     stats,
     stringr,
-    utils
+    utils,
+    xml2
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
