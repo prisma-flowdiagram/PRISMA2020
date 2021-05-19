@@ -43,7 +43,7 @@
 #' plot <- PRISMA_flowdiagram(data,
 #'                 fontsize = 12,
 #'                 interactive = TRUE,
-#'                 previous = TRUE,
+#'                 previous = FALSE,
 #'                 other = TRUE);
 #' plot
 #' }
