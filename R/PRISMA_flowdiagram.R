@@ -60,6 +60,10 @@ PRISMA_flowdiagram <- function (data,
                                 arrow_colour = 'Black',
                                 arrow_head = 'normal',
                                 arrow_tail = 'none') {
+  # removes the need to attach() the data first https://stackoverflow.com/a/11505637
+  for(var in seq_len(length(data))) {
+    assign(names(data)[var], data[[var]])
+  }
   #wrap exclusion reasons
   dbr_excluded[,1] <- stringr::str_wrap(dbr_excluded[,1], 
                     width = 35)
