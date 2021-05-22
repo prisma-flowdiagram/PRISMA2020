@@ -60,11 +60,6 @@ PRISMA_flowdiagram <- function (data,
                                 arrow_colour = 'Black',
                                 arrow_head = 'normal',
                                 arrow_tail = 'none') {
-  
-  id_side_label <- "Identification"
-  scr_side_label <- "Screening"
-  inc_side_label <- "Included"
-  
   #wrap exclusion reasons
   dbr_excluded[,1] <- stringr::str_wrap(dbr_excluded[,1], 
                     width = 35)
@@ -446,14 +441,14 @@ PRISMA_flowdiagram <- function (data,
 
   insertJS_ <- function (plot) {
      javascript <- htmltools::HTML(paste0('
-        const nodeMap = new Map([["node1","',id_side_label,'"], ["node2","',scr_side_label,'"], ["node3","',inc_side_label,'"]]);
+        const nodeMap = new Map([["node1","',identification_text,'"], ["node2","',screening_text,'"], ["node3","',included_text,'"]]);
         for (const [node, label] of nodeMap) {
           var theDiv = document.getElementById(node);
           var theText = theDiv.querySelector("text");
           var attrX = theText.getAttribute("x");
           var attrY = theText.getAttribute("y");
-          theText.setAttribute("y",1+parseFloat(attrX))
-          theText.setAttribute("x",-1*parseFloat(attrY))
+          theText.setAttribute("y",parseFloat(attrX)+2)
+          theText.setAttribute("x",parseFloat(attrY)*-1)
           theText.setAttribute("style","transform: rotate(-90deg);")
           theText.innerHTML = label;
         }
@@ -541,6 +536,9 @@ read_PRISMAdata <- function(data){
   new_reports_text <- data[grep('new_reports', data[,1]),]$boxtext
   total_studies_text <- data[grep('total_studies', data[,1]),]$boxtext
   total_reports_text <- data[grep('total_reports', data[,1]),]$boxtext
+  identification_text <- data[grep('identification', data[,1]),]$boxtext
+  screening_text <- data[grep('screening', data[,1]),]$boxtext
+  included_text <- data[grep('included', data[,1]),]$boxtext
   
   x <- list(previous_studies = previous_studies,
            previous_reports = previous_reports,
@@ -593,6 +591,9 @@ read_PRISMAdata <- function(data){
            new_reports_text = new_reports_text,
            total_studies_text = total_studies_text,
            total_reports_text = total_reports_text,
+           identification_text = identification_text,
+           screening_text = screening_text,
+           included_text = included_text,
            tooltips = tooltips,
            urls = urls)
   
@@ -741,7 +742,7 @@ PRISMA_save <- function(plotobj, format = 'HTML', filename = 'PRISMA2020_flowdia
       attrX <- xml2::xml_attr(xml_text_node, "x")
       attrY <- xml2::xml_attr(xml_text_node, "y")
       xml2::xml_attr(xml_text_node, "x") <- as.double(attrY)*-1
-      xml2::xml_attr(xml_text_node, "y") <- as.double(attrX)+1
+      xml2::xml_attr(xml_text_node, "y") <- as.double(attrX)+2
       # libRSVG does not support css transforms, so we need to use the native SVG transform attribute
       xml2::xml_attr(xml_text_node, "transform") <- "rotate(-90)"
       xml2::xml_text(xml_text_node) <- matsp[,2]
@@ -750,7 +751,7 @@ PRISMA_save <- function(plotobj, format = 'HTML', filename = 'PRISMA2020_flowdia
     return(tmpfilesvg)
   }
   switch(
-    format,
+    toupper(format),
     "HTML" = {
       htmlwidgets::saveWidget(plotobj, file=filename)      
     },
