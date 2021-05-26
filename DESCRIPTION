@@ -31,7 +31,9 @@ Imports:
     stats,
     stringr,
     utils,
-    xml2
+    xml2,
+    webp,
+    tools
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

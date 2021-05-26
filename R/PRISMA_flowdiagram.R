@@ -439,23 +439,7 @@ PRISMA_flowdiagram <- function (data,
   ")
   )
 
-  insertJS_ <- function (plot) {
-     javascript <- htmltools::HTML(paste0('
-        const nodeMap = new Map([["node1","',identification_text,'"], ["node2","',screening_text,'"], ["node3","',included_text,'"]]);
-        for (const [node, label] of nodeMap) {
-          var theDiv = document.getElementById(node);
-          var theText = theDiv.querySelector("text");
-          var attrX = theText.getAttribute("x");
-          var attrY = theText.getAttribute("y");
-          theText.setAttribute("y",parseFloat(attrX)+2)
-          theText.setAttribute("x",parseFloat(attrY)*-1)
-          theText.setAttribute("style","transform: rotate(-90deg);")
-          theText.innerHTML = label;
-        }
-     '))
-     htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-   }
-   x <- insertJS_(x)
+  x <- insertJS_(x, identification_text = identification_text,screening_text = screening_text,included_text = included_text)
   
   if (interactive == TRUE) {
     x <- sr_flow_interactive(x, urls, previous = previous, other = other)
@@ -689,11 +673,11 @@ sr_flow_interactive <- function(plot,
 #' @description Save the output from PRISMA_flowdiagram() to the 
 #' working directory.
 #' @param plotobj A plot produced using PRISMA_flowdiagram().
-#' @param format The format to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP
-#' @param filename The filename to save (without extension)
-#' @return A flow diagram plot as an html file, with embedded links and 
-#' tooltips if interactive=TRUE in PRISMA_flowdiagram() and if tooltips 
-#' are provided in the data upload, respectively.
+#' @param filename The filename to save (including extension)
+#' @param filetype The filetype to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP
+#' (if NA, the filetype will be calculated out based on the file extension)
+#' HTML files maintain hyperlinks and tooltips
+#' @return the absolute filename of the saved diagram plot.
 #' @examples
 #' \dontrun{
 #' data <- read.csv(file.choose());
@@ -704,80 +688,43 @@ sr_flow_interactive <- function(plot,
 #'                 interactive = TRUE,
 #'                 previous = TRUE,
 #'                 other = TRUE)
-#' PRISMA_save(plot, format = 'pdf')
+#' PRISMA_save(plot)
 #' }
 #' @export
-PRISMA_save <- function(plotobj, format = 'HTML', filename = 'PRISMA2020_flowdiagram'){
-  gen_tmp_svg_ <- function(obj) {
-    # generate temporary filenames
-    tmpfilehtml <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".html" )
-    tmpfilesvg <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".svg" )
-    # save the widget as HTML and read it into a variable
-    htmlwidgets::saveWidget(obj, file=tmpfilehtml)
-    htmldata <- xml2::read_html(tmpfilehtml)
-    # extract our labelling javascript using xml_find_first and xpath
-    # it finds the first script element follwing the grViz class - this looks to be quite fragile if we change our injected JS
-    js <- xml2::xml_text(xml2::xml_find_first(htmldata,'//div[contains(@class, "grViz")]//following-sibling::script'))
-    # use DiagrammeRsvg to export an SVG from the htmlwidgets code - this uses the V8 engine in the background so takes a little bit of time to run
-    # then read the SVG's XML into a variable
-    svg <- DiagrammeRsvg::export_svg(plotobj)
-    svg <- xml2::read_xml(svg)
-    # we need to extract the node names and the label values from our JS, so find the appropriate part of the code (again, sensitive to script changes)
-    # we then extract the node names and labels and insert them into the SVG, in a similar manner to the original JS code
-    jsnode <- stringr::str_split(
-      stringr::str_remove_all(
-        stringr::str_match(
-          js, "const nodeMap = new Map\\(\\[(.*)\\]\\);"
-        )[1,2],
-        "\\[|\"|]"
-      ),
-      ",\\s",
-      simplify = TRUE
-    )
-    len <- length(jsnode)
-    for (i in 1:len) {
-      matsp <- stringr::str_split_fixed(jsnode[i],",",2)
-      namespace <- xml2::xml_ns(svg)
-      xml_text_node <- xml2::xml_find_first(svg, paste0('//d1:g[@id="',matsp[,1],'"]//d1:text'), namespace)
-      attrX <- xml2::xml_attr(xml_text_node, "x")
-      attrY <- xml2::xml_attr(xml_text_node, "y")
-      xml2::xml_attr(xml_text_node, "x") <- as.double(attrY)*-1
-      xml2::xml_attr(xml_text_node, "y") <- as.double(attrX)+2
-      # libRSVG does not support css transforms, so we need to use the native SVG transform attribute
-      xml2::xml_attr(xml_text_node, "transform") <- "rotate(-90)"
-      xml2::xml_text(xml_text_node) <- matsp[,2]
-    }
-    xml2::write_xml(svg, file = tmpfilesvg)
-    return(tmpfilesvg)
-  }
+PRISMA_save <- function(plotobj, filename = 'PRISMA2020_flowdiagram.html', filetype = NA){
+  format_real <- calc_filetype_(filename, filetype)
   switch(
-    toupper(format),
+    format_real,
     "HTML" = {
-      htmlwidgets::saveWidget(plotobj, file=filename)      
+      tmp_html <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".html" )
+      htmlwidgets::saveWidget(plotobj, file=tmp_html, title = tools::file_path_sans_ext(filename))
+      if (!(file.copy(tmp_html, filename, overwrite = TRUE))){
+        stop("Error saving HTML")
+      }
     },
     "PDF" = {
       tmp_svg <- gen_tmp_svg_(plotobj)
-      message(tmp_svg)
-      rsvg::rsvg_pdf(tmp_svg, paste0(filename,'.pdf'))
+      rsvg::rsvg_pdf(tmp_svg, filename)
     },
     "PNG" = {
       tmp_svg <- gen_tmp_svg_(plotobj)
-      rsvg::rsvg_png(tmp_svg, paste0(filename,'.png'))
+      rsvg::rsvg_png(tmp_svg, filename)
     },
     "SVG" = {
       tmp_svg <- gen_tmp_svg_(plotobj)
-      if (!(file.copy(tmp_svg, paste0(filename,'.svg'), overwrite = TRUE))){
+      if (!(file.copy(tmp_svg, filename, overwrite = TRUE))){
         stop("Error saving SVG")
       }
     },
     "PS" = {
       tmp_svg <- gen_tmp_svg_(plotobj)
-      rsvg::rsvg_ps(tmp_svg, paste0(filename,'.ps'))
+      rsvg::rsvg_ps(tmp_svg, filename)
     },
     "WEBP" = {
       tmp_svg <- gen_tmp_svg_(plotobj)
-      rsvg::rsvg_webp(tmp_svg, paste0(filename,'.webp'))
+      rsvg::rsvg_webp(tmp_svg, filename)
     },
     stop("Please choose one of the supported file types")
   )
+  return(tools::file_path_as_absolute(filename))
 }
