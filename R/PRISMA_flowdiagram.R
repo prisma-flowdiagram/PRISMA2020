@@ -60,13 +60,12 @@ PRISMA_flowdiagram <- function (data,
                                 arrow_colour = 'Black',
                                 arrow_head = 'normal',
                                 arrow_tail = 'none') {
-  
   #wrap exclusion reasons
   dbr_excluded[,1] <- stringr::str_wrap(dbr_excluded[,1], 
                     width = 35)
   other_excluded[,1] <- stringr::str_wrap(other_excluded[,1], 
                     width = 35)
-  
+
   if(stringr::str_count(paste(dbr_excluded[,1], collapse = "\n"), "\n") > 3){
     dbr_excludedh <- 3.5 - ((stringr::str_count(paste(dbr_excluded[,1], collapse = "\n"), "\n")-4)/9)
   } else {
@@ -105,7 +104,7 @@ PRISMA_flowdiagram <- function (data,
     h_adj2 <- 0
     previous_nodes <- paste0("node [shape = box,
           fontsize = ", fontsize,",
-          fontname = ", font, ",
+          fontname = ", font,",
           color = ", greybox_colour, "]
     1 [label = '", previous_text, "', style = 'rounded,filled', width = 3.5, height = 0.5, pos='",xstart+1,",",ystart+8.25,"!', tooltip = '", tooltips[1], "']
     
@@ -272,10 +271,14 @@ PRISMA_flowdiagram <- function (data,
   
   graph[splines=ortho, layout=neato, tooltip = 'Click the boxes for further information', outputorder=edgesfirst]
   
-  node [shape = box]
-  identification [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+7,"!', width = 0.4, height = 1.5, tooltip = '", tooltips[20], "'];
-  screening [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 2.5, tooltip = '", tooltips[21], "'];
-  included [color = LightSteelBlue2, label='', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
+  node [shape = box,
+        fontsize = ", fontsize,",
+        fontname = ", font, ",
+        color = ", title_colour, "
+        ]
+  identification [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",ystart+7,"!', width = 0.4, height = 1.5, tooltip = '", tooltips[20], "'];
+  screening [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 2.5, tooltip = '", tooltips[21], "'];
+  included [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
   ",
            previous_nodes,"
   node [shape = box,
@@ -435,66 +438,12 @@ PRISMA_flowdiagram <- function (data,
   }
   ")
   )
-  
-  # Append in vertical text on blue bars
-  if (paste0(previous,  other) == 'TRUETRUE'){
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'537\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'356\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'95\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-    } else if (paste0(previous,  other) == 'FALSETRUE'){
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'497\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'315\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'100\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-  } else if (paste0(previous,  other) == 'TRUEFALSE'){
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'536\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'357\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'95\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-  } else {
-    insertJS <- function(plot){
-      javascript <- htmltools::HTML('
-var theDiv = document.getElementById("node1");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'497\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Identification</text>";
-var theDiv = document.getElementById("node2");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'315\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Screening</text>";
-var theDiv = document.getElementById("node3");
-theDiv.innerHTML += "<text text-anchor=\'middle\' style=\'transform: rotate(-90deg);\' x=\'100\' y=\'19\' font-family=\'Helvetica,sans-Serif\' font-size=\'14.00\'>Included</text>";
-                              ')
-      htmlwidgets::appendContent(plot, htmlwidgets::onStaticRenderComplete(javascript))
-    }
-    x <- insertJS(x)
-    }
+
+  x <- insertJS_(x, identification_text = identification_text,screening_text = screening_text,included_text = included_text)
   
   if (interactive == TRUE) {
     x <- sr_flow_interactive(x, urls, previous = previous, other = other)
   }
-  
   return(x)
 }
 
@@ -571,6 +520,9 @@ read_PRISMAdata <- function(data){
   new_reports_text <- data[grep('new_reports', data[,1]),]$boxtext
   total_studies_text <- data[grep('total_studies', data[,1]),]$boxtext
   total_reports_text <- data[grep('total_reports', data[,1]),]$boxtext
+  identification_text <- data[grep('identification', data[,1]),]$boxtext
+  screening_text <- data[grep('screening', data[,1]),]$boxtext
+  included_text <- data[grep('included', data[,1]),]$boxtext
   
   x <- list(previous_studies = previous_studies,
            previous_reports = previous_reports,
@@ -623,6 +575,9 @@ read_PRISMAdata <- function(data){
            new_reports_text = new_reports_text,
            total_studies_text = total_studies_text,
            total_reports_text = total_reports_text,
+           identification_text = identification_text,
+           screening_text = screening_text,
+           included_text = included_text,
            tooltips = tooltips,
            urls = urls)
   
@@ -715,12 +670,14 @@ sr_flow_interactive <- function(plot,
 
 #' Save PRISMA2020 flow diagram
 #' 
-#' @description Save the html output from PRISMA_flowdiagram() to the 
+#' @description Save the output from PRISMA_flowdiagram() to the 
 #' working directory.
 #' @param plotobj A plot produced using PRISMA_flowdiagram().
-#' @return A flow diagram plot as an html file, with embedded links and 
-#' tooltips if interactive=TRUE in PRISMA_flowdiagram() and if tooltips 
-#' are provided in the data upload, respectively.
+#' @param filename The filename to save (including extension)
+#' @param filetype The filetype to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP
+#' (if NA, the filetype will be calculated out based on the file extension)
+#' HTML files maintain hyperlinks and tooltips
+#' @return the absolute filename of the saved diagram plot.
 #' @examples
 #' \dontrun{
 #' data <- read.csv(file.choose());
@@ -731,9 +688,43 @@ sr_flow_interactive <- function(plot,
 #'                 interactive = TRUE,
 #'                 previous = TRUE,
 #'                 other = TRUE)
-#' PRISMA_save(plot, format = 'pdf')
+#' PRISMA_save(plot)
 #' }
 #' @export
-PRISMA_save <- function(plotobj){
-  htmlwidgets::saveWidget(plotobj, file="PRISMA2020_flowdiagram.html")
+PRISMA_save <- function(plotobj, filename = 'PRISMA2020_flowdiagram.html', filetype = NA){
+  format_real <- calc_filetype_(filename, filetype)
+  switch(
+    format_real,
+    "HTML" = {
+      tmp_html <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".html" )
+      htmlwidgets::saveWidget(plotobj, file=tmp_html, title = tools::file_path_sans_ext(filename))
+      if (!(file.copy(tmp_html, filename, overwrite = TRUE))){
+        stop("Error saving HTML")
+      }
+    },
+    "PDF" = {
+      tmp_svg <- gen_tmp_svg_(plotobj)
+      rsvg::rsvg_pdf(tmp_svg, filename)
+    },
+    "PNG" = {
+      tmp_svg <- gen_tmp_svg_(plotobj)
+      rsvg::rsvg_png(tmp_svg, filename)
+    },
+    "SVG" = {
+      tmp_svg <- gen_tmp_svg_(plotobj)
+      if (!(file.copy(tmp_svg, filename, overwrite = TRUE))){
+        stop("Error saving SVG")
+      }
+    },
+    "PS" = {
+      tmp_svg <- gen_tmp_svg_(plotobj)
+      rsvg::rsvg_ps(tmp_svg, filename)
+    },
+    "WEBP" = {
+      tmp_svg <- gen_tmp_svg_(plotobj)
+      rsvg::rsvg_webp(tmp_svg, filename)
+    },
+    stop("Please choose one of the supported file types")
+  )
+  return(tools::file_path_as_absolute(filename))
 }

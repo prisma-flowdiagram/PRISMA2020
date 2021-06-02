@@ -4,10 +4,14 @@
 \alias{PRISMA_save}
 \title{Save PRISMA2020 flow diagram}
 \usage{
-PRISMA_save(plotobj)
+PRISMA_save(plotobj, format = "HTML", filename = "PRISMA2020_flowdiagram")
 }
 \arguments{
 \item{plotobj}{A plot produced using PRISMA_flowdiagram().}
+
+\item{format}{The format to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP}
+
+\item{filename}{The filename to save (without extension)}
 }
 \value{
 A flow diagram plot as an html file, with embedded links and
@@ -15,7 +19,7 @@ tooltips if interactive=TRUE in PRISMA_flowdiagram() and if tooltips
 are provided in the data upload, respectively.
 }
 \description{
-Save the html output from PRISMA_flowdiagram() to the
+Save the output from PRISMA_flowdiagram() to the
 working directory.
 }
 \examples{
