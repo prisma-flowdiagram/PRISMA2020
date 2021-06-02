@@ -38,14 +38,15 @@ PRISMA_insert_js_ <- function (plot, identification_text, screening_text, includ
 #' 
 #' @description Converts a PRISMA systematic review flow diagram into an 
 #' interactive HTML plot, for embedding links from each box.
-#' @param plot A plot object from sr_flow().
+#' @seealso [PRISMA_interactive_()]
+#' @param plot A plot object from [PRISMA_flowdiagram()].
 #' @param urls A dataframe consisting of two columns: nodes and urls. The first
 #' column should contain 19 rows for the nodes from node1 to node19. The second 
 #' column should contain a corresponding URL for each node.
 #' @param previous Logical argument (TRUE or FALSE) (supplied through 
-#' PRISMA_flowdiagram()) specifying whether previous studies were sought.
+#' [PRISMA_flowdiagram()]) specifying whether previous studies were sought.
 #' @param other Logical argument (TRUE or FALSE) (supplied through 
-#' PRISMA_flowdiagram()) specifying whether other studies were sought.
+#' [PRISMA_flowdiagram()]) specifying whether other studies were sought.
 #' @return An interactive flow diagram plot.
 #' @examples 
 #' \dontrun{

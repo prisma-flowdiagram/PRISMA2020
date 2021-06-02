@@ -7,17 +7,17 @@
 sr_flow_interactive(plot, urls, previous, other)
 }
 \arguments{
-\item{plot}{A plot object from sr_flow().}
+\item{plot}{A plot object from \code{\link[=PRISMA_flowdiagram]{PRISMA_flowdiagram()}}.}
 
 \item{urls}{A dataframe consisting of two columns: nodes and urls. The first
 column should contain 19 rows for the nodes from node1 to node19. The second
 column should contain a corresponding URL for each node.}
 
 \item{previous}{Logical argument (TRUE or FALSE) (supplied through
-PRISMA_flowdiagram()) specifying whether previous studies were sought.}
+\code{\link[=PRISMA_flowdiagram]{PRISMA_flowdiagram()}}) specifying whether previous studies were sought.}
 
 \item{other}{Logical argument (TRUE or FALSE) (supplied through
-PRISMA_flowdiagram()) specifying whether other studies were sought.}
+\code{\link[=PRISMA_flowdiagram]{PRISMA_flowdiagram()}}) specifying whether other studies were sought.}
 }
 \value{
 An interactive flow diagram plot.

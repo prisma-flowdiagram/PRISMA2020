@@ -6,9 +6,9 @@
 #' hyperlink URLs to each box. Data can be imported from the standard CSV template 
 #' provided.
 #' @param data List of data inputs including numbers of studies, box text, tooltips 
-#' and urls for hyperlinks. Data inputted via the `read_PRISMAdata()` function. If 
+#' and urls for hyperlinks. Data inputted via the [PRISMA_data()] function. If 
 #' inputting individually, see the necessary parameters listed in the 
-#' `read_PRISMAdata()` function and combine them in a list using `data <- list()`.
+#' [PRISMA_data()]) function and combine them in a list using `data <- list()`.
 #' @param interactive Logical argument TRUE or FALSE whether to plot interactivity 
 #' (tooltips and hyperlinked boxes).
 #' @param previous Logical argument (TRUE or FALSE) specifying whether previous 
@@ -39,8 +39,8 @@
 #' @examples 
 #' \dontrun{
 #' data <- read.csv(file.choose(), stringsAsFactors=FALSE);
-#' data <- read_PRISMAdata(data);
-#' attach(data); 
+#' data <- PRISMA_data(data);
+#' attach(data);
 #' plot <- PRISMA_flowdiagram(data,
 #'                 fontsize = 12,
 #'                 interactive = TRUE,
@@ -588,9 +588,9 @@ PRISMA_data <- function(data){
 
 #' Save PRISMA2020 flow diagram
 #' 
-#' @description Save the output from PRISMA_flowdiagram() to the 
+#' @description Save the output from [PRISMA_flowdiagram()] to the 
 #' working directory.
-#' @param plotobj A plot produced using PRISMA_flowdiagram().
+#' @param plotobj A plot produced using [PRISMA_flowdiagram()].
 #' @param filename The filename to save (including extension)
 #' @param filetype The filetype to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP
 #' (if NA, the filetype will be calculated out based on the file extension)
@@ -652,14 +652,14 @@ PRISMA_save <- function(plotobj, filename = 'PRISMA2020_flowdiagram.html', filet
 #' @description DEPRECATED - Converts a PRISMA systematic review flow diagram into an 
 #' interactive HTML plot, for embedding links from each box.
 #' @seealso [PRISMA_interactive_()]
-#' @param plot A plot object from sr_flow().
+#' @param plot A plot object from [PRISMA_flowdiagram()].
 #' @param urls A dataframe consisting of two columns: nodes and urls. The first
 #' column should contain 19 rows for the nodes from node1 to node19. The second 
 #' column should contain a corresponding URL for each node.
 #' @param previous Logical argument (TRUE or FALSE) (supplied through 
-#' PRISMA_flowdiagram()) specifying whether previous studies were sought.
+#' [PRISMA_flowdiagram()]) specifying whether previous studies were sought.
 #' @param other Logical argument (TRUE or FALSE) (supplied through 
-#' PRISMA_flowdiagram()) specifying whether other studies were sought.
+#' [PRISMA_flowdiagram()]) specifying whether other studies were sought.
 #' @return An interactive flow diagram plot.
 #' @export
 sr_flow_interactive <- function(plot, 

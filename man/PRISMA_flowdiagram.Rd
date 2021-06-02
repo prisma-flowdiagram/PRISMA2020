@@ -21,9 +21,9 @@ PRISMA_flowdiagram(
 }
 \arguments{
 \item{data}{List of data inputs including numbers of studies, box text, tooltips
-and urls for hyperlinks. Data inputted via the \code{read_PRISMAdata()} function. If
+and urls for hyperlinks. Data inputted via the \code{\link[=PRISMA_data]{PRISMA_data()}} function. If
 inputting individually, see the necessary parameters listed in the
-\code{read_PRISMAdata()} function and combine them in a list using \code{data <- list()}.}
+\code{\link[=PRISMA_data]{PRISMA_data()}}) function and combine them in a list using \code{data <- list()}.}
 
 \item{interactive}{Logical argument TRUE or FALSE whether to plot interactivity
 (tooltips and hyperlinked boxes).}
@@ -74,8 +74,8 @@ provided.
 \examples{
 \dontrun{
 data <- read.csv(file.choose(), stringsAsFactors=FALSE);
-data <- read_PRISMAdata(data);
-attach(data); 
+data <- PRISMA_data(data);
+attach(data);
 plot <- PRISMA_flowdiagram(data,
                 fontsize = 12,
                 interactive = TRUE,
