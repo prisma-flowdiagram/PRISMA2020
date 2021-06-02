@@ -73,13 +73,13 @@ provided.
 }
 \examples{
 \dontrun{
-data <- read.csv(file.choose());
+data <- read.csv(file.choose(), stringsAsFactors=FALSE);
 data <- read_PRISMAdata(data);
 attach(data); 
 plot <- PRISMA_flowdiagram(data,
                 fontsize = 12,
                 interactive = TRUE,
-                previous = TRUE,
+                previous = FALSE,
                 other = TRUE);
 plot
 }
