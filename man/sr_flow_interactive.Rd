@@ -2,7 +2,7 @@
 % Please edit documentation in R/PRISMA_flowdiagram.R
 \name{sr_flow_interactive}
 \alias{sr_flow_interactive}
-\title{Plot interactive flow diagram for systematic reviews}
+\title{Plot interactive flow diagram for systematic reviews - DEPRECATED}
 \usage{
 sr_flow_interactive(plot, urls, previous, other)
 }
@@ -23,19 +23,9 @@ PRISMA_flowdiagram()) specifying whether other studies were sought.}
 An interactive flow diagram plot.
 }
 \description{
-Converts a PRISMA systematic review flow diagram into an
+DEPRECATED - Converts a PRISMA systematic review flow diagram into an
 interactive HTML plot, for embedding links from each box.
 }
-\examples{
-\dontrun{
-urls <- data.frame(
-    box = c('box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 'box8', 
-            'box9', 'box10', 'box11', 'box12', 'box13', 'box14', 'box15', 'box16'), 
-    url = c('page1.html', 'page2.html', 'page3.html', 'page4.html', 'page5.html', 
-            'page6.html', 'page7.html', 'page8.html', 'page9.html', 'page10.html', 
-            'page11.html', 'page12.html', 'page13.html', 'page14.html', 'page15.html', 
-            'page16.html'));
-output <- sr_flow_interactive_p1o1(x, urls, previous = TRUE, other = TRUE);
-output
-}
+\seealso{
+\code{\link[=PRISMA_interactive_]{PRISMA_interactive_()}}
 }

@@ -9,7 +9,7 @@
 #' @param included_text the text to use as the "identification" label
 #' @return the plot object (with JS to generate side labels)
 #' @keywords internal
-insertJS_ <- function (plot, identification_text, screening_text, included_text) {
+PRISMA_insert_js_ <- function (plot, identification_text, screening_text, included_text) {
     # This JS loops through each node, and
     # locates the relevent <text> tag containing the label
     # The blank label is replaced with the relevent descriptive label
@@ -34,6 +34,87 @@ insertJS_ <- function (plot, identification_text, screening_text, included_text)
     return(plot)
 }
 
+#' Plot interactive flow diagram for systematic reviews
+#' 
+#' @description Converts a PRISMA systematic review flow diagram into an 
+#' interactive HTML plot, for embedding links from each box.
+#' @param plot A plot object from sr_flow().
+#' @param urls A dataframe consisting of two columns: nodes and urls. The first
+#' column should contain 19 rows for the nodes from node1 to node19. The second 
+#' column should contain a corresponding URL for each node.
+#' @param previous Logical argument (TRUE or FALSE) (supplied through 
+#' PRISMA_flowdiagram()) specifying whether previous studies were sought.
+#' @param other Logical argument (TRUE or FALSE) (supplied through 
+#' PRISMA_flowdiagram()) specifying whether other studies were sought.
+#' @return An interactive flow diagram plot.
+#' @examples 
+#' \dontrun{
+#' urls <- data.frame(
+#'     box = c('box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 'box8', 
+#'             'box9', 'box10', 'box11', 'box12', 'box13', 'box14', 'box15', 'box16'), 
+#'     url = c('page1.html', 'page2.html', 'page3.html', 'page4.html', 'page5.html', 
+#'             'page6.html', 'page7.html', 'page8.html', 'page9.html', 'page10.html', 
+#'             'page11.html', 'page12.html', 'page13.html', 'page14.html', 'page15.html', 
+#'             'page16.html'));
+#' output <- PRISMA_interactive(x, urls, previous = TRUE, other = TRUE);
+#' output
+#' }
+#' @keywords internal
+PRISMA_interactive_ <- function(plot, 
+                                urls,
+                                previous,
+                                other) {
+  
+  if(paste0(previous, other) == 'TRUETRUE'){
+    link <- data.frame(boxname = c('identification', 'screening', 'included', 'prevstud', 'box1', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
+                                   'box8', 'box9', 'box10', 'othstud', 'box11', 'box12', 'box13', 'box14', 'box15', 'box16', 'A', 'B'), 
+                       node = paste0('node', seq(1, 24)))
+    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node23', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 
+                'node15', 'node22', 'node16', 'node17', 'node18', 'node19', 'node20', 'node21', 'node24')
+  } else if(paste0(previous, other) == 'FALSETRUE'){
+    link <- data.frame(boxname = c('identification', 'screening', 'included', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
+                                   'box8', 'box9', 'box10', 'othstud', 'box11', 'box12', 'box13', 'box14', 'box15', 'B'), 
+                       node = paste0('node', seq(1, 20)))
+    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 'node15', 
+                'node16', 'node17', 'node18', 'node19', 'node20')
+  }
+  else if(paste0(previous, other) == 'TRUEFALSE'){
+    link <- data.frame(boxname = c('identification', 'screening', 'included', 'prevstud', 'box1', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
+                                   'box8', 'box9', 'box10', 'box16', 'A'), 
+                       node = paste0('node', seq(1, 17)))
+    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 'node15', 
+                'node16', 'node17')
+  }
+  else {
+    link <- data.frame(boxname = c('identification', 'screening', 'included', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
+                                   'box8', 'box9', 'box10'), 
+                       node = paste0('node', seq(1, 13)))
+    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13')
+  }
+  
+  
+  link <- merge(link, urls, by.x = 'boxname', by.y = 'box', all.x = TRUE)
+  link <- link[match(target, link$node),]
+  node <- link$node
+  url <- link$url
+  
+  #the following function produces three lines of JavaScript per node to add a specified hyperlink for the node, pulled in from nodes.csv
+  myfun <- function(node, 
+                    url){
+    t <- paste0('const ', node, ' = document.getElementById("', node, '");
+  var link', node, ' = "<a href=\'', url, '\' target=\'_blank\'>" + ', node, '.innerHTML + "</a>";
+  ', node, '.innerHTML = link', node, ';
+  ')
+  }
+  #the following code adds the location link for the new window
+  javascript <- htmltools::HTML(paste(mapply(myfun, 
+                                             node, 
+                                             url), 
+                                      collapse = '\n'))  
+  htmlwidgets::prependContent(plot, 
+                              htmlwidgets::onStaticRenderComplete(javascript))
+}
+
 #' Calculate the correct filetime
 #'
 #' @description Work out the correct filetype to save the file as
@@ -41,7 +122,7 @@ insertJS_ <- function (plot, identification_text, screening_text, included_text)
 #' @param ft The filetype (which can be NA or NULL)
 #' @return the filetype taken from the filename, or overriden by the ft param
 #' @keywords internal
-calc_filetype_ <- function(fn, ft) {
+PRISMA_calc_filetype_ <- function(fn, ft) {
     # if the filetype is set, return that, otherwise
     # calculate the filetype from the extension (HTM becomes HTML)
     if(!is.na(ft) & !is.null(ft)){
@@ -61,7 +142,7 @@ calc_filetype_ <- function(fn, ft) {
 #' @param obj the plot object
 #' @return the full path to the saved SVG
 #' @keywords internal
-gen_tmp_svg_ <- function(obj) {
+PRISMA_gen_tmp_svg_ <- function(obj) {
     # generate temporary filenames
     tmpfilehtml <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".html" )
     tmpfilesvg <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".svg" )

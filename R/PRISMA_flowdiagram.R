@@ -1,5 +1,6 @@
 #' Plot interactive flow diagrams for systematic reviews
 #' 
+#' 
 #' @description Produces a PRISMA2020 style flow diagram for systematic reviews, 
 #' with the option to add interactivity through tooltips (mouseover popups) and 
 #' hyperlink URLs to each box. Data can be imported from the standard CSV template 
@@ -439,28 +440,28 @@ PRISMA_flowdiagram <- function (data,
   ")
   )
 
-  x <- insertJS_(x, identification_text = identification_text,screening_text = screening_text,included_text = included_text)
+  x <- PRISMA_insert_js_(x, identification_text = identification_text,screening_text = screening_text,included_text = included_text)
   
   if (interactive == TRUE) {
-    x <- sr_flow_interactive(x, urls, previous = previous, other = other)
+    x <- PRISMA_interactive_(x, urls, previous = previous, other = other)
   }
   return(x)
 }
 
 
 #' Read in PRISMA flow diagram data
-#' 
+#'
 #' @description Read in a template CSV containing data for the flow diagram
 #' @param data File to read in.
 #' @return A list of objects needed to plot the flow diagram
-#' @examples 
+#' @examples
 #' \dontrun{
 #' data <- read.csv(file.choose(), stringsAsFactors=FALSE);
-#' data <- read_PRISMAdata(data);
+#' data <- PRISMA_data(data);
 #' attach(data);
 #' }
 #' @export
-read_PRISMAdata <- function(data){
+PRISMA_data <- function(data){
   
   #Set parameters
   previous_studies <- scales::comma(as.numeric(data[grep('previous_studies', data[,1]),]$n))
@@ -585,89 +586,6 @@ read_PRISMAdata <- function(data){
   
 }
 
-
-#' Plot interactive flow diagram for systematic reviews
-#' 
-#' @description Converts a PRISMA systematic review flow diagram into an 
-#' interactive HTML plot, for embedding links from each box.
-#' @param plot A plot object from sr_flow().
-#' @param urls A dataframe consisting of two columns: nodes and urls. The first
-#' column should contain 19 rows for the nodes from node1 to node19. The second 
-#' column should contain a corresponding URL for each node.
-#' @param previous Logical argument (TRUE or FALSE) (supplied through 
-#' PRISMA_flowdiagram()) specifying whether previous studies were sought.
-#' @param other Logical argument (TRUE or FALSE) (supplied through 
-#' PRISMA_flowdiagram()) specifying whether other studies were sought.
-#' @return An interactive flow diagram plot.
-#' @examples 
-#' \dontrun{
-#' urls <- data.frame(
-#'     box = c('box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 'box8', 
-#'             'box9', 'box10', 'box11', 'box12', 'box13', 'box14', 'box15', 'box16'), 
-#'     url = c('page1.html', 'page2.html', 'page3.html', 'page4.html', 'page5.html', 
-#'             'page6.html', 'page7.html', 'page8.html', 'page9.html', 'page10.html', 
-#'             'page11.html', 'page12.html', 'page13.html', 'page14.html', 'page15.html', 
-#'             'page16.html'));
-#' output <- sr_flow_interactive_p1o1(x, urls, previous = TRUE, other = TRUE);
-#' output
-#' }
-#' @export
-sr_flow_interactive <- function(plot, 
-                                urls,
-                                previous,
-                                other) {
-  
-  if(paste0(previous, other) == 'TRUETRUE'){
-    link <- data.frame(boxname = c('identification', 'screening', 'included', 'prevstud', 'box1', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
-                                   'box8', 'box9', 'box10', 'othstud', 'box11', 'box12', 'box13', 'box14', 'box15', 'box16', 'A', 'B'), 
-                       node = paste0('node', seq(1, 24)))
-    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node23', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 
-                'node15', 'node22', 'node16', 'node17', 'node18', 'node19', 'node20', 'node21', 'node24')
-  } else if(paste0(previous, other) == 'FALSETRUE'){
-    link <- data.frame(boxname = c('identification', 'screening', 'included', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
-                                   'box8', 'box9', 'box10', 'othstud', 'box11', 'box12', 'box13', 'box14', 'box15', 'B'), 
-                       node = paste0('node', seq(1, 20)))
-    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 'node15', 
-                'node16', 'node17', 'node18', 'node19', 'node20')
-  }
-  else if(paste0(previous, other) == 'TRUEFALSE'){
-    link <- data.frame(boxname = c('identification', 'screening', 'included', 'prevstud', 'box1', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
-                                   'box8', 'box9', 'box10', 'box16', 'A'), 
-                       node = paste0('node', seq(1, 17)))
-    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13', 'node14', 'node15', 
-                'node16', 'node17')
-  }
-  else {
-    link <- data.frame(boxname = c('identification', 'screening', 'included', 'newstud', 'box2', 'box3', 'box4', 'box5', 'box6', 'box7', 
-                                   'box8', 'box9', 'box10'), 
-                       node = paste0('node', seq(1, 13)))
-    target <- c('node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7', 'node8', 'node9', 'node10', 'node11', 'node12', 'node13')
-  }
-  
-  
-  link <- merge(link, urls, by.x = 'boxname', by.y = 'box', all.x = TRUE)
-  link <- link[match(target, link$node),]
-  node <- link$node
-  url <- link$url
-  
-  #the following function produces three lines of JavaScript per node to add a specified hyperlink for the node, pulled in from nodes.csv
-  myfun <- function(node, 
-                    url){
-    t <- paste0('const ', node, ' = document.getElementById("', node, '");
-  var link', node, ' = "<a href=\'', url, '\' target=\'_blank\'>" + ', node, '.innerHTML + "</a>";
-  ', node, '.innerHTML = link', node, ';
-  ')
-  }
-  #the following code adds the location link for the new window
-  javascript <- htmltools::HTML(paste(mapply(myfun, 
-                                             node, 
-                                             url), 
-                                      collapse = '\n'))  
-  htmlwidgets::prependContent(plot, 
-                              htmlwidgets::onStaticRenderComplete(javascript))
-}
-
-
 #' Save PRISMA2020 flow diagram
 #' 
 #' @description Save the output from PRISMA_flowdiagram() to the 
@@ -681,7 +599,7 @@ sr_flow_interactive <- function(plot,
 #' @examples
 #' \dontrun{
 #' data <- read.csv(file.choose());
-#' data <- read_PRISMAdata(data);
+#' data <- PRISMA_data(data);
 #' attach(data); 
 #' plot <- PRISMA_flowdiagram(data,
 #'                 fontsize = 12,
@@ -692,7 +610,7 @@ sr_flow_interactive <- function(plot,
 #' }
 #' @export
 PRISMA_save <- function(plotobj, filename = 'PRISMA2020_flowdiagram.html', filetype = NA){
-  format_real <- calc_filetype_(filename, filetype)
+  format_real <- PRISMA_calc_filetype_(filename, filetype)
   switch(
     format_real,
     "HTML" = {
@@ -703,28 +621,63 @@ PRISMA_save <- function(plotobj, filename = 'PRISMA2020_flowdiagram.html', filet
       }
     },
     "PDF" = {
-      tmp_svg <- gen_tmp_svg_(plotobj)
+      tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
       rsvg::rsvg_pdf(tmp_svg, filename)
     },
     "PNG" = {
-      tmp_svg <- gen_tmp_svg_(plotobj)
+      tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
       rsvg::rsvg_png(tmp_svg, filename)
     },
     "SVG" = {
-      tmp_svg <- gen_tmp_svg_(plotobj)
+      tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
       if (!(file.copy(tmp_svg, filename, overwrite = TRUE))){
         stop("Error saving SVG")
       }
     },
     "PS" = {
-      tmp_svg <- gen_tmp_svg_(plotobj)
+      tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
       rsvg::rsvg_ps(tmp_svg, filename)
     },
     "WEBP" = {
-      tmp_svg <- gen_tmp_svg_(plotobj)
+      tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
       rsvg::rsvg_webp(tmp_svg, filename)
     },
     stop("Please choose one of the supported file types")
   )
   return(tools::file_path_as_absolute(filename))
+}
+
+#' Plot interactive flow diagram for systematic reviews - DEPRECATED
+#' 
+#' @description DEPRECATED - Converts a PRISMA systematic review flow diagram into an 
+#' interactive HTML plot, for embedding links from each box.
+#' @seealso [PRISMA_interactive_()]
+#' @param plot A plot object from sr_flow().
+#' @param urls A dataframe consisting of two columns: nodes and urls. The first
+#' column should contain 19 rows for the nodes from node1 to node19. The second 
+#' column should contain a corresponding URL for each node.
+#' @param previous Logical argument (TRUE or FALSE) (supplied through 
+#' PRISMA_flowdiagram()) specifying whether previous studies were sought.
+#' @param other Logical argument (TRUE or FALSE) (supplied through 
+#' PRISMA_flowdiagram()) specifying whether other studies were sought.
+#' @return An interactive flow diagram plot.
+#' @export
+sr_flow_interactive <- function(plot, 
+                                urls,
+                                previous,
+                                other) {
+  .Deprecated("PRISMA_interactive_")
+  return(PRISMA_interactive_(plot, urls, previous, other))
+}
+
+#' Read in PRISMA flow diagram data - DEPRECATED
+#' @description DEPRECATED - read in a template CSV containing data for the flow diagram
+#' @seealso [PRISMA_data()]
+#' @param data File to read in.
+#' @return A list of objects needed to plot the flow diagram
+#' @export
+read_PRISMAdata <- function(data){
+  .Deprecated("PRISMA_data")
+  x <- PRISMA_data(data)
+  return(x)
 }

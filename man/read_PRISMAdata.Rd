@@ -2,7 +2,7 @@
 % Please edit documentation in R/PRISMA_flowdiagram.R
 \name{read_PRISMAdata}
 \alias{read_PRISMAdata}
-\title{Read in PRISMA flow diagram data}
+\title{Read in PRISMA flow diagram data - DEPRECATED}
 \usage{
 read_PRISMAdata(data)
 }
@@ -13,12 +13,8 @@ read_PRISMAdata(data)
 A list of objects needed to plot the flow diagram
 }
 \description{
-Read in a template CSV containing data for the flow diagram
+DEPRECATED - read in a template CSV containing data for the flow diagram
 }
-\examples{
-\dontrun{
-data <- read.csv(file.choose(), stringsAsFactors=FALSE);
-data <- read_PRISMAdata(data);
-attach(data);
-}
+\seealso{
+\code{\link[=PRISMA_data]{PRISMA_data()}}
 }

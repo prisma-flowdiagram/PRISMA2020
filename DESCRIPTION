@@ -10,7 +10,9 @@ Authors@R: c(
     person("Luke", "McGuinness", role = "aut",
            email = "luke.mcguinness@bristol.ac.uk",
            comment = c(ORCID = "0000-0001-8730-9761")),
-    person("Chris", "Pritchard", role = "ctb")     
+    person("Chris", "Pritchard", role = "ctb",
+            email = "chris.pritchard@ntu.ac.uk",
+            comment = c(ORCID = "0000-0002-1143-9751"))
            )
 Description: Systematic reviews should be described in a high degree of 
     methodological detail. The 'PRISMA' Statement calls for a high level of 
@@ -23,7 +25,7 @@ Description: Systematic reviews should be described in a high degree of
     texts), with a mouse-over tool tip that describes the information linked 
     to in more detail. Interactive versions can be saved as HTML files, 
     whilst static versions for inclusion in manuscripts can be saved as 
-    PNG or TIFF files.
+    HTML, PDF, PNG, SVG, PS or WEBP files.
 Imports:
     DiagrammeR,
     DiagrammeRsvg,

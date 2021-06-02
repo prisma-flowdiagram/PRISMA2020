@@ -25,7 +25,7 @@ working directory.
 \examples{
 \dontrun{
 data <- read.csv(file.choose());
-data <- read_PRISMAdata(data);
+data <- PRISMA_data(data);
 attach(data); 
 plot <- PRISMA_flowdiagram(data,
                 fontsize = 12,
