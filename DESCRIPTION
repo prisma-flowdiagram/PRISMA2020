@@ -10,8 +10,7 @@ Authors@R: c(
     person("Luke", "McGuinness", role = "aut",
            email = "luke.mcguinness@bristol.ac.uk",
            comment = c(ORCID = "0000-0001-8730-9761")),
-    person("Chris", "Pritchard", role = "ctb",
-           comment = c(ORCID = "0000-0001-8730-9761"))     
+    person("Chris", "Pritchard", role = "ctb")     
            )
 Description: Systematic reviews should be described in a high degree of 
     methodological detail. The 'PRISMA' Statement calls for a high level of 
