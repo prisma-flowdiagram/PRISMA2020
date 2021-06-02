@@ -8,7 +8,7 @@
 #' @param screening_text the text to use as the "screening" label
 #' @param included_text the text to use as the "identification" label
 #' @return the plot object (with JS to generate side labels)
-#' @NoRd
+#' @keywords internal
 insertJS_ <- function (plot, identification_text, screening_text, included_text) {
     # This JS loops through each node, and
     # locates the relevent <text> tag containing the label
@@ -40,7 +40,7 @@ insertJS_ <- function (plot, identification_text, screening_text, included_text)
 #' @param fn The filename (including extension)
 #' @param ft The filetype (which can be NA or NULL)
 #' @return the filetype taken from the filename, or overriden by the ft param
-#' @NoRd
+#' @keywords internal
 calc_filetype_ <- function(fn, ft) {
     # if the filetype is set, return that, otherwise
     # calculate the filetype from the extension (HTM becomes HTML)
@@ -60,7 +60,7 @@ calc_filetype_ <- function(fn, ft) {
 #' @description Generate and save a temporary SVG from a plot object
 #' @param obj the plot object
 #' @return the full path to the saved SVG
-#' @NoRd
+#' @keywords internal
 gen_tmp_svg_ <- function(obj) {
     # generate temporary filenames
     tmpfilehtml <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".html" )
