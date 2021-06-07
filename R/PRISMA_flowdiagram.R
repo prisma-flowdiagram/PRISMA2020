@@ -66,7 +66,6 @@ PRISMA_flowdiagram <- function (data,
                     width = 35)
   other_excluded[,1] <- stringr::str_wrap(other_excluded[,1], 
                     width = 35)
-
   if(stringr::str_count(paste(dbr_excluded[,1], collapse = "\n"), "\n") > 3){
     dbr_excludedh <- 3.5 - ((stringr::str_count(paste(dbr_excluded[,1], collapse = "\n"), "\n")-4)/9)
   } else {
