@@ -46,10 +46,10 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            hr(),
                                            'Please cite as:',
                                            br(),
-                                           'Neal R Haddaway, Luke A McGuinness. (2020). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams (Version 0.0.1). Zenodo.', 
+                                           'Neal R Haddaway, Chris C Pritchard, Luke A McGuinness. (2020). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams (Version 0.0.2). Zenodo.', 
                                            tags$a(href="http://doi.org/10.5281/zenodo.4287835", "http://doi.org/10.5281/zenodo.4287835"),
                                            br(),
-                                           tags$a(href="Haddaway_and_McGuinness2020.ris", "Download citation (.ris)", download=NA, target="_blank")
+                                           tags$a(href="Haddaway_Pritchard_and_McGuinness2020.ris", "Download citation (.ris)", download=NA, target="_blank")
                                     )
                                   ),
                                   
@@ -60,12 +60,13 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            'Credits:',
                                            br(),
                                            'Neal R Haddaway (creator, author)', br(),
-                                           'Luke A McGuinness (coder, contributor)', br(),
+                                           'Luke A McGuinness (coder, author)', br(),
+                                           'Chris C Pritchard (coder, author)', br(),
                                            'Matthew J Page (advisor)', br(),
                                            'Jack Wasey (advisor)', br(),
                                            br(),
                                            tags$a(href="https://github.com/nealhaddaway/PRISMA2020", tags$img(height = 40, width = 40, src = "https://pngimg.com/uploads/github/github_PNG40.png")), 
-                                           'Created November 2020'
+                                           'Created November 2020, Updated June 2021'
                                     )
                                   )
                          ),
@@ -314,7 +315,7 @@ server <- function(input, output) {
                                interactive = FALSE,
                                previous = include_previous,
                                other = include_other,
-                               side_boxes = TRUE)
+                               side_boxes = FALSE)
   })
   
   
