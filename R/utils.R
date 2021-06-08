@@ -34,6 +34,21 @@ PRISMA_insert_js_ <- function (plot, identification_text, screening_text, includ
     return(plot)
 }
 
+#' Add the hyperlink to the given node
+#'
+#' @description Generate the javascript method to insert the side labels
+#' @param node the relevent node
+#' @param url the URL the node should link to
+#' @keywords internal
+  #the following function produces three lines of JavaScript per node to add a specified hyperlink for the node, pulled in from nodes.csv
+PRISMA_add_hyperlink_ <- function(node,
+                  url){
+  t <- paste0('const ', node, ' = document.getElementById("', node, '");
+  var link', node, ' = "<a href=\'', url, '\' target=\'_blank\'>" + ', node, '.innerHTML + "</a>";
+ ', node, '.innerHTML = link', node, ';
+ ')
+}
+
 #' Plot interactive flow diagram for systematic reviews
 #' 
 #' @description Converts a PRISMA systematic review flow diagram into an 
@@ -99,16 +114,8 @@ PRISMA_interactive_ <- function(plot,
   node <- link$node
   url <- link$url
   
-  #the following function produces three lines of JavaScript per node to add a specified hyperlink for the node, pulled in from nodes.csv
-  myfun <- function(node, 
-                    url){
-    t <- paste0('const ', node, ' = document.getElementById("', node, '");
-  var link', node, ' = "<a href=\'', url, '\' target=\'_blank\'>" + ', node, '.innerHTML + "</a>";
-  ', node, '.innerHTML = link', node, ';
-  ')
-  }
   #the following code adds the location link for the new window
-  javascript <- htmltools::HTML(paste(mapply(myfun, 
+  javascript <- htmltools::HTML(paste(mapply(PRISMA_add_hyperlink_, 
                                              node, 
                                              url), 
                                       collapse = '\n'))  
