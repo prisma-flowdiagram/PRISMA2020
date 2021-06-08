@@ -16,7 +16,8 @@ PRISMA_flowdiagram(
   main_colour = "Black",
   arrow_colour = "Black",
   arrow_head = "normal",
-  arrow_tail = "none"
+  arrow_tail = "none",
+  side_boxes = TRUE
 )
 }
 \arguments{
@@ -61,6 +62,8 @@ is 'Black'. See 'DiagrammeR' colour scheme
 \item{arrow_tail}{The tail shape for the line connectors. The default is
 'none'. See DiagrammeR arrow shape specification
 \url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes}.}
+
+\item{side_boxes}{Whether or not to include the blue label boxes along the side}
 }
 \value{
 A flow diagram plot.
