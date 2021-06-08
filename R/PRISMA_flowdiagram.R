@@ -35,6 +35,7 @@
 #' @param arrow_tail The tail shape for the line connectors. The default is 
 #' 'none'. See DiagrammeR arrow shape specification 
 #' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes>.
+#' @param side_boxes Whether or not to include the blue label boxes along the side
 #' @return A flow diagram plot.
 #' @examples 
 #' \dontrun{
@@ -60,7 +61,8 @@ PRISMA_flowdiagram <- function (data,
                                 main_colour = 'Black',
                                 arrow_colour = 'Black',
                                 arrow_head = 'normal',
-                                arrow_tail = 'none') {
+                                arrow_tail = 'none',
+                                side_boxes = TRUE) {
   #wrap exclusion reasons
   dbr_excluded[,1] <- stringr::str_wrap(dbr_excluded[,1], 
                     width = 35)
@@ -158,7 +160,19 @@ PRISMA_flowdiagram <- function (data,
     prevnode2 <- ""
     
   }
-  
+  if(side_boxes == TRUE){
+    sidebox <- paste0("node [shape = box,
+        fontsize = ", fontsize,",
+        fontname = ", font, ",
+        color = ", title_colour, "
+        ]
+  identification [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",ystart+7,"!', width = 0.4, height = 1.5, tooltip = '", tooltips[20], "'];
+  screening [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 2.5, tooltip = '", tooltips[21], "'];
+  included [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
+  ")
+  } else {
+    sidebox <- ""
+  }
   if(other == TRUE){
     if (is.data.frame(other_excluded) == TRUE){
       other_excluded_data <- paste0(':',
@@ -269,17 +283,8 @@ PRISMA_flowdiagram <- function (data,
   x <- DiagrammeR::grViz(
     paste0("digraph TD {
   
-  graph[splines=ortho, layout=neato, tooltip = 'Click the boxes for further information', outputorder=edgesfirst]
-  
-  node [shape = box,
-        fontsize = ", fontsize,",
-        fontname = ", font, ",
-        color = ", title_colour, "
-        ]
-  identification [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",ystart+7,"!', width = 0.4, height = 1.5, tooltip = '", tooltips[20], "'];
-  screening [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",ystart+4.5,"!', width = 0.4, height = 2.5, tooltip = '", tooltips[21], "'];
-  included [color = LightSteelBlue2, label=' ', style = 'filled,rounded', pos='",-1.4,",",h_adj1+0.87,"!', width = 0.4, height = ",2.5-h_adj2,", tooltip = '", tooltips[22], "'];\n
-  ",
+  graph[splines=ortho, layout=neato, tooltip = 'Click the boxes for further information', outputorder=edgesfirst]",
+           sidebox,
            previous_nodes,"
   node [shape = box,
         fontsize = ", fontsize,",
@@ -438,8 +443,9 @@ PRISMA_flowdiagram <- function (data,
   }
   ")
   )
-
-  x <- PRISMA_insert_js_(x, identification_text = identification_text,screening_text = screening_text,included_text = included_text)
+  if (side_boxes == TRUE) {
+    x <- PRISMA_insert_js_(x, identification_text = identification_text,screening_text = screening_text,included_text = included_text)
+  }
   
   if (interactive == TRUE) {
     x <- PRISMA_interactive_(x, urls, previous = previous, other = other)

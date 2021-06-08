@@ -3,8 +3,7 @@ library(shinyjs)
 library(rsvg)
 library(DT)
 library(rio)
-
-source("functions.R")
+library(PRISMA2020)
 
 template <- read.csv("www/PRISMA.csv",stringsAsFactors = FALSE)
 
@@ -96,7 +95,8 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                                  
                                                  h3("Download"),
                                                  downloadButton('PRISMAflowdiagramPDF', 'Download PDF'),
-                                                 downloadButton('PRISMAflowdiagramPNG', 'Download PNG')
+                                                 downloadButton('PRISMAflowdiagramPNG', 'Download PNG'),
+                                                 downloadButton('PRISMAflowdiagramSVG', 'Download SVG')
                                     ), 
                                     mainPanel(
                                       DiagrammeR::grVizOutput(outputId = "plot1", width = "100%", height = "700px"))
@@ -296,7 +296,7 @@ server <- function(input, output) {
   
   # Create plot
   plot <- reactive({
-    data <- read_PRISMAdata(rv$data)
+    data <- PRISMA2020::PRISMA_data(rv$data)
     attach(data)
     if (input$previous == 'Included'){
       include_previous = TRUE
@@ -308,10 +308,13 @@ server <- function(input, output) {
     } else {
       include_other = FALSE
     }
-    plot <- PRISMA_flowdiagram(data,
+    plot <- PRISMA2020::PRISMA_flowdiagram(data,
+                               fontsize = 12,
+                               font = "Helvetica",
                                interactive = FALSE,
                                previous = include_previous,
-                               other = include_other)
+                               other = include_other,
+                               side_boxes = TRUE)
   })
   
   
@@ -325,15 +328,22 @@ server <- function(input, output) {
   output$PRISMAflowdiagramPDF <- downloadHandler(
     filename = "prisma.pdf",
     content = function(file){
-      prisma_pdf(plot(), 
-                 file)
+      PRISMA2020::PRISMA_save(plot(), 
+                 filename = file, filetype = "PDF")
     }
   )
   output$PRISMAflowdiagramPNG <- downloadHandler(
     filename = "prisma.png",
     content = function(file){
-      prisma_png(plot(), 
-                 file)
+      PRISMA2020::PRISMA_save(plot(),
+                 filename = file, filetype = "PNG")
+    }
+  )
+  output$PRISMAflowdiagramSVG <- downloadHandler(
+    filename = "prisma.svg",
+    content = function(file){
+      PRISMA2020::PRISMA_save(plot(),
+                 filename = file, filetype = "SVG")
     }
   )
 
