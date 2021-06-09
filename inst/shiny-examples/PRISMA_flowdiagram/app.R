@@ -3,9 +3,15 @@ library(shinyjs)
 library(rsvg)
 library(DT)
 library(rio)
+library(devtools)
+# This will enable us to host the latest version on shinyapps.io once
+# The new function names are merged.
+# This can be removed once we are on CRAN
+# This is currently commented out and it would be best to manually install the library prior to use for now
+# devtools::install_github("nealhaddaway/PRISMA2020")
 library(PRISMA2020)
 
-template <- read.csv("www/PRISMA.csv",stringsAsFactors = FALSE)
+template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE)
 
 # Define UI for application that draws a histogram
 ui <- tagList(
