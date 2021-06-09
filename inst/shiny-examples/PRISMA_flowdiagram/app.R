@@ -8,8 +8,9 @@ library(PRISMA2020)
 template <- read.csv("www/PRISMA.csv",stringsAsFactors = FALSE)
 
 # Define UI for application that draws a histogram
-ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
-                         
+ui <- tagList(
+  tags$head(tags$script(src = "labels.js")),
+  navbarPage("PRISMA Flow Diagram",
                          # Tab 1 ----
                          tabPanel("Home",
                                   fluidRow(
@@ -113,7 +114,6 @@ server <- function(input, output) {
   rv <- reactiveValues()
   
   # Data Handling ----
-  
   # Use template data to populate editable table
   observe({
     if (is.null(input$data_upload)) {
@@ -309,13 +309,18 @@ server <- function(input, output) {
     } else {
       include_other = FALSE
     }
+    shinyjs::runjs(paste0('
+       const nodeMap = new Map([["node1","',identification_text,'"], ["node2","',screening_text,'"], ["node3","',included_text,'"]])
+       createLabels(nodeMap)
+    '))
     plot <- PRISMA2020::PRISMA_flowdiagram(data,
                                fontsize = 12,
                                font = "Helvetica",
                                interactive = FALSE,
                                previous = include_previous,
                                other = include_other,
-                               side_boxes = FALSE)
+                               side_boxes = TRUE)
+    
   })
   
   
@@ -352,5 +357,3 @@ server <- function(input, output) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
-
-
