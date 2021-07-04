@@ -1,6 +1,6 @@
 Package: PRISMA2020
 Title: Make Interactive 'PRISMA' Flow Diagrams
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(
     person(given = "Neal",
            family = "Haddaway",
@@ -40,6 +40,8 @@ Imports:
     utils,
     xml2,
     webp,
+    DT,
+    rio,
     tools
 License: MIT + file LICENSE
 Encoding: UTF-8

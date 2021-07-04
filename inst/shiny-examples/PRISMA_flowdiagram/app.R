@@ -7,9 +7,12 @@ library(devtools)
 # This will enable us to host the latest version on shinyapps.io once
 # The new function names are merged.
 # This can be removed once we are on CRAN
-# This is currently commented out and it would be best to manually install the library prior to use for now
-# devtools::install_github("nealhaddaway/PRISMA2020")
+# If the library is already installed, this won't do anything
+if(!require(PRISMA2020)) {
+  devtools::install_github("nealhaddaway/PRISMA2020")
+}
 library(PRISMA2020)
+
 
 template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE)
 
@@ -104,7 +107,8 @@ ui <- tagList(
                                                  h3("Download"),
                                                  downloadButton('PRISMAflowdiagramPDF', 'Download PDF'),
                                                  downloadButton('PRISMAflowdiagramPNG', 'Download PNG'),
-                                                 downloadButton('PRISMAflowdiagramSVG', 'Download SVG')
+                                                 downloadButton('PRISMAflowdiagramSVG', 'Download SVG'),
+                                                 downloadButton('PRISMAflowdiagramHTML', 'Download Interactive HTML')
                                     ), 
                                     mainPanel(
                                       DiagrammeR::grVizOutput(outputId = "plot1", width = "100%", height = "700px"))
@@ -322,14 +326,13 @@ server <- function(input, output) {
     plot <- PRISMA2020::PRISMA_flowdiagram(data,
                                fontsize = 12,
                                font = "Helvetica",
-                               interactive = FALSE,
+                               interactive = TRUE,
                                previous = include_previous,
                                other = include_other,
                                side_boxes = TRUE)
     
   })
-  
-  
+
   # Display plot
   output$plot1 <- DiagrammeR::renderDiagrammeR({
     plot <- plot()
@@ -358,7 +361,13 @@ server <- function(input, output) {
                  filename = file, filetype = "SVG")
     }
   )
-
+  output$PRISMAflowdiagramHTML <- downloadHandler(
+    filename = "prisma.html",
+    content = function(file){
+      PRISMA2020::PRISMA_save(plot(),
+                 filename = file, filetype = "html")
+    }
+  )
 }
 
 # Run the application 
