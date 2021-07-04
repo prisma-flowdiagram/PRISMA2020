@@ -105,10 +105,10 @@ ui <- tagList(
                                                  hr(),
                                                  
                                                  h3("Download"),
-                                                 downloadButton('PRISMAflowdiagramPDF', 'Download PDF'),
-                                                 downloadButton('PRISMAflowdiagramPNG', 'Download PNG'),
-                                                 downloadButton('PRISMAflowdiagramSVG', 'Download SVG'),
-                                                 downloadButton('PRISMAflowdiagramHTML', 'Download Interactive HTML')
+                                                 downloadButton('PRISMAflowdiagramPDF', 'PDF'),
+                                                 downloadButton('PRISMAflowdiagramPNG', 'PNG'),
+                                                 downloadButton('PRISMAflowdiagramSVG', 'SVG'),
+                                                 downloadButton('PRISMAflowdiagramHTML', 'Interactive HTML')
                                     ), 
                                     mainPanel(
                                       DiagrammeR::grVizOutput(outputId = "plot1", width = "100%", height = "700px"))
