@@ -1,12 +1,17 @@
 Package: PRISMA2020
 Title: Make Interactive 'PRISMA' Flow Diagrams
 Version: 0.0.1
-Authors@R: 
+Authors@R: c(
     person(given = "Neal",
            family = "Haddaway",
            role = c("aut", "cre"),
            email = "nealhaddaway@gmail.com",
-           comment = c(ORCID = "0000-0003-3902-2234"))
+           comment = c(ORCID = "0000-0003-3902-2234")),
+    person("Luke", "McGuinness", role = "aut",
+           email = "luke.mcguinness@bristol.ac.uk",
+           comment = c(ORCID = "0000-0001-8730-9761")),
+    person("Chris", "Pritchard", role = "ctb")     
+           )
 Description: Systematic reviews should be described in a high degree of 
     methodological detail. The 'PRISMA' Statement calls for a high level of 
     reporting detail in systematic reviews and meta-analyses. An integral part 
@@ -30,7 +35,10 @@ Imports:
     shinyjs,
     stats,
     stringr,
-    utils
+    utils,
+    xml2,
+    webp,
+    tools
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

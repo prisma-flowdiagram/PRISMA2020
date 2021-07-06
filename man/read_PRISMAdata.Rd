@@ -17,7 +17,7 @@ Read in a template CSV containing data for the flow diagram
 }
 \examples{
 \dontrun{
-data <- read.csv(file.choose());
+data <- read.csv(file.choose(), stringsAsFactors=FALSE);
 data <- read_PRISMAdata(data);
 attach(data);
 }

@@ -50,5 +50,8 @@ utils::globalVariables(c('previous_studies',
                          'total_studies_text', 
                          'total_reports_text', 
                          'tooltips', 
-                         'urls'))
+                         'urls',
+                         'identification_text',
+                         'included_text',
+                         'screening_text'))
 

@@ -26,6 +26,6 @@ new_studies,node15,box10,New studies included in review,New studies included in 
 new_reports,NA,box10,Reports of new included studies,Reports of new included studies,NA,NA,xxx
 total_studies,node22,box16,Total studies included in review,Total studies included in review,Total studies included in review,total_studies.html,xxx
 total_reports,NA,box16,Reports of total included studies,Reports of total included studies,NA,NA,xxx
-identification,node1,identification,Blue identification box,NA,Blue identification box,identification.html,xxx
-screening,node2,screening,Blue screening box,NA,Blue screening box,screening.html,xxx
-included,node3,included,Blue included box,NA,Blue included box,included.html,xxx
+identification,node1,identification,Blue identification box,Identification,Blue identification box,identification.html,xxx
+screening,node2,screening,Blue screening box,Screening,Blue screening box,screening.html,xxx
+included,node3,included,Blue included box,Included,Blue included box,included.html,xxx
