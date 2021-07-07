@@ -78,7 +78,11 @@ PRISMA_flowdiagram <- function (data,
   } else {
     other_excludedh <- 3.5
   }
-  
+  #remove previous box if both values are zero
+  if (is.na(previous_studies) == TRUE && is.na(previous_reports) == TRUE) {
+    previous <- FALSE
+  }
+
   if(previous == TRUE){
     xstart <- 0
     ystart <- 0
@@ -104,26 +108,43 @@ PRISMA_flowdiagram <- function (data,
               12->19;\n")
     h_adj1 <- 0
     h_adj2 <- 0
-    previous_nodes <- paste0("node [shape = box,
+
+    #conditional studies and reports - empty text if blank
+    if(is.na(previous_studies) == TRUE) {
+      cond_prevstud <- ''
+    } else {
+      cond_prevstud <- stringr::str_wrap(paste0(previous_studies_text,
+                                                " (n = ",
+                                                previous_studies, 
+                                                ")"), 
+                                         width = 40)
+    }
+    if(is.na(previous_reports) == TRUE) {
+      cond_prevrep <- ''
+    } else {
+      cond_prevrep <- paste0(stringr::str_wrap(previous_reports_text, 
+                                               width = 40),
+                             "\n(n = ",
+                             previous_reports,
+                             ')')
+    }
+    if (is.na(previous_studies) == TRUE || is.na(previous_reports) == TRUE) {
+      dbl_br <- ''
+    } else {
+      dbl_br <- "\n\n"
+    }
+previous_nodes <- paste0("node [shape = box,
           fontsize = ", fontsize,",
-          fontname = ", font,",
+          fontname = ", font, ",
           color = ", greybox_colour, "]
     1 [label = '", previous_text, "', style = 'rounded,filled', width = 3.5, height = 0.5, pos='",xstart+1,",",ystart+8.25,"!', tooltip = '", tooltips[1], "']
     
     node [shape = box,
           fontname = ", font, ",
           color = ", greybox_colour, "]
-    2 [label = '",paste0(stringr::str_wrap(paste0(previous_studies_text,
-                                                  " (n = ",
-                                                  previous_studies, 
-                                                  ")"), 
-                                           width = 40),
-                         "\n\n",
-                         paste0(stringr::str_wrap(previous_reports_text, 
-                                                  width = 40),
-                                           "\n(n = ",
-                                           previous_reports,
-                                           ')')), 
+    2 [label = '",paste0(cond_prevstud,
+                         dbl_br,
+                         cond_prevrep), 
                          "', style = 'filled', width = 3.5, height = 0.5, pos='",xstart+1,",",ystart+7,"!', tooltip = '", tooltips[2], "']")
     finalnode <- paste0("
   node [shape = box,
@@ -157,8 +178,7 @@ PRISMA_flowdiagram <- function (data,
     h_adj2 <- 1.4
     prev_rank1 <- ""
     prevnode1 <- ""
-    prevnode2 <- ""
-    
+    prevnode2 <- ""  
   }
   if(side_boxes == TRUE){
     sidebox <- paste0("node [shape = box,
@@ -172,6 +192,9 @@ PRISMA_flowdiagram <- function (data,
   ")
   } else {
     sidebox <- ""
+  }
+  if (is.na(website_results) == TRUE && is.na(organisation_results) == TRUE && is.na(citations_results) == TRUE) {
+    other <- FALSE
   }
   if(other == TRUE){
     if (is.data.frame(other_excluded) == TRUE){
@@ -187,6 +210,31 @@ PRISMA_flowdiagram <- function (data,
       other_excluded_data <- paste0('\n', '(n = ', other_excluded, ')')
     }
     B <- paste0("B [label = '', pos='",xstart+13,",",ystart+1.5,"!', tooltip = '']")
+
+     if (is.na(website_results) == FALSE) {
+      cond_websites <- paste0(website_results_text,
+                              " (n = ",
+                              website_results,
+                              ')\n')
+    } else {
+      cond_websites <- ''
+    }
+    if (is.na(organisation_results) == FALSE) {
+      cond_organisation <- paste0(organisation_results_text,
+                                  " (n = ",
+                                  organisation_results,
+                                  ')\n')
+    } else {
+      cond_organisation <- ''
+    }
+    if (is.na(citations_results) == FALSE) {
+      cond_citation <- paste0(citations_results_text,
+                              " (n = ",
+                              citations_results,
+                              ')')
+    } else {
+      cond_citation <- ''
+    }
     cluster2 <- paste0("subgraph cluster2 {
     edge [color = White, 
           arrowhead = none, 
@@ -216,18 +264,9 @@ PRISMA_flowdiagram <- function (data,
         fontname = ", font, ",
         color = ", greybox_colour, "]
   14 [label = '", paste0('Records identified from:\n',
-                                                  website_results_text,
-                                                  " (n = ",
-                                                  website_results,
-                                                  ')\n',
-                                                  organisation_results_text,
-                                                  " (n = ",
-                                                  organisation_results,
-                                                  ')\n',
-                                                  citations_results_text,
-                                                  " (n = ",
-                                                  citations_results,
-                                                  ')'),
+                         cond_websites,
+                         cond_organisation,
+                         cond_citation),
                          "', style = 'filled', width = 3.5, height = 0.5, pos='",xstart+13,",",ystart+7,"!', tooltip = '", tooltips[6], "']
   
   node [shape = box,
@@ -279,7 +318,85 @@ PRISMA_flowdiagram <- function (data,
     othernodeB <- ""
     
   }
+  if (any(!grepl("\\D", dbr_excluded)) == FALSE){
+    dbr_excluded_data <- paste0(':',
+                                paste(paste('\n', 
+                                            dbr_excluded[,1], 
+                                            ' (n = ', 
+                                            dbr_excluded[,2], 
+                                            ')', 
+                                            sep = ''), 
+                                      collapse = ''))
+  } else {
+    dbr_excluded_data <- paste0('\n', '(n = ', dbr_excluded, ')')
+  }
   
+  if (is.na(database_results) == FALSE) {
+    cond_database <- paste0(database_results_text, 
+                            ' (n = ',
+                            database_results,
+                            ')\n')
+  } else {
+    cond_database <- ''
+  }
+  if (is.na(register_results) == FALSE) {
+    cond_register <- paste0(register_results_text, 
+                            ' (n = ',
+                            register_results,
+                            ')')
+  } else {
+    cond_register <- ''
+  }
+  
+  if (is.na(duplicates) == FALSE) {
+    cond_duplicates <- paste0(stringr::str_wrap(paste0(duplicates_text,
+                                                       ' (n = ',
+                                                       duplicates,
+                                                       ')'),
+                                                width = 42),
+                              '\n')
+  } else {
+    cond_duplicates <- ''
+  }
+  if (is.na(excluded_automatic) == FALSE) {
+    cond_automatic <- paste0(stringr::str_wrap(paste0(excluded_automatic_text,
+                                                       ' (n = ',
+                                                       excluded_automatic,
+                                                       ')'),
+                                                width = 42),
+                              '\n')
+  } else {
+    cond_automatic <- ''
+  }
+  if (is.na(excluded_other) == FALSE) {
+    cond_exclother <- paste0(stringr::str_wrap(paste0(excluded_other_text, 
+                                                      ' (n = ',
+                                                      excluded_other,
+                                                      ')'),
+                                               width = 42))
+  } else {
+    cond_exclother <- ''
+  }
+  if (is.na(duplicates) == TRUE && is.na(excluded_automatic) == TRUE && is.na(excluded_other) == TRUE) {
+    cond_duplicates <- paste0('(n = 0)')
+  }
+  
+  if(is.na(new_studies) == FALSE) {
+    cond_newstud <- paste0(stringr::str_wrap(new_studies_text, width = 40),
+                           '\n(n = ',
+                           new_studies,
+                           ')\n')
+  } else {
+    cond_newstud <- ''
+  }
+  if(is.na(new_reports) == FALSE) {
+    cond_newreports <- paste0(stringr::str_wrap(new_reports_text, width = 40),
+                           '\n(n = ',
+                           new_reports,
+                           ')')
+  } else {
+    cond_newreports <- ''
+  }
   x <- DiagrammeR::grViz(
     paste0("digraph TD {
   
@@ -295,43 +412,23 @@ PRISMA_flowdiagram <- function (data,
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  4 [label = '", paste0('Records identified from:\n', 
-                        database_results_text, 
-                        ' (n = ',
-                        database_results,
-                        ')\n', 
-                        register_results_text, 
-                        ' (n = ',
-                        register_results,
-                        ')'), "', width = 3.5, height = 0.5, height = 0.5, pos='",xstart+5,",",ystart+7,"!', tooltip = '", tooltips[4], "']
+ 4 [label = '", paste0('Records identified from:\n', 
+                        cond_database, 
+                        cond_register), "', width = 3.5, height = 0.5, height = 0.5, pos='",xstart+5,",",ystart+7,"!', tooltip = '", tooltips[4], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
   5 [label = '", paste0('Records removed before screening:\n', 
-                        stringr::str_wrap(paste0(duplicates_text,
-                                                 ' (n = ',
-                                                 duplicates,
-                                                 ')'),
-                                          width = 42),
-                        '\n',
-                        stringr::str_wrap(paste0(excluded_automatic_text,
-                                                 ' (n = ',
-                                                 excluded_automatic,
-                                                 ')'),
-                                          width = 42)
-                        ,'\n', 
-                        stringr::str_wrap(paste0(excluded_other_text, 
-                                                 ' (n = ',
-                                                 excluded_other,
-                                                 ')'),
-                                          width = 42)),
-                        "', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+7,"!', tooltip = '", tooltips[7], "']
+                        cond_duplicates,
+                        cond_automatic, 
+                        cond_exclother),
+           "', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+7,"!', tooltip = '", tooltips[7], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  6 [label = '", paste0(records_screened_text,
+6 [label = '", paste0(records_screened_text,
                         '\n(n = ',
                         records_screened,
                         ')'), "', width = 3.5, height = 0.5, height = 0.5, pos='",xstart+5,",",ystart+5.5,"!', tooltip = '", tooltips[8], "']
@@ -339,7 +436,7 @@ PRISMA_flowdiagram <- function (data,
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  7 [label = '", paste0(records_excluded_text,
+ 7 [label = '", paste0(records_excluded_text,
                         '\n(n = ',
                         records_excluded,
                         ')'), "', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+5.5,"!', tooltip = '", tooltips[9], "']
@@ -355,15 +452,15 @@ PRISMA_flowdiagram <- function (data,
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  9 [label = '", paste0(dbr_notretrieved_reports_text,
+9 [label = '", paste0(dbr_notretrieved_reports_text,
                         '\n(n = ',
                         dbr_notretrieved_reports,
                         ')'), "', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+4.5,"!', tooltip = '", tooltips[11], "']
-  
+
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, "]
-  10 [label = '", paste0(dbr_assessed_text,
+10 [label = '", paste0(dbr_assessed_text,
                          '\n(n = ',
                          dbr_assessed,
                          ')'), "', width = 3.5, height = 0.5, pos='",xstart+5,",",ystart+3.5,"!', tooltip = '", tooltips[14], "']
@@ -374,25 +471,13 @@ PRISMA_flowdiagram <- function (data,
         fillcolor = White,
         style = filled]
   11 [label = '", paste0(dbr_excluded_text,
-                         paste(paste('\n', 
-                                     dbr_excluded[,1], 
-                                     ' (n = ', 
-                                     dbr_excluded[,2], 
-                                     ')', 
-                                     sep = ''), 
-                               collapse = '')), "', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+dbr_excludedh,"!', tooltip = '", tooltips[15], "']
+                         dbr_excluded_data), "', width = 3.5, height = 0.5, pos='",xstart+9,",",ystart+dbr_excludedh,"!', tooltip = '", tooltips[15], "']
   
   node [shape = box,
         fontname = ", font, ",
         color = ", main_colour, ", fillcolor = '', style = solid]
-  12 [label = '", paste0(stringr::str_wrap(new_studies_text, width = 40),
-                         '\n(n = ',
-                         new_studies,
-                         ')\n',
-                         stringr::str_wrap(new_reports_text, width = 40),
-                         '\n(n = ',
-                         new_reports,
-                         ')'), "', width = 3.5, height = 0.5, pos='",xstart+5,",",ystart+1.5,"!', tooltip = '", tooltips[18], "']
+  12 [label = '", paste0(cond_newstud,
+                         cond_newreports), "', width = 3.5, height = 0.5, pos='",xstart+5,",",ystart+1.5,"!', tooltip = '", tooltips[18], "']
   
   ",othernodes,
            
