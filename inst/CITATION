@@ -4,10 +4,10 @@ citEntry(
   entry    = "Manual",
   title    = "PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams (Version 0.0.2)",
   author   = "Neal R Haddaway, Chris C Pritchard and Luke A McGuinness",
-  year     = "2020",
+  year     = "2021",
   doi      = "10.5281/zenodo.4287835",
   textVersion = paste(
-    "Neal R Haddaway, Chris C Pritchard and Luke A McGuinness (2020).",
+    "Neal R Haddaway, Chris C Pritchard and Luke A McGuinness (2021).",
     "PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams (Version 0.0.2)",
     "zenodo. https://doi.org/10.5281/zenodo.4287835"
   )
