@@ -7,7 +7,7 @@
 PRISMA_save(plotobj, filename = "PRISMA2020_flowdiagram.html", filetype = NA)
 }
 \arguments{
-\item{plotobj}{A plot produced using PRISMA_flowdiagram().}
+\item{plotobj}{A plot produced using \code{\link[=PRISMA_flowdiagram]{PRISMA_flowdiagram()}}.}
 
 \item{filename}{The filename to save (including extension)}
 
@@ -19,13 +19,13 @@ HTML files maintain hyperlinks and tooltips}
 the absolute filename of the saved diagram plot.
 }
 \description{
-Save the output from PRISMA_flowdiagram() to the
+Save the output from \code{\link[=PRISMA_flowdiagram]{PRISMA_flowdiagram()}} to the
 working directory.
 }
 \examples{
 \dontrun{
 data <- read.csv(file.choose());
-data <- read_PRISMAdata(data);
+data <- PRISMA_data(data);
 attach(data); 
 plot <- PRISMA_flowdiagram(data,
                 fontsize = 12,

@@ -3,14 +3,23 @@ library(shinyjs)
 library(rsvg)
 library(DT)
 library(rio)
+library(devtools)
+# This will enable us to host the latest version on shinyapps.io once
+# The new function names are merged.
+# This can be removed once we are on CRAN
+# If the library is already installed, this won't do anything
+if(!require(PRISMA2020)) {
+  devtools::install_github("nealhaddaway/PRISMA2020")
+}
+library(PRISMA2020)
 
-source("functions.R")
 
-template <- read.csv("www/PRISMA.csv",stringsAsFactors = FALSE)
+template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE)
 
 # Define UI for application that draws a histogram
-ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
-                         
+ui <- tagList(
+  tags$head(tags$script(src = "labels.js")),
+  navbarPage("PRISMA Flow Diagram",
                          # Tab 1 ----
                          tabPanel("Home",
                                   fluidRow(
@@ -47,10 +56,10 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            hr(),
                                            'Please cite as:',
                                            br(),
-                                           'Neal R Haddaway, Luke A McGuinness. (2020). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams (Version 0.0.1). Zenodo.', 
+                                           'Neal R Haddaway, Chris C Pritchard, Luke A McGuinness. (2020). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams (Version 0.0.2). Zenodo.', 
                                            tags$a(href="http://doi.org/10.5281/zenodo.4287835", "http://doi.org/10.5281/zenodo.4287835"),
                                            br(),
-                                           tags$a(href="Haddaway_and_McGuinness2020.ris", "Download citation (.ris)", download=NA, target="_blank")
+                                           tags$a(href="Haddaway_Pritchard_and_McGuinness2020.ris", "Download citation (.ris)", download=NA, target="_blank")
                                     )
                                   ),
                                   
@@ -61,12 +70,13 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                            'Credits:',
                                            br(),
                                            'Neal R Haddaway (creator, author)', br(),
-                                           'Luke A McGuinness (coder, contributor)', br(),
+                                           'Luke A McGuinness (coder, author)', br(),
+                                           'Chris C Pritchard (coder, author)', br(),
                                            'Matthew J Page (advisor)', br(),
                                            'Jack Wasey (advisor)', br(),
                                            br(),
                                            tags$a(href="https://github.com/nealhaddaway/PRISMA2020", tags$img(height = 40, width = 40, src = "https://pngimg.com/uploads/github/github_PNG40.png")), 
-                                           'Created November 2020'
+                                           'Created November 2020, Updated June 2021'
                                     )
                                   )
                          ),
@@ -95,8 +105,10 @@ ui <- shinyUI(navbarPage("PRISMA Flow Diagram",
                                                  hr(),
                                                  
                                                  h3("Download"),
-                                                 downloadButton('PRISMAflowdiagramPDF', 'Download PDF'),
-                                                 downloadButton('PRISMAflowdiagramPNG', 'Download PNG')
+                                                 downloadButton('PRISMAflowdiagramPDF', 'PDF'),
+                                                 downloadButton('PRISMAflowdiagramPNG', 'PNG'),
+                                                 downloadButton('PRISMAflowdiagramSVG', 'SVG'),
+                                                 downloadButton('PRISMAflowdiagramHTML', 'Interactive HTML')
                                     ), 
                                     mainPanel(
                                       DiagrammeR::grVizOutput(outputId = "plot1", width = "100%", height = "700px"))
@@ -112,7 +124,6 @@ server <- function(input, output) {
   rv <- reactiveValues()
   
   # Data Handling ----
-  
   # Use template data to populate editable table
   observe({
     if (is.null(input$data_upload)) {
@@ -296,7 +307,7 @@ server <- function(input, output) {
   
   # Create plot
   plot <- reactive({
-    data <- read_PRISMAdata(rv$data)
+    data <- PRISMA2020::PRISMA_data(rv$data)
     attach(data)
     if (input$previous == 'Included'){
       include_previous = TRUE
@@ -308,13 +319,20 @@ server <- function(input, output) {
     } else {
       include_other = FALSE
     }
-    plot <- PRISMA_flowdiagram(data,
-                               interactive = FALSE,
+    shinyjs::runjs(paste0('
+       const nodeMap = new Map([["node1","',identification_text,'"], ["node2","',screening_text,'"], ["node3","',included_text,'"]])
+       createLabels(nodeMap)
+    '))
+    plot <- PRISMA2020::PRISMA_flowdiagram(data,
+                               fontsize = 12,
+                               font = "Helvetica",
+                               interactive = TRUE,
                                previous = include_previous,
-                               other = include_other)
+                               other = include_other,
+                               side_boxes = TRUE)
+    
   })
-  
-  
+
   # Display plot
   output$plot1 <- DiagrammeR::renderDiagrammeR({
     plot <- plot()
@@ -325,21 +343,32 @@ server <- function(input, output) {
   output$PRISMAflowdiagramPDF <- downloadHandler(
     filename = "prisma.pdf",
     content = function(file){
-      prisma_pdf(plot(), 
-                 file)
+      PRISMA2020::PRISMA_save(plot(), 
+                 filename = file, filetype = "PDF")
     }
   )
   output$PRISMAflowdiagramPNG <- downloadHandler(
     filename = "prisma.png",
     content = function(file){
-      prisma_png(plot(), 
-                 file)
+      PRISMA2020::PRISMA_save(plot(),
+                 filename = file, filetype = "PNG")
     }
   )
-
+  output$PRISMAflowdiagramSVG <- downloadHandler(
+    filename = "prisma.svg",
+    content = function(file){
+      PRISMA2020::PRISMA_save(plot(),
+                 filename = file, filetype = "SVG")
+    }
+  )
+  output$PRISMAflowdiagramHTML <- downloadHandler(
+    filename = "prisma.html",
+    content = function(file){
+      PRISMA2020::PRISMA_save(plot(),
+                 filename = file, filetype = "html")
+    }
+  )
 }
 
 # Run the application 
 shinyApp(ui = ui, server = server)
-
-
