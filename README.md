@@ -17,7 +17,7 @@ Please cite as:<br>
 
 <!-- badges: start -->
 [![R build status](https://github.com/nealhaddaway/PRISMA2020/workflows/R-CMD-check/badge.svg/)](https://github.com/nealhaddaway/PRISMA2020/actions/)
-[![HitCount](https://hits.dwyl.com/nealhaddaway/nealhaddaway/PRISMA2020.svg/)](https://hits.dwyl.com/nealhaddaway/nealhaddaway/PRISMA2020/)
 ![GitHub all releases](https://img.shields.io/github/downloads/nealhaddaway/PRISMA2020/total?style=plastic/)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/nealhaddaway/PRISMA2020)
+![GitHub Repo stars](https://img.shields.io/github/stars/nealhaddaway/PRISMA2020?style=social)
 <!-- badges: end -->
