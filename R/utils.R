@@ -24,9 +24,10 @@ PRISMA_insert_js_ <- function (plot, identification_text, screening_text, includ
          var theText = theDiv.querySelector("text");
          var attrX = theText.getAttribute("x");
          var attrY = theText.getAttribute("y");
-         theText.setAttribute("y",parseFloat(attrX)+2)
+         theText.setAttribute("y",parseFloat(attrX))
          theText.setAttribute("x",parseFloat(attrY)*-1)
          theText.setAttribute("style","transform: rotate(-90deg);")
+         theText.setAttribute("dominant-baseline", "middle")
          theText.innerHTML = label;
        }
     '))
