@@ -37,18 +37,16 @@
 #' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes>.
 #' @param side_boxes Whether or not to include the blue label boxes along the side
 #' @return A flow diagram plot.
-#' @examples 
-#' \dontrun{
-#' data <- read.csv(file.choose(), stringsAsFactors=FALSE);
+#' @examples
+#' csvFile <- system.file("extdata", "PRISMA.csv", package = "PRISMA2020")
+#' data <- read.csv(csvFile);
 #' data <- PRISMA_data(data);
-#' attach(data);
 #' plot <- PRISMA_flowdiagram(data,
 #'                 fontsize = 12,
 #'                 interactive = TRUE,
 #'                 previous = FALSE,
 #'                 other = TRUE);
 #' plot
-#' }
 #' @export
 PRISMA_flowdiagram <- function (data,
                                 interactive = FALSE,
@@ -63,6 +61,10 @@ PRISMA_flowdiagram <- function (data,
                                 arrow_head = 'normal',
                                 arrow_tail = 'none',
                                 side_boxes = TRUE) {
+  # removes the need to attach() the data first https://stackoverflow.com/a/11505637
+  for(var in seq_len(length(data))) {
+    assign(names(data)[var], data[[var]])
+  }
   #wrap exclusion reasons
   dbr_excluded[,1] <- stringr::str_wrap(dbr_excluded[,1], 
                     width = 35)
@@ -545,11 +547,9 @@ previous_nodes <- paste0("node [shape = box,
 #' @param data File to read in.
 #' @return A list of objects needed to plot the flow diagram
 #' @examples
-#' \dontrun{
-#' data <- read.csv(file.choose(), stringsAsFactors=FALSE);
+#' csvFile <- system.file("extdata", "PRISMA.csv", package = "PRISMA2020")
+#' data <- read.csv(csvFile);
 #' data <- PRISMA_data(data);
-#' attach(data);
-#' }
 #' @export
 PRISMA_data <- function(data){
   
@@ -685,56 +685,65 @@ PRISMA_data <- function(data){
 #' @param filetype The filetype to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP
 #' (if NA, the filetype will be calculated out based on the file extension)
 #' HTML files maintain hyperlinks and tooltips
+#' @param overwrite if TRUE, will overwrite an existing file
 #' @return the absolute filename of the saved diagram plot.
 #' @examples
-#' \dontrun{
-#' data <- read.csv(file.choose());
+#' csvFile <- system.file("extdata", "PRISMA.csv", package = "PRISMA2020")
+#' data <- read.csv(csvFile);
 #' data <- PRISMA_data(data);
-#' attach(data); 
 #' plot <- PRISMA_flowdiagram(data,
 #'                 fontsize = 12,
 #'                 interactive = TRUE,
-#'                 previous = TRUE,
-#'                 other = TRUE)
-#' PRISMA_save(plot)
-#' }
+#'                 previous = FALSE,
+#'                 other = TRUE);
+#' PRISMA_save(plot, filename = tempfile(), filetype="html");
 #' @export
-PRISMA_save <- function(plotobj, filename = 'PRISMA2020_flowdiagram.html', filetype = NA){
-  format_real <- PRISMA_calc_filetype_(filename, filetype)
-  switch(
-    format_real,
-    "HTML" = {
-      tmp_html <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".html" )
-      htmlwidgets::saveWidget(plotobj, file=tmp_html, title = tools::file_path_sans_ext(filename))
-      if (!(file.copy(tmp_html, filename, overwrite = TRUE))){
-        stop("Error saving HTML")
-      }
-    },
-    "PDF" = {
-      tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
-      rsvg::rsvg_pdf(tmp_svg, filename)
-    },
-    "PNG" = {
-      tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
-      rsvg::rsvg_png(tmp_svg, filename)
-    },
-    "SVG" = {
-      tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
-      if (!(file.copy(tmp_svg, filename, overwrite = TRUE))){
-        stop("Error saving SVG")
-      }
-    },
-    "PS" = {
-      tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
-      rsvg::rsvg_ps(tmp_svg, filename)
-    },
-    "WEBP" = {
-      tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
-      rsvg::rsvg_webp(tmp_svg, filename)
-    },
-    stop("Please choose one of the supported file types")
-  )
-  return(tools::file_path_as_absolute(filename))
+PRISMA_save <- function(plotobj, filename = 'PRISMA2020_flowdiagram.html', filetype = NA, overwrite = FALSE){
+  if (!file.exists(filename) | overwrite == TRUE ) {
+    format_real <- PRISMA_calc_filetype_(filename, filetype)
+    switch(
+      format_real,
+      "HTML" = {
+        tmp_html <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".html" )
+        htmlwidgets::saveWidget(plotobj, file=tmp_html, title = tools::file_path_sans_ext(filename))
+        if (!(file.copy(tmp_html, filename, overwrite = TRUE))){
+          stop("Error saving HTML")
+        }
+        file.remove(tmp_html)
+      },
+      "PDF" = {
+        tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
+        rsvg::rsvg_pdf(tmp_svg, filename)
+        file.remove(tmp_svg)
+      },
+      "PNG" = {
+        tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
+        rsvg::rsvg_png(tmp_svg, filename)
+        file.remove(tmp_svg)
+      },
+      "SVG" = {
+        tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
+        if (!(file.copy(tmp_svg, filename, overwrite = TRUE))){
+          stop("Error saving SVG")
+        }
+        file.remove(tmp_svg)
+      },
+      "PS" = {
+        tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
+        rsvg::rsvg_ps(tmp_svg, filename)
+        file.remove(tmp_svg)
+      },
+      "WEBP" = {
+        tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)
+        rsvg::rsvg_webp(tmp_svg, filename)
+        file.remove(tmp_svg)
+      },
+      stop("Please choose one of the supported file types")
+    )
+    return(tools::file_path_as_absolute(filename))
+  } else {
+    stop("File exists, please set overwite = TRUE to overwrite")
+  }
 }
 
 #' Plot interactive flow diagram for systematic reviews - DEPRECATED
@@ -768,6 +777,5 @@ sr_flow_interactive <- function(plot,
 #' @export
 read_PRISMAdata <- function(data){
   .Deprecated("PRISMA_data")
-  x <- PRISMA_data(data)
-  return(x)
+  return(PRISMA_data(data))
 }

@@ -3,3 +3,4 @@
 ^\.github$
 .png
 inst/shiny-examples
+LICENSE.md

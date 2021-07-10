@@ -16,9 +16,7 @@ A list of objects needed to plot the flow diagram
 Read in a template CSV containing data for the flow diagram
 }
 \examples{
-\dontrun{
-data <- read.csv(file.choose(), stringsAsFactors=FALSE);
+csvFile <- system.file("extdata", "PRISMA.csv", package = "PRISMA2020")
+data <- read.csv(csvFile);
 data <- PRISMA_data(data);
-attach(data);
-}
 }
