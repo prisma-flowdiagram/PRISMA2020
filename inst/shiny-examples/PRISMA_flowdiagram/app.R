@@ -311,7 +311,6 @@ server <- function(input, output) {
   # Create plot
   plot <- reactive({
     data <- PRISMA2020::PRISMA_data(rv$data)
-    attach(data)
     if (input$previous == 'Included'){
       include_previous = TRUE
     } else {
