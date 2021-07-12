@@ -29,7 +29,7 @@ ui <- tagList(
                    is a flow diagram.',
                                            br(),
                                            br(),
-                                           'This tool allows you to produce a flow diagram for your own review that conforms to ', tags$a(href="https://osf.io/preprints/metaarxiv/v7gm2/", "the PRISMA2020 Statement."), 
+                                           'This tool allows you to produce a flow diagram for your own review that conforms to ', tags$a(href="https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003583", "the PRISMA2020 Statement."), 
                                            'You can provide the numbers in the data entry section of the \'Create flow diagram\' tab. Alternatively, to allow for more customisation, you can use the template file below.',
                                            br(),
                                            br(),

@@ -5,6 +5,7 @@ account: estech
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3345280
-bundleId: 4233628
+bundleId: 4810047
 url: https://estech.shinyapps.io/prisma_flowdiagram/
-when: 1613544521.90921
+when: 1626069276.86885
+lastSyncTime: 1626069276.86886
