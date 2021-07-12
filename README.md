@@ -12,7 +12,7 @@ A static version is produced otherwise. <a href="https://srflowdiagram.github.io
 See the interactive template here.</a><br>
 
 Please cite as:<br>
- Neal R Haddaway, Chris C Pritchard and Luke A McGuinness (2021). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams (Version 0.0.2). doi: <a href="https://doi.org/10.5281/zenodo.4287835" target="_blank">10.5281/zenodo.4287835</a><br>
+ Neal R Haddaway, Chris C Pritchard and Luke A McGuinness (2021). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams. doi: <a href="https://doi.org/10.5281/zenodo.4287834" target="_blank">10.5281/zenodo.4287834</a><br>
 <a id="raw-url" href="https://raw.githubusercontent.com/nealhaddaway/PRISMA2020/master/inst/extdata/citation.ris">Citation in .ris format (right click 'Save Link As')</a>
 
 <!-- badges: start -->

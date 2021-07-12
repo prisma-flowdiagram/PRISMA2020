@@ -75,15 +75,13 @@ hyperlink URLs to each box. Data can be imported from the standard CSV template
 provided.
 }
 \examples{
-\dontrun{
-data <- read.csv(file.choose(), stringsAsFactors=FALSE);
+csvFile <- system.file("extdata", "PRISMA.csv", package = "PRISMA2020")
+data <- read.csv(csvFile);
 data <- PRISMA_data(data);
-attach(data);
 plot <- PRISMA_flowdiagram(data,
                 fontsize = 12,
                 interactive = TRUE,
                 previous = FALSE,
                 other = TRUE);
 plot
-}
 }

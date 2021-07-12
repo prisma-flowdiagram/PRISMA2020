@@ -4,7 +4,12 @@
 \alias{PRISMA_save}
 \title{Save PRISMA2020 flow diagram}
 \usage{
-PRISMA_save(plotobj, filename = "PRISMA2020_flowdiagram.html", filetype = NA)
+PRISMA_save(
+  plotobj,
+  filename = "PRISMA2020_flowdiagram.html",
+  filetype = NA,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{plotobj}{A plot produced using \code{\link[=PRISMA_flowdiagram]{PRISMA_flowdiagram()}}.}
@@ -14,6 +19,8 @@ PRISMA_save(plotobj, filename = "PRISMA2020_flowdiagram.html", filetype = NA)
 \item{filetype}{The filetype to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP
 (if NA, the filetype will be calculated out based on the file extension)
 HTML files maintain hyperlinks and tooltips}
+
+\item{overwrite}{if TRUE, will overwrite an existing file}
 }
 \value{
 the absolute filename of the saved diagram plot.
@@ -23,15 +30,13 @@ Save the output from \code{\link[=PRISMA_flowdiagram]{PRISMA_flowdiagram()}} to 
 working directory.
 }
 \examples{
-\dontrun{
-data <- read.csv(file.choose());
+csvFile <- system.file("extdata", "PRISMA.csv", package = "PRISMA2020")
+data <- read.csv(csvFile);
 data <- PRISMA_data(data);
-attach(data); 
 plot <- PRISMA_flowdiagram(data,
                 fontsize = 12,
                 interactive = TRUE,
-                previous = TRUE,
-                other = TRUE)
-PRISMA_save(plot)
-}
+                previous = FALSE,
+                other = TRUE);
+PRISMA_save(plot, filename = tempfile(), filetype="html");
 }

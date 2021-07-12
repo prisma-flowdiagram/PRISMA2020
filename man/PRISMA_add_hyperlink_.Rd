@@ -11,6 +11,9 @@ PRISMA_add_hyperlink_(node, url)
 
 \item{url}{the URL the node should link to}
 }
+\value{
+An interactive flow diagram plot.
+}
 \description{
 Generate the javascript method to insert the side labels
 }

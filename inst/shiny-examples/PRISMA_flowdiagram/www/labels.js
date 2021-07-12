@@ -6,9 +6,10 @@ function renderLabel(node, label) {
 	var theText = node.querySelector("text");
 	var attrX = theText.getAttribute("x");
 	var attrY = theText.getAttribute("y");
-	theText.setAttribute("y",parseFloat(attrX)+2)
+	theText.setAttribute("y",parseFloat(attrX))
 	theText.setAttribute("x",parseFloat(attrY)*-1)
 	theText.setAttribute("style","transform: rotate(-90deg);")
+	theText.setAttribute("dominant-baseline", "middle")
 	theText.innerHTML = label;
 }
 // https://stackoverflow.com/questions/38881301/observe-mutations-on-a-target-node-that-doesnt-exist-yet/38882022

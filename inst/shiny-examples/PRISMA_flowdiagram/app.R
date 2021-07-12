@@ -30,14 +30,17 @@ ui <- tagList(
                                            br(),
                                            br(),
                                            'This tool allows you to produce a flow diagram for your own review that conforms to ', tags$a(href="https://osf.io/preprints/metaarxiv/v7gm2/", "the PRISMA2020 Statement."), 
-                                           'You can provide the numbers and texts for the boxes in the data entry section of the \'Create flow diagram\' tab. Alternatively, you can add your own values using the template file below.',
+                                           'You can provide the numbers in the data entry section of the \'Create flow diagram\' tab. Alternatively, to allow for more customisation, you can use the template file below.',
                                            br(),
                                            br(),
-                                           "At present, this version of the tool doesn't support embedding tooltips and hyperlinks in the plot. For this functionality, please use the", 
+                                           "This tool also allows you to download an interactive HTML version of the plot, alongside several other common formats.",
+                                           br(),
+                                           br(),
+                                           "We also provide an R package:",
                                            tags$a(href="https://github.com/nealhaddaway/PRISMA2020", "PRISMA2020 flow diagram R package on Github."),
                                            br(),
                                            br(),
-                                           'Please let us know if you have any feedback or if you encounter an error by sending an email to ', tags$a(href="mailto:neal.haddaway@sei.org", "neal.haddaway@sei.org"),
+                                           'Please let us know if you have any feedback or if you encounter an error by creating an', tags$a(href="https://github.com/nealhaddaway/PRISMA2020/issues", "issue on GitHub"),
                                            br(),
                                            br(),
                                            tags$a(href="PRISMA.csv", "Download the template CSV file", download=NA, target="_blank"),
@@ -56,8 +59,8 @@ ui <- tagList(
                                            hr(),
                                            'Please cite as:',
                                            br(),
-                                           'Neal R Haddaway, Chris C Pritchard, Luke A McGuinness. (2021). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams (Version 0.0.2). Zenodo.', 
-                                           tags$a(href="http://doi.org/10.5281/zenodo.4287835", "http://doi.org/10.5281/zenodo.4287835"),
+                                           'Neal R Haddaway, Chris C Pritchard, Luke A McGuinness. (2021). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams. Zenodo.', 
+                                           tags$a(href="http://doi.org/10.5281/zenodo.4287834", "http://doi.org/10.5281/zenodo.4287834"),
                                            br(),
                                            tags$a(href="Haddaway_Pritchard_and_McGuinness2021.ris", "Download citation (.ris)", download=NA, target="_blank")
                                     )
@@ -308,7 +311,6 @@ server <- function(input, output) {
   # Create plot
   plot <- reactive({
     data <- PRISMA2020::PRISMA_data(rv$data)
-    attach(data)
     if (input$previous == 'Included'){
       include_previous = TRUE
     } else {
