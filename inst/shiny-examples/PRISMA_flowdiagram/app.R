@@ -304,10 +304,8 @@ server <- function(input, output) {
                 resetPaging = FALSE,
                 rownames = FALSE)  # important
   })
-  
-  
+
   # Reactive plot ----
-  
   # Create plot
   plot <- reactive({
     data <- PRISMA2020::PRISMA_data(rv$data)
@@ -322,7 +320,7 @@ server <- function(input, output) {
       include_other = FALSE
     }
     shinyjs::runjs(paste0('
-       const nodeMap = new Map([["node1","',identification_text,'"], ["node2","',screening_text,'"], ["node3","',included_text,'"]])
+       const nodeMap = new Map([["node1","',rv$data[which(rv$data$data == "identification"), "boxtext"],'"], ["node2","',rv$data[which(rv$data$data == "screening"), "boxtext"],'"], ["node3","',rv$data[which(rv$data$data == "included"), "boxtext"],'"]])
        createLabels(nodeMap)
     '))
     plot <- PRISMA2020::PRISMA_flowdiagram(data,
