@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Haddaway
+    given-names: Neal
+    orcid: https://orcid.org/0000-0003-3902-2234
+  - family-names: McGuinness
+    given-names: Luke A
+    orcid: https://orcid.org/0000-0001-8730-9761
+  - family-names: Pritchard
+    given-names: Chris C
+    orcid: https://orcid.org/0000-0002-1143-9751
+title: "PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams"
+version: 0.0.2
+doi: 10.5281/zenodo.5082518
+date-released: 2021-07-08
