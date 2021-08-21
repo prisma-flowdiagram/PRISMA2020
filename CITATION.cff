@@ -33,9 +33,5 @@ preferred-citation:
     orcid: https://orcid.org/0000-0001-8730-9761
   doi: "10.1101/2021.07.14.21260492 "
   journal: "medRxiv"
-  month: 7
-  start: 1 # First page number
-  end: 24 # Last page number
-  number: 2021.07.14.21260492
   title: "PRISMA2020: an R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis"
   year: 2021
