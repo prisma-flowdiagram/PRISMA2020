@@ -14,3 +14,28 @@ title: "PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant f
 version: 0.0.2
 doi: 10.5281/zenodo.5082518
 date-released: 2021-07-08
+license: MIT
+url: "https://github.com/nealhaddaway/PRISMA2020"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: Haddaway
+    given-names: Neal
+    orcid: https://orcid.org/0000-0003-3902-2234
+  - family-names: Page
+    given-names: Matthew J
+    orcid: https://orcid.org/0000-0002-4242-7526
+  - family-names: Pritchard
+    given-names: Chris C
+    orcid: https://orcid.org/0000-0002-1143-9751
+  - family-names: McGuinness
+    given-names: Luke A
+    orcid: https://orcid.org/0000-0001-8730-9761
+  doi: "10.1101/2021.07.14.21260492 "
+  journal: "medRxiv"
+  month: 7
+  start: 1 # First page number
+  end: 24 # Last page number
+  number: 2021.07.14.21260492
+  title: "PRISMA2020: an R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis"
+  year: 2021
