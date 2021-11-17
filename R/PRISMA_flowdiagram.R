@@ -553,6 +553,9 @@ previous_nodes <- paste0("node [shape = box,
 #' @export
 PRISMA_data <- function(data){
   
+  # Ensure data is a df, not a tibble; tibbles do not return vectors using df[, 1].
+  data <- as.data.frame(data)
+  
   #Set parameters
   previous_studies <- scales::comma(as.numeric(data[grep('previous_studies', data[,1]),]$n))
   previous_reports <- scales::comma(as.numeric(data[grep('previous_reports', data[,1]),]$n))
