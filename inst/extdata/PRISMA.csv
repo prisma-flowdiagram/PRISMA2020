@@ -1,5 +1,5 @@
 data,node,box,description,boxtext,tooltips,url,n
-NA,node4,prevstud,Grey title box; Previous studies,Previous studies43242342,Grey title box; Previous studies,prevstud.html,0
+NA,node4,prevstud,Grey title box; Previous studies,Previous studies,Grey title box; Previous studies,prevstud.html,0
 previous_studies,node5,box1,Studies included in previous version of review,Studies included in previous version of review,Studies included in previous version of review,previous_studies.html,0
 previous_reports,NA,box1,Reports of studies included in previous version of review,Reports of studies included in previous version of review,NA,previous_reports.html,0
 NA,node6,newstud,Yellow title box; Identification of new studies via databases and registers,Identification of new studies via databases and registers,Yellow title box; Identification of new studies via databases and registers,newstud.html,0
@@ -26,6 +26,6 @@ new_studies,node15,box10,New studies included in review,New studies included in 
 new_reports,NA,box10,Reports of new included studies,Reports of new included studies,NA,NA,0
 total_studies,node22,box16,Total studies included in review,Total studies included in review,Total studies included in review,total_studies.html,0
 total_reports,NA,box16,Reports of total included studies,Reports of total included studies,NA,NA,0
-identification,node1,identification,Blue identification box,Identification4231412341,Blue identification box,identification.html,0
+identification,node1,identification,Blue identification box,Identification,Blue identification box,identification.html,0
 screening,node2,screening,Blue screening box,Screening,Blue screening box,screening.html,0
 included,node3,included,Blue included box,Included,Blue included box,included.html,0
