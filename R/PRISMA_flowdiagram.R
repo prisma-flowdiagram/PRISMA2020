@@ -682,9 +682,10 @@ PRISMA_data <- function(data){
 #' working directory.
 #' @param plotobj A plot produced using [PRISMA_flowdiagram()].
 #' @param filename The filename to save (including extension)
-#' @param filetype The filetype to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP
+#' @param filetype The filetype to save the plot in, supports: HTML, ZIP, PDF, PNG, SVG, PS and WEBP
 #' (if NA, the filetype will be calculated out based on the file extension)
 #' HTML files maintain hyperlinks and tooltips
+#' The ZIP option creates an archive containing the HTML file, and supporting javascript and css files in an adjacent folder, instead of embedded base64 within the HTML file
 #' @param overwrite if TRUE, will overwrite an existing file
 #' @return the absolute filename of the saved diagram plot.
 #' @examples
@@ -704,12 +705,26 @@ PRISMA_save <- function(plotobj, filename = 'PRISMA2020_flowdiagram.html', filet
     switch(
       format_real,
       "HTML" = {
-        tmp_html <- tempfile(pattern = "PRISMA2020_", tmpdir = tempdir(), fileext = ".html" )
-        htmlwidgets::saveWidget(plotobj, file=tmp_html, title = tools::file_path_sans_ext(filename))
+        tmp_html <- tempfile(pattern = "PRISMA2020_", tmpdir=tempdir(), fileext=".html" )
+        htmlwidgets::saveWidget(plotobj, file=tmp_html, title="PRISMA2020 Flowdiagram")
         if (!(file.copy(tmp_html, filename, overwrite = TRUE))){
           stop("Error saving HTML")
         }
         file.remove(tmp_html)
+      },
+      "ZIP" = {
+        curr_wd <- getwd()
+        tmp_dir <- tempdir()
+        setwd(tmp_dir)
+        tmp_zipfile <- tempfile(pattern = "PRISMA2020_", tmpdir=tempdir(), fileext=".zip" )
+        tmp_html <- paste0(tools::file_path_sans_ext(basename(filename)),".html")
+        tmp_libdir <- paste0(tmp_html,"_files")
+        htmlwidgets::saveWidget(plotobj, file=tmp_html, libdir=tmp_libdir,selfcontained=FALSE, title="PRISMA2020 Flowdiagram")
+        zip::zip(zipfile = tmp_zipfile, files = c(tmp_html, tmp_libdir))
+        setwd(curr_wd)
+        if (!(file.copy(paste0(tmp_zipfile), filename, overwrite = TRUE))){
+          stop("Error saving ZIP File")
+        }
       },
       "PDF" = {
         tmp_svg <- PRISMA_gen_tmp_svg_(plotobj)

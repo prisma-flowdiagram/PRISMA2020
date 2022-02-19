@@ -111,7 +111,8 @@ ui <- tagList(
                                                  downloadButton('PRISMAflowdiagramPDF', 'PDF'),
                                                  downloadButton('PRISMAflowdiagramPNG', 'PNG'),
                                                  downloadButton('PRISMAflowdiagramSVG', 'SVG'),
-                                                 downloadButton('PRISMAflowdiagramHTML', 'Interactive HTML')
+                                                 downloadButton('PRISMAflowdiagramHTML', 'Interactive HTML'),
+                                                 downloadButton('PRISMAflowdiagramZIP', 'Interactive HTML (ZIP)')
                                     ), 
                                     mainPanel(
                                       DiagrammeR::grVizOutput(outputId = "plot1", width = "100%", height = "700px"))
@@ -366,6 +367,13 @@ server <- function(input, output) {
     content = function(file){
       PRISMA2020::PRISMA_save(plot(),
                  filename = file, filetype = "html")
+    }
+  )
+  output$PRISMAflowdiagramZIP <- downloadHandler(
+    filename = "prisma.zip",
+    content = function(file){
+      PRISMA2020::PRISMA_save(plot(),
+                 filename = file, filetype = "zip")
     }
   )
 }
