@@ -61,9 +61,10 @@ working directory.</p>
 <dt>filename</dt>
 <dd><p>The filename to save (including extension)</p></dd>
 <dt>filetype</dt>
-<dd><p>The filetype to save the plot in, supports: HTML, PDF, PNG, SVG, PS and WEBP
+<dd><p>The filetype to save the plot in, supports: HTML, ZIP, PDF, PNG, SVG, PS and WEBP
 (if NA, the filetype will be calculated out based on the file extension)
-HTML files maintain hyperlinks and tooltips</p></dd>
+HTML files maintain hyperlinks and tooltips
+The ZIP option creates an archive containing the HTML file, and supporting javascript and css files in an adjacent folder, instead of embedded base64 within the HTML file</p></dd>
 <dt>overwrite</dt>
 <dd><p>if TRUE, will overwrite an existing file</p></dd>
 </dl></div>
@@ -83,7 +84,7 @@ HTML files maintain hyperlinks and tooltips</p></dd>
 <span class="r-in">                previous <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span class="r-in">                other <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>;</span>
 <span class="r-in"><span class="fu">PRISMA_save</span><span class="op">(</span><span class="va">plot</span>, filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>, filetype<span class="op">=</span><span class="st">"html"</span><span class="op">)</span>;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmptowLqr/file141b11efafc2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpjDSIhm/file9917cd759bc"</span>
 </code></pre></div>
     </div>
   </div>
