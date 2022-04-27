@@ -18,7 +18,7 @@ template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE)
 
 # Define UI for application that draws a histogram
 ui <- tagList(
-  tags$head(tags$script(src = "labels.js")),
+  tags$head(tags$script(src = "labels.js"), includeHTML("google-analytics.html")),
   navbarPage("PRISMA Flow Diagram",
                          # Tab 1 ----
                          tabPanel("Home",
