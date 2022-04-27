@@ -59,10 +59,10 @@ ui <- tagList(
                                            hr(),
                                            'Please cite as:',
                                            br(),
-                                           'Neal R Haddaway, Chris C Pritchard, Luke A McGuinness. (2021). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams. Zenodo.', 
-                                           tags$a(href="http://doi.org/10.5281/zenodo.4287834", "http://doi.org/10.5281/zenodo.4287834"),
+                                           'Neal R Haddaway, Matthew J Page, Chris C Pritchard, Luke A McGuinness. (2022). PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis. Zenodo.', 
+                                           tags$a(href="https://doi.org/10.1002/cl2.1230", "https://doi.org/10.1002/cl2.1230"),
                                            br(),
-                                           tags$a(href="Haddaway_Pritchard_and_McGuinness2021.ris", "Download citation (.ris)", download=NA, target="_blank")
+                                           tags$a(href="Haddaway_et_al_2022.ris", "Download citation (.ris)", download=NA, target="_blank")
                                     )
                                   ),
                                   
@@ -79,7 +79,7 @@ ui <- tagList(
                                            'Jack Wasey (advisor)', br(),
                                            br(),
                                            tags$a(href="https://github.com/nealhaddaway/PRISMA2020", tags$img(height = 40, width = 40, src = "https://pngimg.com/uploads/github/github_PNG40.png")), 
-                                           'Created November 2020, Updated July 2021'
+                                           'Created November 2020, Updated April 2022'
                                     )
                                   )
                          ),
