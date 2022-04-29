@@ -7,9 +7,12 @@ You can use this package to produce a flow diagram that conforms to the PRISMA 2
 
 The 'Previous' and 'Other' study arms of the flowchart can be toggled on and off and removed or added to the diagram by specifying this in the function inputs.
 
-A static version is produced otherwise. <a href="https://srflowdiagram.github.io/template.html" target="_blank">
-  
-See the interactive template here.</a><br>
+A static version is produced otherwise.  
+
+<a href="https://srflowdiagram.github.io/template.html" target="_blank">See the interactive template here.</a><br>
+
+
+<a href="https://estech.shinyapps.io/prisma_flowdiagram/" target="_blank">Visit the web-based Shiny app for a point-and-click user interface here.</a>
 
 Please cite as:<br>
  Neal R Haddaway, Chris C Pritchard and Luke A McGuinness (2021). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams. doi: <a href="https://doi.org/10.5281/zenodo.4287834" target="_blank">10.5281/zenodo.4287834</a><br>
