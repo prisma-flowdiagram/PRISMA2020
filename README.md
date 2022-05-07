@@ -15,7 +15,7 @@ A static version is produced otherwise.
 <a href="https://estech.shinyapps.io/prisma_flowdiagram/" target="_blank">Visit the web-based Shiny app for a point-and-click user interface here.</a>
 
 Please cite as:<br>
- Neal R Haddaway, Chris C Pritchard and Luke A McGuinness (2021). PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams. doi: <a href="https://doi.org/10.5281/zenodo.4287834" target="_blank">10.5281/zenodo.4287834</a><br>
+ Haddaway, N. R., Page, M. J., Pritchard, C. C., & McGuinness, L. A. (2022). PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis. Campbell Systematic Reviews, 18, e1230. <a href=https://doi.org/10.1002/cl2.1230>https://doi.org/10.1002/cl2.1230</a><br>
 <a id="raw-url" href="https://raw.githubusercontent.com/nealhaddaway/PRISMA2020/master/inst/extdata/citation.ris">Citation in .ris format (right click 'Save Link As')</a>
 
 <!-- badges: start -->

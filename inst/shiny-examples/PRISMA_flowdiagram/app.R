@@ -59,7 +59,7 @@ ui <- tagList(
                                            hr(),
                                            'Please cite as:',
                                            br(),
-                                           'Neal R Haddaway, Matthew J Page, Chris C Pritchard, Luke A McGuinness. (2022). PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis. Zenodo.', 
+                                           ' Haddaway, N. R., Page, M. J., Pritchard, C. C., & McGuinness, L. A. (2022). PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis. Campbell Systematic Reviews, 18, e1230.', 
                                            tags$a(href="https://doi.org/10.1002/cl2.1230", "https://doi.org/10.1002/cl2.1230"),
                                            br(),
                                            tags$a(href="Haddaway_et_al_2022.ris", "Download citation (.ris)", download=NA, target="_blank")

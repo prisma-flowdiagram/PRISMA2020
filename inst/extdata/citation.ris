@@ -1,12 +1,25 @@
-TY  - COMP
-AU  - Haddaway, N. R.
-AU	- Pritchard, C. C.
-AU  - McGuinness, L. A.
-DO  - 10.5281/zenodo.4287834
-PB  - Zenodo
-PY  - 2021
-ST  - PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams
-TI  - PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams
-UR  - http://doi.org/10.5281/zenodo.4287834
-ID  - 1
+TY  - JOUR
+T1  - PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis
+AU  - Haddaway, Neal R.
+AU  - Page, Matthew J.
+AU  - Pritchard, Chris C.
+AU  - McGuinness, Luke A.
+Y1  - 2022/06/01
+PY  - 2022
+DA  - 2022/06/01
+N1  - https://doi.org/10.1002/cl2.1230
+DO  - https://doi.org/10.1002/cl2.1230
+T2  - Campbell Systematic Reviews
+JF  - Campbell Systematic Reviews
+JO  - Campbell Systematic Reviews
+JA  - Campbell Systematic Reviews
+SP  - e1230
+VL  - 18
+IS  - 2
+PB  - John Wiley & Sons, Ltd
+SN  - 1891-1803
+M3  - https://doi.org/10.1002/cl2.1230
+UR  - https://doi.org/10.1002/cl2.1230
+Y2  - 2022/05/06
+N2  - Abstract Background Reporting standards, such as PRISMA aim to ensure that the methods and results of systematic reviews are described in sufficient detail to allow full transparency. Flow diagrams in evidence syntheses allow the reader to rapidly understand the core procedures used in a review and examine the attrition of irrelevant records throughout the review process. Recent research suggests that use of flow diagrams in systematic reviews is poor and of low quality and called for standardised templates to facilitate better reporting in flow diagrams. The increasing options for interactivity provided by the Internet gives us an opportunity to support easy-to-use evidence synthesis tools, and here we report on the development of a tool for the production of PRISMA 2020-compliant systematic review flow diagrams. Methods and Findings We developed a free-to-use, Open Source R package and web-based Shiny app to allow users to design PRISMA flow diagrams for their own systematic reviews. Our tool allows users to produce standardised visualisations that transparently document the methods and results of a systematic review process in a variety of formats. In addition, we provide the opportunity to produce interactive, web-based flow diagrams (exported as HTML files), that allow readers to click on boxes of the diagram and navigate to further details on methods, results or data files. We provide an interactive example here; https://prisma-flowdiagram.github.io/. Conclusions We have developed a user-friendly tool for producing PRISMA 2020-compliant flow diagrams for users with coding experience and, importantly, for users without prior experience in coding by making use of Shiny (https://estech.shinyapps.io/prisma_flowdiagram/). This free-to-use tool will make it easier to produce clear and PRISMA 2020-compliant systematic review flow diagrams. Significantly, users can also produce interactive flow diagrams for the first time, allowing readers of their reviews to smoothly and swiftly explore and navigate to further details of the methods and results of a review. We believe this tool will increase use of PRISMA flow diagrams, improve the compliance and quality of flow diagrams, and facilitate strong science communication of the methods and results of systematic reviews by making use of interactivity. We encourage the systematic review community to make use of the tool, and provide feedback to streamline and improve their usability and efficiency.
 ER  -

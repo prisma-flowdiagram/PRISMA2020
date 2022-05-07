@@ -31,7 +31,7 @@ preferred-citation:
   - family-names: McGuinness
     given-names: Luke A
     orcid: https://orcid.org/0000-0001-8730-9761
-  doi: "10.1101/2021.07.14.21260492 "
-  journal: "medRxiv"
+  doi: "10.1002/cl2.1230"
+  journal: "Campbell Systematic Reviews"
   title: "PRISMA2020: an R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis"
-  year: 2021
+  year: 2022
