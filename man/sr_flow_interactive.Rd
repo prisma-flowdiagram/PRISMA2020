@@ -23,8 +23,9 @@ column should contain a corresponding URL for each node.}
 An interactive flow diagram plot.
 }
 \description{
-DEPRECATED - Converts a PRISMA systematic review flow diagram into an
-interactive HTML plot, for embedding links from each box.
+DEPRECATED -
+Converts a PRISMA systematic review flow diagram
+into an interactive HTML plot, for embedding links from each box.
 }
 \seealso{
 \code{\link[=PRISMA_interactive_]{PRISMA_interactive_()}}

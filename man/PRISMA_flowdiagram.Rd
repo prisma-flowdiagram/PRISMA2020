@@ -9,6 +9,8 @@ PRISMA_flowdiagram(
   interactive = FALSE,
   previous = TRUE,
   other = TRUE,
+  detail_databases = FALSE,
+  detail_registers = FALSE,
   fontsize = 7,
   font = "Helvetica",
   title_colour = "Goldenrod1",
@@ -21,26 +23,34 @@ PRISMA_flowdiagram(
 )
 }
 \arguments{
-\item{data}{List of data inputs including numbers of studies, box text, tooltips
-and urls for hyperlinks. Data inputted via the \code{\link[=PRISMA_data]{PRISMA_data()}} function. If
-inputting individually, see the necessary parameters listed in the
-\code{\link[=PRISMA_data]{PRISMA_data()}}) function and combine them in a list using \code{data <- list()}.}
+\item{data}{List of data inputs including numbers of studies,
+box text, tooltips, and urls for hyperlinks.
+Data inputted via the \code{\link[=PRISMA_data]{PRISMA_data()}} function.
+If inputting individually, see the necessary parameters
+listed in the  \code{\link[=PRISMA_data]{PRISMA_data()}}) function and
+combine them in a list using \code{data <- list()}.}
 
-\item{interactive}{Logical argument TRUE or FALSE whether to plot interactivity
-(tooltips and hyperlinked boxes).}
+\item{interactive}{Logical argument TRUE or FALSE
+whether to plot interactivity (tooltips and hyperlinked boxes).}
 
 \item{previous}{Logical argument (TRUE or FALSE) specifying whether previous
 studies were sought.}
 
-\item{other}{Logical argument (TRUE or FALSE) specifying whether other studies
-were sought.}
+\item{other}{Logical argument (TRUE or FALSE) specifying whether
+other studies were sought.}
+
+\item{detail_databases}{Logical argument (TRUE or FALSE) specifying whether
+to list specific databases.}
+
+\item{detail_registers}{Logical argument (TRUE or FALSE) specifying whether
+to list specific registers.}
 
 \item{fontsize}{The font size for text in each box. The default is '12'.}
 
 \item{font}{The font for text in each box. The default is 'Helvetica'.}
 
 \item{title_colour}{The colour for the upper middle title box (new studies).
-The default is 'Goldenrod1'. See 'DiagrammeR' colour scheme
+The default is 'Goldenrod1'. See 'DiagrammeR' colour scheme.
 \url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors}.}
 
 \item{greybox_colour}{The colour for the left and right column boxes. The
@@ -57,22 +67,24 @@ is 'Black'. See 'DiagrammeR' colour scheme
 
 \item{arrow_head}{The head shape for the line connectors. The default is
 'normal'. See DiagrammeR arrow shape specification
-\url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes}.}
+\url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes}. #nolint}
 
 \item{arrow_tail}{The tail shape for the line connectors. The default is
 'none'. See DiagrammeR arrow shape specification
-\url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes}.}
+\url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes}. #nolint}
 
-\item{side_boxes}{Whether or not to include the blue label boxes along the side}
+\item{side_boxes}{Whether or not to include the
+blue label boxes along the side}
 }
 \value{
 A flow diagram plot.
 }
 \description{
-Produces a PRISMA2020 style flow diagram for systematic reviews,
-with the option to add interactivity through tooltips (mouseover popups) and
-hyperlink URLs to each box. Data can be imported from the standard CSV template
-provided.
+Produces a PRISMA2020 style flow diagram
+for systematic reviews, with the option to add
+interactivity through tooltips (mouseover popups) and
+hyperlink URLs to each box.
+Data can be imported from the standard CSV template provided.
 }
 \examples{
 csvFile <- system.file("extdata", "PRISMA.csv", package = "PRISMA2020")

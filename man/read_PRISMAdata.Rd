@@ -13,7 +13,8 @@ read_PRISMAdata(data)
 A list of objects needed to plot the flow diagram
 }
 \description{
-DEPRECATED - read in a template CSV containing data for the flow diagram
+DEPRECATED -
+read in a template CSV containing data for the flow diagram
 }
 \seealso{
 \code{\link[=PRISMA_data]{PRISMA_data()}}
