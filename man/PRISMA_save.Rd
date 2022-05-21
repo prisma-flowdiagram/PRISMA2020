@@ -16,10 +16,13 @@ PRISMA_save(
 
 \item{filename}{The filename to save (including extension)}
 
-\item{filetype}{The filetype to save the plot in, supports: HTML, ZIP, PDF, PNG, SVG, PS and WEBP
+\item{filetype}{The filetype to save the plot in, supports:
+HTML, ZIP, PDF, PNG, SVG, PS and WEBP
 (if NA, the filetype will be calculated out based on the file extension)
 HTML files maintain hyperlinks and tooltips
-The ZIP option creates an archive containing the HTML file, and supporting javascript and css files in an adjacent folder, instead of embedded base64 within the HTML file}
+The ZIP option creates an archive containing the HTML file,
+alongside supporting javascript and css files in an adjacent folder,
+instead of embedded base64 within the HTML file}
 
 \item{overwrite}{if TRUE, will overwrite an existing file}
 }
