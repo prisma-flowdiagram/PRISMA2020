@@ -2,10 +2,9 @@ on:
   release:
     types: [released]
   pull_request:
-    types: [assigned, opened, synchronize, reopened]
-    branches:
-      - main
-      - master
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
   push:
     branches:
       - main
@@ -13,14 +12,15 @@ on:
 name: Check & Deploy
 jobs:
   R-CMD-Check:
+    if: (github.event_name != 'issue_comment')
     uses: prisma-flowdiagram/r-workflows/.github/workflows/R-CMD-check.yml@v1
   pkgdown:
     needs: R-CMD-check
-    if: github.event_name == 'push'
+    if: (github.event_name == 'push')
     uses: prisma-flowdiagram/r-workflows/.github/workflows/pkgdown.yml@v1
   deploy-latest:
     needs: pkgdown
-    if: github.event_name == 'push'
+    if: (github.event_name == 'push')
     uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@v1
     with:
       install-package: true
@@ -41,6 +41,70 @@ jobs:
       rsconnect-app-name: "PRISMA_flowdiagram"
       working-directory: "./inst/shiny-examples/PRISMA_flowdiagram"
       environment: "release"
+    secrets:
+      rsconnect-account-token: ${{ secrets.TOKEN }}
+      rsconnect-account-secret: ${{ secrets.SECRET }}
+  check-pr-deploy:
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'pull_request') || ((github.event_name == 'issue_comment'))
+    outputs:
+      triggered: ${{ steps.check-pr.outputs.triggered }}
+    steps:
+      - uses: khan/pull-request-comment-trigger@v1.1.0
+        id: check-pr
+        with:
+          trigger: '!deploy'
+          reaction: rocket
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+  get-pull-ref:
+    runs-on: ubuntu-latest
+    needs: check-pr-deploy
+    if: github.event_name == 'issue_comment'
+    outputs:
+      repository: ${{ steps.get-repo.outputs.repository }}
+      ref: ${{ fromJson(steps.get-repo.outputs.data).head.ref }}
+    steps:
+      - name: get-pull-request-ref
+        id: get-repo
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/:repository/pulls/:issue_id
+          repository: ${{ github.repository }}
+          issue_id: ${{ github.event.issue.number }}
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+  R-CMD-check-PR:
+    needs: [check-pr-deploy,get-pull-ref]
+    if: needs.check-pr-deploy.outputs.triggered == 'true'
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/R-CMD-check.yml@v1
+    with:
+      repository: ${{ needs.get-pull-ref.outputs.repository }} || ${{ github.repository }}
+      ref: ${{ needs.get-pull-ref.outputs.ref }} || ${{ github.ref }}
+  deploy-pr-comment:
+    needs: [get-pull-ref,R-CMD-check-PR]
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@v1
+    with:
+      repository: ${{ needs.get-pull-ref.outputs.repository }} || ${{ github.repository }}
+      ref: ${{ needs.get-pull-ref.outputs.ref }} || ${{ github.ref }}
+      install-package: true
+      rsconnect-account-name: "prismaflow-test"
+      rsconnect-app-name: "PRISMA_flowdiagram"
+      working-directory: "./inst/shiny-examples/PRISMA_flowdiagram"
+      environment: "pr"
+    secrets:
+      rsconnect-account-token: ${{ secrets.TOKEN }}
+      rsconnect-account-secret: ${{ secrets.SECRET }}
+  deploy-pr:
+    needs: [R-CMD-check,check-pr-deploy]
+    if: needs.check-pr-deploy.outputs.triggered == 'true'
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@v1
+    with:
+      install-package: true
+      rsconnect-account-name: "prismaflow-test"
+      rsconnect-app-name: "PRISMA_flowdiagram"
+      working-directory: "./inst/shiny-examples/PRISMA_flowdiagram"
+      environment: "pr"
     secrets:
       rsconnect-account-token: ${{ secrets.TOKEN }}
       rsconnect-account-secret: ${{ secrets.SECRET }}
