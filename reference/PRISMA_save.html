@@ -58,19 +58,31 @@ working directory.</p>
     <h2>Arguments</h2>
     <dl><dt>plotobj</dt>
 <dd><p>A plot produced using <code><a href="PRISMA_flowdiagram.html">PRISMA_flowdiagram()</a></code>.</p></dd>
+
+
 <dt>filename</dt>
 <dd><p>The filename to save (including extension)</p></dd>
+
+
 <dt>filetype</dt>
-<dd><p>The filetype to save the plot in, supports: HTML, ZIP, PDF, PNG, SVG, PS and WEBP
+<dd><p>The filetype to save the plot in, supports:
+HTML, ZIP, PDF, PNG, SVG, PS and WEBP
 (if NA, the filetype will be calculated out based on the file extension)
 HTML files maintain hyperlinks and tooltips
-The ZIP option creates an archive containing the HTML file, and supporting javascript and css files in an adjacent folder, instead of embedded base64 within the HTML file</p></dd>
+The ZIP option creates an archive containing the HTML file,
+alongside supporting javascript and css files in an adjacent folder,
+instead of embedded base64 within the HTML file</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>if TRUE, will overwrite an existing file</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>the absolute filename of the saved diagram plot.</p>
+    
+
+<p>the absolute filename of the saved diagram plot.</p>
     </div>
 
     <div id="ref-examples">
@@ -84,7 +96,7 @@ The ZIP option creates an archive containing the HTML file, and supporting javas
 <span class="r-in">                previous <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span class="r-in">                other <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>;</span>
 <span class="r-in"><span class="fu">PRISMA_save</span><span class="op">(</span><span class="va">plot</span>, filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>, filetype<span class="op">=</span><span class="st">"html"</span><span class="op">)</span>;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/Rtmp2v1p5B/file82653d8dc9c"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpvrG6xw/filef9456a0a80e"</span>
 </code></pre></div>
     </div>
   </div>
@@ -99,7 +111,7 @@ The ZIP option creates an archive containing the HTML file, and supporting javas
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>
