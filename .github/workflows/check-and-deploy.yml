@@ -1,0 +1,46 @@
+on:
+  release:
+    types: [released]
+  pull_request:
+    types: [assigned, opened, synchronize, reopened]
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+name: Check & Deploy
+jobs:
+  R-CMD-Check:
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/R-CMD-check.yml@v1
+  pkgdown:
+    needs: R-CMD-check
+    if: github.event_name == 'push'
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/pkgdown.yml@v1
+  deploy-latest:
+    needs: pkgdown
+    if: github.event_name == 'push'
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@v1
+    with:
+      install-package: true
+      rsconnect-account-name: "estech"
+      rsconnect-app-name: "PRISMA_flowdiagram_latest"
+      working-directory: "./inst/shiny-examples/PRISMA_flowdiagram"
+      environment: "latest"
+    secrets:
+      rsconnect-account-token: ${{ secrets.TOKEN }}
+      rsconnect-account-secret: ${{ secrets.SECRET }}
+  deploy-release:
+    needs: R-CMD-check
+    if: github.event_name == 'release'
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@v1
+    with:
+      install-package: true
+      rsconnect-account-name: "estech"
+      rsconnect-app-name: "PRISMA_flowdiagram"
+      working-directory: "./inst/shiny-examples/PRISMA_flowdiagram"
+      environment: "release"
+    secrets:
+      rsconnect-account-token: ${{ secrets.TOKEN }}
+      rsconnect-account-secret: ${{ secrets.SECRET }}
