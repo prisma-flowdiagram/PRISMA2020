@@ -21,67 +21,83 @@ ui <- tagList(
     tags$link(
       rel = "shortcut icon",
       href = "favicon.ico"
-    )
+    ),
+    # the below enables us to utilise analytics when pushing to shinyapps.io.
+    # if self hosting you can insert your own analytics code here
+    # it is your responsibility to ensure compliance with regulations such as
+    # the EU GDPR. we use a self-hosted version of umami,
+    # configured not to store any cookies or personally identifiable data.
+    # We also respect the "do-not-track" header.
+    analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) {
+      tags$script(
+        src = "https://umami.christopherpritchard.co.uk/umami.js",
+        "async",
+        "defer",
+        "data-website-id" = "72f80a48-0dea-4914-9619-465de3df82a4",
+        "data-do-not-track" = "true",
+        "data-host-url" = "https://umami.christopherpritchard.co.uk"
+      )
+    }
   ),
-  # the below enables us to utilise analytics when pushing to shinyapps.io.
-  # if self hosting you can insert your own analytics code here
-  # it is your responsibility to ensure compliance with regulations such as
-  # the EU GDPR
-  ### DO NOT MODIFY BEGIN ANALYTICS ###
-  #                                   #
-  #       INSERT_ANALYTICS_CODE       #
-  #                                   #
-  #### DO NOT MODIFY END ANALYTICS ####
   navbarPage(
     "PRISMA Flow Diagram",
     position = "fixed-top",
     # Tab 1 ----
-    # nolint start
     tabPanel("Home",
       fluidRow(
         column(10, offset = 1,
-          'Systematic reviews should be described in a high degree of methodological detail. ',
+          "Systematic reviews should be described in
+          a high degree of methodological detail. ",
           tags$a(
-            href="http://prisma-statement.org/",
+            href = "http://prisma-statement.org/",
             "The PRISMA Statement"
           ),
-          'calls for a high level of reporting detail in systematic reviews and meta-analyses. An integral part of the methodologicadescription of a review is a flow diagram.',
+          "calls for a high level of reporting detail in
+          systematic reviews and meta-analyses. An integral
+          part of the methodological description of a review
+          is a flow diagram.",
           br(),
           br(),
-          'This tool allows you to produce a flow diagram for your own review that conforms to ',
+          "This tool allows you to produce a flow diagram
+          for your own review that conforms to ",
           tags$a(
-            href="https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003583",
+            href = "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003583", # nolint
             "the PRISMA2020 Statement."
           ),
-          'You can provide the numbers in the data entry section of the \'Create flow diagram\' tab. Alternatively, to allow for morcustomisation, you can use the template file below.',
+          "You can provide the numbers in the data entry section
+          of the 'Create flow diagram' tab.
+          Alternatively, to allow for more customisation,
+          you can use the template file below.",
           br(),
           br(),
-          "This tool also allows you to download an interactive HTML version of the plot, alongside several other common formats.",
+          "This tool also allows you to download an interactive HTML
+          version of the plot, alongside several other common formats.",
           br(),
           br(),
           "We also provide an R package:",
           tags$a(
-            href="https://github.com/nealhaddaway/PRISMA2020",
+            href = "https://github.com/prisma-flowdiagram/PRISMA2020",
             "PRISMA2020 flow diagram R package on Github."
           ),
           br(),
           br(),
-          'Please let us know if you have any feedback or if you encounter an error by creating an',
+          "Please let us know if you have any feedback or
+          if you encounter an error by creating an",
           tags$a(
-            href="https://github.com/nealhaddaway/PRISMA2020/issues",
+            href = "https://github.com/prisma-flowdiagram/PRISMA2020/issues",
             "issue on GitHub"
           ),
           br(),
           br(),
           tags$a(
-            href="PRISMA.csv",
+            href = "PRISMA.csv",
             "Download the template CSV file",
-            download=NA,
-            target="_blank"
+            download = NA,
+            target = "_blank"
           ),
           br(),
           br(),
-          'Upload your edited file here:',
+          "Upload your edited file here:",
           br(),
           fileInput(
             "data_upload",
@@ -94,58 +110,57 @@ ui <- tagList(
               ".csv"
             )
           ),
-          # actionButton("reset_data_upload", "Click to clear uploaded data",
-          # style="color: #fff; background-color: #e86868; border-color: #e86868"),
-          # br(),
           hr(),
-          'Please cite as:',
+          "Please cite as:",
           br(),
-          ' Haddaway, N. R., Page, M. J., Pritchard, C. C., & McGuinness, L. A. (2022). PRISMA2020: An R package and Shiny app foproducing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open SynthesisCampbell Systematic Reviews, 18, e1230.', 
+          "Haddaway, N. R., Page, M. J., Pritchard, C. C., &
+          McGuinness, L. A. (2022). PRISMA2020: An R package
+          and Shiny app for producing PRISMA 2020-compliant flow
+          diagrams, with interactivity for optimised digital transparency
+          and Open Synthesis Campbell Systematic Reviews, 18, e1230.",
           tags$a(
-            href="https://doi.org/10.1002/cl2.1230",
+            href = "https://doi.org/10.1002/cl2.1230",
             "https://doi.org/10.1002/cl2.1230"
           ),
           br(),
           tags$a(
-            href="Haddaway_et_al_2022.ris",
+            href = "Haddaway_et_al_2022.ris",
             "Download citation (.ris)",
-            download=NA,
-            target="_blank"
+            download = NA,
+            target = "_blank"
           )
         )
       ),
-      # Show a plot of the generated distribution
       fluidRow(
         column(
           10,
           offset = 1,
           br(),
-          'Credits:',
+          "Credits:",
           br(),
-          'Neal R Haddaway (creator, author)',
+          "Neal R Haddaway (creator, author)",
           br(),
-          'Luke A McGuinness (coder, author)',
+          "Luke A McGuinness (coder, author)",
           br(),
-          'Chris C Pritchard (coder, author)',
+          "Chris C Pritchard (coder, author)",
           br(),
-          'Matthew J Page (advisor)',
+          "Matthew J Page (advisor)",
           br(),
-          'Jack Wasey (advisor)',
+          "Jack Wasey (advisor)",
           br(),
           br(),
           tags$a(
-            href="https://github.com/nealhaddaway/PRISMA2020",
+            href = "https://github.com/prisma-flowdiagram/PRISMA2020",
             tags$img(
               height = 40,
               width = 40,
               src = "https://pngimg.com/uploads/github/github_PNG40.png"
             )
           ),
-          'Created November 2020, Updated June 2022'
+          "Created November 2020, Updated June 2022"
         )
       )
     ),
-    # nolint end
     # Tab 2 ----
     tabPanel(
       "Create flow diagram",
@@ -238,35 +253,125 @@ ui <- tagList(
           )
         )
       )
-    )
-      # the below enables us to insert code to inform the user about analytics
-      # if self hosting you can insert your own information here
-      # it is your responsibility to ensure compliance with regulations such as
-      # the EU GDPR
-      ### DO NOT MODIFY BEGIN ANALYTICS ###
-      #                                   #
-      #   INSERT_ANALYTICS_INFORMATION    #
-      #                                   #
-      #### DO NOT MODIFY END ANALYTICS ####
-    # nolint start
-    , tabPanel(
-      "Privacy & Impact",
-      fluidRow(
-        column(10, offset = 1,
-          'Analytics are used to help us understand how the tool is used. This information is used to improve the tool and to make it more useful to users. Personally identifiable data, including IP addresses, are not collected for these purposes, however, IP addresses may be stored and used for by our hosting provider, shinyapps.io and their partners to monitor and maintain website security. Further information about their privacy practices can be found at ',
-          tags$a(
-            href="https://www.rstudio.com/about/rstudio-and-the-gdpr-what-you-need-to-know/",
-            "RStudio"
+    ),
+    # the below analytics information should be updated to reflect
+    # analytics that you use. It is your responsibility to ensure
+    # compliance with regulations such as the EU GDPR
+    # this section will not be shown unless the PRISMA_ANALYTICS
+    # environment variable is set at runtime
+    anaytics_info <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) {
+      tabPanel(
+        "Privacy & Impact",
+        tags$script(
+          "async",
+          "src" = "https://badge.dimensions.ai/badge.js",
+          "charset" = "utf-8"
+        ),
+        tags$script(
+          "type" = "text/javascript",
+          "src" = "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"
+        ),
+        fluidRow(
+          column(
+            width = 10,
+            offset = 1,
+            "We use",
+            tags$a(
+              href = "https://umami.is",
+              "Umami"
+            ),
+            "analytics to identify how our website
+            is used and accessed. We do not collect any
+            personally identifiable data, nor do we use cookies
+            or local browser storage. All data collected for this purpose
+            is anonymised. We also respect the 'do-not-track' header that can
+            be set within your browser preferences.",
+            br(),
+            br(),
+            "The site's usage can be viewed",
+            tags$a(
+              href =
+                "https://umami.christopherpritchard.co.uk/share/DaPFWd0Q/Prisma%20Flow%20Diagram", #nolint
+              "on the public dashboard."
+            ),
+            br(),
+            br(),
+            "RStudio collects data in line with their",
+            tags$a(
+              href = "https://www.rstudio.com/legal/privacy-policy/",
+              "Privacy Policy"
+            ),
+            "for the neccesary functioning of their cloud products,
+            including our hosting provider,",
+            tags$a(
+              href = "https://shinyapps.io",
+              "shinyapps.io"
+            ),
+            br(),
+            br(),
+            hr(),
+            "Our",
+            tags$a(
+              href = "https://doi.org/10.1002/cl2.1230",
+              "article"
+            ),
+            "metrics are:",
+            br()
           ),
-          '.',
-          br(),
-          br(),
-          'The analytics collected allow us to see the reach of the tool, with the link available '
+        ),
+        fluidRow(
+          column(1, offset = 1,
+            tags$div(
+              "class" = "__dimensions_badge_embed__",
+              "data-doi" = "10.1002/cl2.1230",
+              "data-legend" = "hover-right",
+              "data-style" = "small_circle",
+              "width" = "64"
+            )
+          ),
+          column(1, offset = 0,
+            tags$div(
+              "class" = "altmetric-embed",
+              "data-badge-type" = "donut",
+              "data-doi" = "10.1002/cl2.1230",
+              "width" = "64"
+            )
+          ),
+        ),
+        fluidRow(
+          column(10, offset = 1,
+            br(),
+            "We also published a",
+            tags$a(
+              href = "https://doi.org/10.1002/cl2.1230",
+              "preprint."
+            ),
+            "Our metrics for the preprint are:",
+            br(),
+            br()
           )
+        ),
+        fluidRow(
+          column(1, offset = 1,
+            tags$div(
+              "class" = "__dimensions_badge_embed__",
+              "data-doi" = "10.1101/2021.07.14.21260492",
+              "data-legend" = "hover-right",
+              "data-style" = "small_circle",
+              "width" = "64"
+            )
+          ),
+          column(1, offset = 0,
+            tags$div(
+              "class" = "altmetric-embed",
+              "data-badge-type" = "donut",
+              "data-doi" = "10.1101/2021.07.14.21260492",
+              "width" = "64"
+            )
+          ),
         )
       )
-    # nolint end
-    )
+    }
   )
 )
 
