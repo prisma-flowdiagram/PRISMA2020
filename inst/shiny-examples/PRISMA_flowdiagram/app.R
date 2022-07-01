@@ -248,6 +248,25 @@ ui <- tagList(
       #   INSERT_ANALYTICS_INFORMATION    #
       #                                   #
       #### DO NOT MODIFY END ANALYTICS ####
+    # nolint start
+    , tabPanel(
+      "Privacy & Impact",
+      fluidRow(
+        column(10, offset = 1,
+          'Analytics are used to help us understand how the tool is used. This information is used to improve the tool and to make it more useful to users. Personally identifiable data, including IP addresses, are not collected for these purposes, however, IP addresses may be stored and used for by our hosting provider, shinyapps.io and their partners to monitor and maintain website security. Further information about their privacy practices can be found at ',
+          tags$a(
+            href="https://www.rstudio.com/about/rstudio-and-the-gdpr-what-you-need-to-know/",
+            "RStudio"
+          ),
+          '.',
+          br(),
+          br(),
+          'The analytics collected allow us to see the reach of the tool, with the link available '
+          )
+        )
+      )
+    # nolint end
+    )
   )
 )
 
