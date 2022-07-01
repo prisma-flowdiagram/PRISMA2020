@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - master
+      - analytics
 name: Check & Deploy
 jobs:
   R-CMD-Check:
@@ -21,13 +22,15 @@ jobs:
   deploy-latest:
     needs: pkgdown
     if: (github.event_name == 'push')
-    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@v1
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@187389dec090ec98902ae399fa88e53395654576
     with:
       install-package: true
       rsconnect-account-name: "estech"
       rsconnect-app-name: "PRISMA_flowdiagram_latest"
       working-directory: "./inst/shiny-examples/PRISMA_flowdiagram"
       environment: "latest"
+      renvironment-contents: |
+        PRISMA_ANALYTICS=TRUE      
     secrets:
       rsconnect-account-token: ${{ secrets.TOKEN }}
       rsconnect-account-secret: ${{ secrets.SECRET }}
