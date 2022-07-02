@@ -1,3 +1,12 @@
+# Suppress R CMD check note
+#' @importFrom DT addRow
+#' @importFrom rio import
+#' @importFrom shiny column
+#' @importFrom shinyjs alert
+#' @importFrom stats median
+#' @importFrom utils apropos
+#' @importFrom webp read_webp
+NULL
 #' Plot interactive flow diagrams for systematic reviews
 #' @description Produces a PRISMA2020 style flow diagram
 #' for systematic reviews, with the option to add
@@ -536,7 +545,7 @@ PRISMA_flowdiagram <- function( #nolint
         prev_study_height
       )
     )
-  included_box_height <- 
+  included_box_height <-
     newstudy_newreports_height +
     total_studies_height +
     default_box_spacing
