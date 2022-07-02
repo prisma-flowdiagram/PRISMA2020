@@ -5,6 +5,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4287834.svg)](https://doi.org/10.5281/zenodo.4287834)
 [![DOI](https://zenodo.org/badge/DOI/10.1002/cl2.1230.svg)](https://doi.org/10.1002/cl2.1230)
 <!-- badges: end -->
+
 # PRISMA2020 Flow Diagram <img src="https://raw.githubusercontent.com/prisma-flowdiagram/PRISMA2020/master/PRISMA2020-hex.png" align="right" width="15%"/>
 
 You can use this package to produce a flow diagram that conforms to the PRISMA 2020 standards using the `PRISMA_flowdiagram()` function. The data can be manually entered into the function, or loaded up using the template CSV file provided in 'INST/EXTDATA/'. The function, (if 'interactive = TRUE') produces an interactive HTML ouput with each box linking to a specific page (e.g. of search results or methods details), and hover-over tooltips for further information. 
