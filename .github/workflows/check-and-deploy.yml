@@ -22,7 +22,7 @@ jobs:
   deploy-latest:
     needs: pkgdown
     if: (github.event_name == 'push')
-    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@187389dec090ec98902ae399fa88e53395654576
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@162f88ea69400bc1ae0baa8deecb0d62630c5946
     with:
       install-package: true
       rsconnect-account-name: "estech"
@@ -86,7 +86,7 @@ jobs:
       ref: ${{ needs.get-pull-ref.outputs.ref || github.ref }}
   deploy-pr-comment:
     needs: [get-pull-ref,R-CMD-check-PR]
-    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@v1
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@162f88ea69400bc1ae0baa8deecb0d62630c5946
     with:
       repository: ${{ needs.get-pull-ref.outputs.repository || github.repository }}
       ref: ${{ needs.get-pull-ref.outputs.ref || github.ref }}
