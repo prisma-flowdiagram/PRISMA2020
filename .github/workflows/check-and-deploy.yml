@@ -28,9 +28,7 @@ jobs:
       rsconnect-account-name: "estech"
       rsconnect-app-name: "PRISMA_flowdiagram_latest"
       working-directory: "./inst/shiny-examples/PRISMA_flowdiagram"
-      environment: "latest"
-      renvironment-contents: |
-        PRISMA_ANALYTICS=TRUE      
+      environment: "latest"    
     secrets:
       rsconnect-account-token: ${{ secrets.TOKEN }}
       rsconnect-account-secret: ${{ secrets.SECRET }}
@@ -86,7 +84,7 @@ jobs:
       ref: ${{ needs.get-pull-ref.outputs.ref || github.ref }}
   deploy-pr-comment:
     needs: [get-pull-ref,R-CMD-check-PR]
-    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@162f88ea69400bc1ae0baa8deecb0d62630c5946
+    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@v1
     with:
       repository: ${{ needs.get-pull-ref.outputs.repository || github.repository }}
       ref: ${{ needs.get-pull-ref.outputs.ref || github.ref }}
