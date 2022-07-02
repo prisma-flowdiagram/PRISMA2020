@@ -75,6 +75,32 @@ PRISMA_flowdiagram <- function( #nolint
   for (var in seq_len(length(data))) {
     assign(names(data)[var], data[[var]])
   }
+  # positional attributes, in inches
+  diagram_start_x <- 0
+  diagram_start_y <- 0
+  prev_study_width <- 0
+  prev_study_offset <- 0
+  prev_study_height <- 0
+  total_studies_height <- 0
+  other_identified_height <- 0
+  other_sought_reports_height <- 0
+  other_notretrieved_height <- 0
+  other_assessed_height <- 0
+  other_excluded_height <- 0
+  default_box_width <- 3.5
+  min_box_height <- 0.5
+  default_box_spacing <- 0.5
+  section_label_length <- 0.4
+  top_box_width <- default_box_width * 2 + default_box_spacing
+  A <- "" #nolint
+  Aedge <- "" #nolint
+  bottomedge <- ""
+  previous_nodes <- ""
+  finalnode <- ""
+  prev_rank1 <- ""
+  prevnode1 <- ""
+  prevnode2 <- ""
+
   #wrap exclusion reasons
   dbr_excluded[, 1] <- stringr::str_wrap(
     dbr_excluded[, 1],
@@ -93,71 +119,11 @@ PRISMA_flowdiagram <- function( #nolint
     register_specific_results[, 1],
     width = 35
   )
-  # calculate an adjustment factor to relocate
-  # boxes depending on length of arguments
-  if (detail_databases == TRUE) {
-    id_adj_factor <- PRISMA_get_height_(
-      database_specific_results,
-      7.5,
-      0
-    )
-  } else {
-    id_adj_factor <- 7
-  }
-  if (detail_registers == TRUE) {
-    id_adj_factor <- id_adj_factor + PRISMA_get_height_(
-      register_specific_results,
-      0,
-      0
-    )
-  }
   #remove previous box if both values are zero
   if (is.na(previous_studies) == TRUE && is.na(previous_reports) == TRUE) {
     previous <- FALSE
   }
   if (previous == TRUE) {
-    xstart <- 0
-    ystart <- 0
-    A <- paste0( #nolint
-      "A [
-        label = '',
-        pos = '", xstart + 1, ",", ystart + 0, "!',
-        tooltip = ''
-      ]"
-    )
-    Aedge <- paste0( #nolint
-      "subgraph cluster0 {
-        edge [
-          color = White,
-          arrowhead = none,
-          arrowtail = none
-        ]
-        1->2;
-        edge [
-          color = ", arrow_colour, ",
-          arrowhead = none,
-          arrowtail = ", arrow_tail, "
-        ]
-        2->A;
-        edge [
-          color = ", arrow_colour, ",
-          arrowhead = ", arrow_head, ",
-          arrowtail = none,
-          constraint = FALSE
-        ]
-        A->19;
-      }"
-    )
-    bottomedge <- paste0(
-      "edge [
-        color = '", arrow_colour, "',
-        arrowhead = '", arrow_head, "',
-        arrowtail = '", arrow_tail, "'
-      ]
-      12->19;\n"
-    )
-    h_adj1 <- 0
-    h_adj2 <- 0
     #conditional studies and reports - empty text if blank
     if (is.na(previous_studies) == TRUE) {
       cond_prevstud <- ""
@@ -183,126 +149,46 @@ PRISMA_flowdiagram <- function( #nolint
     if (is.na(previous_studies) == TRUE || is.na(previous_reports) == TRUE) {
       dbl_br <- ""
     } else {
-      dbl_br <- "\n\n"
+      dbl_br <- "\n"
     }
-    previous_nodes <- paste0(
-      "node [
-        shape = box,
-        fontsize = ", fontsize, ",
-        fontname = ", font, ",
-        color = ", greybox_colour, "
-      ]
-      1 [
-        label = '", previous_text, "',
-        style = 'rounded,filled',
-        width = 3.5,
-        height = 0.5,
-        pos = '", xstart + 1, ",", ystart + (id_adj_factor * 1.2), "!',
-        tooltip = '", tooltips["prevstud"], "'
-      ]
-      node [
-        shape = box,
-        fontname = ", font, ",
-        color = ", greybox_colour, "
-      ]
-      2 [
-        label = '", cond_prevstud, dbl_br, cond_prevrep, "',
-        style = 'filled',
-        width = 3.5,
-        height = 0.5,
-        pos = '", xstart + 1, ",", ystart + id_adj_factor, "!',
-        tooltip = '", tooltips["previous_studies"], "'
-      ]"
+    prev_study_label <- paste0(cond_prevstud, dbl_br, cond_prevrep)
+    total_studies_label <- paste0(
+      stringr::str_wrap(
+        paste0(
+          total_studies_text,
+          " (n = ", total_studies, ")"
+        ),
+        width = 33
+      ),
+      "\n",
+      stringr::str_wrap(
+        paste0(
+          total_reports_text,
+          " (n = ", total_reports, ")"
+        ),
+        width = 33
+      )
     )
-    finalnode <- paste0(
-      "node [
-        shape = box,
-        fontname = ", font, ",
-        color = ", greybox_colour, "
-      ]
-      19 [
-        label = '",
-          paste0(
-            stringr::str_wrap(
-              paste0(
-                total_studies_text,
-                " (n = ", total_studies, ")"
-              ),
-              width = 33
-            ),
-            "\n",
-            stringr::str_wrap(
-              paste0(
-                total_reports_text,
-                " (n = ", total_reports, ")"
-              ),
-            width = 33
-            )
-          ),
-          "',
-        style = 'filled',
-        width = 3.5,
-        height = 0.5,
-        pos = '", xstart + 5, ",", ystart + 0, "!',
-        tooltip = '", tooltips["total_studies"], "'
-      ]"
+    # we multiply by 2 because we need the width
+    # from the start, not just the centre
+    prev_study_width <- default_box_width * 2
+    prev_study_offset <- default_box_spacing
+    prev_box_x <- PRISMA_get_pos_(
+      diagram_start_x,
+      default_box_spacing,
+      default_box_width,
+      prev_study_offset
     )
-    prev_rank1 <- "{rank = same; A; 19}"
-    prevnode1 <- "1; "
-    prevnode2 <- "2; "
-  } else {
-    xstart <- -3.5
-    ystart <- 0
-    A <- "" #nolint
-    Aedge <- "" #nolint
-    bottomedge <- ""
-    previous_nodes <- ""
-    finalnode <- ""
-    h_adj1 <- 0.63
-    h_adj2 <- 1.4
-    prev_rank1 <- ""
-    prevnode1 <- ""
-    prevnode2 <- ""
+    prev_study_height <- PRISMA_get_height_(
+      stringr::str_count(prev_study_label, "\n"),
+      min_box_height
+    )
+    total_studies_height <- PRISMA_get_height_(
+      stringr::str_count(total_studies_label, "\n"),
+      min_box_height
+    )
   }
-  if (side_boxes == TRUE) {
-    sidebox <- paste0(
-      "node [
-        shape = box,
-        fontsize = ", fontsize, ",
-        fontname = ", font, ",
-        color = ", title_colour, "
-      ]
-      identification [
-        color = LightSteelBlue2,
-        label = ' ',
-        style = 'filled,rounded',
-        pos = '", -1.4, ",", ystart + id_adj_factor, "!',
-        width = 0.4,
-        height = 1.5,
-        tooltip = '", tooltips["identification"], "'
-      ];
-      screening [
-        color = LightSteelBlue2,
-        label = ' ',
-        style = 'filled,rounded',
-        pos = '", -1.4, ",", ystart + 4.5, "!',
-        width = 0.4,
-        height = 2.5,
-        tooltip = '", tooltips["screening"], "'
-      ];
-      included [
-        color = LightSteelBlue2,
-        label = ' ',
-        style = 'filled,rounded',
-        pos = '", -1.4, ",", h_adj1 + 0.87, "!',
-        width = 0.4,
-        height = ", 2.5 - h_adj2, ",
-        tooltip = '", tooltips["included"], "'
-      ];\n"
-    )
-  } else {
-    sidebox <- ""
-  }
+  # conditionals for the node labels
   if (
     is.na(website_results) == TRUE &&
     is.na(organisation_results) == TRUE &&
@@ -311,6 +197,34 @@ PRISMA_flowdiagram <- function( #nolint
     other <- FALSE
   }
   if (other == TRUE) {
+    # conditionals for the node labels
+    if (is.na(website_results) == FALSE) {
+      cond_websites <- paste0(
+        "\n",
+        website_results_text,
+        " (n = ", website_results, ")"
+      )
+    } else {
+      cond_websites <- ""
+    }
+    if (is.na(organisation_results) == FALSE) {
+      cond_organisation <- paste0(
+        "\n",
+        organisation_results_text,
+        " (n = ", organisation_results, ")"
+      )
+    } else {
+      cond_organisation <- ""
+    }
+    if (is.na(citations_results) == FALSE) {
+      cond_citation <- paste0(
+        "\n",
+        citations_results_text,
+        " (n = ", citations_results, ")"
+      )
+    } else {
+      cond_citation <- ""
+    }
     if (is.data.frame(other_excluded) == TRUE) {
       other_excluded_data <- paste0(
         ":",
@@ -329,179 +243,122 @@ PRISMA_flowdiagram <- function( #nolint
         "\n", "(n = ", other_excluded, ")"
       )
     }
-    B <- paste0( #nolint
-      "B [
-        label = '',
-        pos = '", xstart + 13, ",", ystart + 1.5, "!',
-        tooltip = ''
-      ]"
+    # labels
+    other_identified_label <- paste0(
+      "Records identified from:",
+      cond_websites,
+      cond_organisation,
+      cond_citation
     )
-    if (is.na(website_results) == FALSE) {
-      cond_websites <- paste0(
-        website_results_text,
-        " (n = ", website_results, ")\n"
-      )
-    } else {
-      cond_websites <- ""
-    }
-    if (is.na(organisation_results) == FALSE) {
-      cond_organisation <- paste0(
-        organisation_results_text,
-        " (n = ", organisation_results, ")\n"
-      )
-    } else {
-      cond_organisation <- ""
-    }
-    if (is.na(citations_results) == FALSE) {
-      cond_citation <- paste0(
-        citations_results_text,
-        " (n = ", citations_results, ")"
-      )
-    } else {
-      cond_citation <- ""
-    }
-    cluster2 <- paste0(
-      "subgraph cluster2 {
-        edge [
-          color = White,
-          arrowhead = none,
-          arrowtail = none
-        ]
-        13->14;
-        edge [
-          color = ", arrow_colour, ",
-          arrowhead = ", arrow_head, ",
-          arrowtail = ", arrow_tail,
-        "]
-        14->15;
-        15->16;
-        15->17;
-        17->18;
-        edge [
-          color = ", arrow_colour, ",
-          arrowhead = none,
-          arrowtail = ", arrow_tail,
-        "]
-        17->B;
-        edge [
-          color = ", arrow_colour, ",
-          arrowhead = ", arrow_head, ",
-          arrowtail = none,
-          constraint = FALSE
-        ]
-        B->12;
-      }"
+    other_sought_reports_label <- paste0(
+      other_sought_reports_text,
+      "\n(n = ",
+        other_sought_reports,
+      ")"
     )
-    othernodes <- paste0(
-      "node [
-        shape = box,
-        fontname = ", font, ",
-        color = ", greybox_colour,
-      "]
-      13 [
-        label = '", other_text, "',
-        style = 'rounded,filled',
-        width = 7.5,
-        height = 0.5,
-        pos = '", xstart + 15, ",", ystart + (id_adj_factor * 1.2), "!',
-        tooltip = '", tooltips["othstud"], "'
-      ]
-      node [
-        shape = box,
-        fontname = ", font, ",
-        color = ", greybox_colour,
-      "]
-      14 [
-        label = '",
-          "Records identified from:\n",
-          cond_websites,
-          cond_organisation,
-          cond_citation,
-        "',
-        style = 'filled',
-        width = 3.5,
-        height = 0.5,
-        pos = '", xstart + 13, ",", ystart + id_adj_factor, "!',
-        tooltip = '", tooltips["website_results"], "'
-      ]
-      node [
-        shape = box,
-        fontname = ", font, ",
-        color = ", greybox_colour,
-      "]
-      15 [
-        label = '",
-          other_sought_reports_text,
-          "\n(n = ", other_sought_reports, ")',
-        style = 'filled',
-        width = 3.5,
-        height = 0.5,
-        pos = '", xstart + 13, ",", ystart + 4.5, "!',
-        tooltip = '", tooltips["other_sought_reports"], "'
-      ]
-      node [
-        shape = box,
-        fontname = ", font, ",
-        color = ", greybox_colour,
-      "]
-      16 [
-        label = '",
-          other_notretrieved_reports_text,
-          "\n(n = ", other_notretrieved_reports, ")
-        ',
-        style = 'filled',
-        width = 3.5,
-        height = 0.5,
-        pos = '", xstart + 17, ",", ystart + 4.5, "!',
-        tooltip = '", tooltips["other_notretrieved_reports"], "'
-      ]
-      node [
-        shape = box,
-        fontname = ", font, ",
-        color = ", greybox_colour, "
-      ]
-      17 [
-        label = '", other_assessed_text, "\n(n = ", other_assessed, ")',
-        style = 'filled',
-        width = 3.5,
-        height = 0.5,
-        pos = '", xstart + 13, ",", ystart + 3.5, "!',
-        tooltip = '", tooltips["other_assessed"], "'
-      ]
-      node [
-        shape = box,
-        fontname = ", font, ",
-        color = ", greybox_colour,
-      "]
-      18 [
-        label = '", other_excluded_text, other_excluded_data, "',
-        style = 'filled',
-        width = 3.5,
-        height = 0.5,
-        pos = '",
-          xstart + 17,
-          ",",
-          ystart + PRISMA_get_height_(dbr_excluded, 3.5),
-        "!',
-        tooltip = '", tooltips["other_excluded"], "'
-      ]\n"
+    other_notretrieved_label <- paste0(
+      other_notretrieved_reports_text,
+      "\n(n = ",
+        other_notretrieved_reports,
+      ")"
     )
-    extraedges <- "16->18;"
-    othernode13 <- "; 13"
-    othernode14 <- "; 14"
-    othernode1516 <- "; 15; 16"
-    othernode1718 <- "; 17; 18"
-    othernodeB <- "; B" #nolint
+    other_assessed_label <- paste0(
+      other_assessed_text,
+      "\n(n = ",
+        other_assessed,
+      ")"
+    )
+    other_excluded_label <- paste0(
+       other_excluded_text, other_excluded_data
+    )
+    # heights
+    other_identified_height <- PRISMA_get_height_(
+      stringr::str_count(other_identified_label, "\n"),
+      min_box_height
+    )
+    other_sought_reports_height <- PRISMA_get_height_(
+      stringr::str_count(other_sought_reports_label, "\n"),
+      min_box_height
+    )
+    other_notretrieved_height <- PRISMA_get_height_(
+      stringr::str_count(other_notretrieved_label, "\n"),
+      min_box_height
+    )
+    other_assessed_height <- PRISMA_get_height_(
+      stringr::str_count(other_assessed_label, "\n"),
+      min_box_height
+    )
+    other_excluded_height <- PRISMA_get_height_(
+      stringr::str_count(other_excluded_label, "\n"),
+      min_box_height
+    )
+  }
+  if (is.na(new_studies) == FALSE) {
+    cond_newstud <- paste0(
+      stringr::str_wrap(new_studies_text, width = 40),
+      "\n(n = ", new_studies, ")\n"
+    )
   } else {
-    B <- "" #nolint
-    cluster2 <- ""
-    othernodes <- ""
-    extraedges <- ""
-    othernode13 <- ""
-    othernode14 <- ""
-    othernode1516 <- ""
-    othernode1718 <- ""
-    othernodeB <- "" #nolint
+    cond_newstud <- ""
+  }
+  if (is.na(new_reports) == FALSE) {
+    cond_newreports <- paste0(
+      stringr::str_wrap(new_reports_text, width = 40),
+      "\n(n = ", new_reports, ")"
+    )
+  } else {
+    cond_newreports <- ""
+  }
+  if (detail_databases == TRUE) {
+    db_specific_data_nr <- paste(
+      paste(
+        "\n",
+        database_specific_results[, 1],
+        " (n = ", database_specific_results[, 2], ")",
+      sep = ""
+      ),
+    collapse = ""
+    )
+    db_specific_data <- paste0(
+      ":",
+      db_specific_data_nr
+    )
+  } else {
+    db_specific_data <- ""
+    db_specific_data_nr <- ""
+  }
+  if (detail_registers == TRUE) {
+    reg_specific_data_nr <- paste(
+      paste(
+        "\n", register_specific_results[, 1],
+        " (n = ", register_specific_results[, 2], ")",
+      sep = ""
+      ),
+    collapse = ""
+    )
+    reg_specific_data <- paste0(
+      ":",
+      reg_specific_data_nr
+    )
+  } else {
+    reg_specific_data <- ""
+    reg_specific_data_nr <- ""
+  }
+  if (is.na(database_results) == FALSE) {
+    cond_database <- paste0(
+      "\n",
+      database_results_text,
+      " (n = ", database_results, ")", db_specific_data)
+  } else {
+    cond_database <- paste0("", db_specific_data_nr)
+  }
+  if (is.na(register_results) == FALSE) {
+    cond_register <- paste0(
+      "\n",
+      register_results_text,
+      " (n = ",  register_results, ")", reg_specific_data)
+  } else {
+    cond_register <- paste0("", reg_specific_data_nr)
   }
   if (any(!grepl("\\D", dbr_excluded)) == FALSE) {
     dbr_excluded_data <- paste0(
@@ -518,54 +375,6 @@ PRISMA_flowdiagram <- function( #nolint
     )
   } else {
     dbr_excluded_data <- paste0("\n", "(n = ", dbr_excluded, ")")
-  }
-  if (detail_databases == TRUE) {
-    db_specific_data_nr <- paste(
-      paste(
-        database_specific_results[, 1],
-        " (n = ", database_specific_results[, 2], ")\n",
-      sep = ""
-      ),
-    collapse = ""
-    )
-    db_specific_data <- paste0(
-      ":\n",
-      db_specific_data_nr
-    )
-  } else {
-    db_specific_data <- "\n"
-    db_specific_data_nr <- ""
-  }
-  if (detail_registers == TRUE) {
-    reg_specific_data_nr <- paste(
-      paste(
-        register_specific_results[, 1],
-        " (n = ", register_specific_results[, 2], ")\n",
-      sep = ""
-      ),
-    collapse = ""
-    )
-    reg_specific_data <- paste0(
-      ":\n",
-      reg_specific_data_nr
-    )
-  } else {
-    reg_specific_data <- "\n"
-    reg_specific_data_nr <- ""
-  }
-  if (is.na(database_results) == FALSE) {
-    cond_database <- paste0(
-      database_results_text,
-      " (n = ", database_results, ")", db_specific_data)
-  } else {
-    cond_database <- paste0("", db_specific_data_nr)
-  }
-  if (is.na(register_results) == FALSE) {
-    cond_register <- paste0(
-      register_results_text,
-      " (n = ",  register_results, ")", reg_specific_data)
-  } else {
-    cond_register <- paste0("", reg_specific_data_nr)
   }
   if (is.na(duplicates) == FALSE) {
     cond_duplicates <- paste0(
@@ -615,30 +424,516 @@ PRISMA_flowdiagram <- function( #nolint
   ) {
     cond_duplicates <- "(n = 0)"
   }
-  if (is.na(new_studies) == FALSE) {
-    cond_newstud <- paste0(
-      stringr::str_wrap(new_studies_text, width = 40),
-      "\n(n = ", new_studies, ")\n"
+  # labels for the nodes
+  newstudy_newreports_label <- paste0(cond_newstud, cond_newreports)
+  dbr_assessed_label <- paste0(
+    dbr_assessed_text,
+    "\n(n = ",
+      dbr_assessed,
+    ")"
+  )
+  dbr_sought_label <- paste0(
+    dbr_sought_reports_text,
+    "\n(n = ",
+      dbr_sought_reports,
+    ")"
+  )
+  dbr_screened_label <- paste0(
+    records_screened_text,
+    "\n(n = ",
+      records_screened,
+    ")"
+  )
+  dbr_identified_label <- paste0(
+    "Records identified from:",
+      cond_database,
+      cond_register
+  )
+  dbr_excluded_label <- paste0(
+    dbr_excluded_text,
+    dbr_excluded_data
+  )
+  dbr_notretrieved_label <- paste0(
+    dbr_notretrieved_reports_text,
+    "\n(n = ",
+      dbr_notretrieved_reports,
+    ")"
+  )
+  dbr_screened_excluded_label <- paste0(
+    records_excluded_text,
+    "\n(n = ",
+      records_excluded,
+    ")"
+  )
+  dbr_notscreened_label <- paste0(
+    "Records removed before screening:\n",
+      cond_duplicates,
+      cond_automatic,
+      cond_exclother
+  )
+  # we set the height of various nodes here
+  newstudy_newreports_height <- PRISMA_get_height_(
+    stringr::str_count(newstudy_newreports_label, "\n"),
+    min_box_height
+  )
+  dbr_assessed_height <- PRISMA_get_height_(
+    stringr::str_count(dbr_assessed_label, "\n"),
+    min_box_height
+  )
+  dbr_sought_height <- PRISMA_get_height_(
+    stringr::str_count(dbr_sought_label, "\n"),
+    min_box_height
+  )
+  dbr_screened_height <- PRISMA_get_height_(
+    stringr::str_count(dbr_screened_label, "\n"),
+    min_box_height
+  )
+  dbr_identified_height <- PRISMA_get_height_(
+    stringr::str_count(dbr_identified_label, "\n"),
+    min_box_height
+  )
+  dbr_excluded_height <- PRISMA_get_height_(
+    stringr::str_count(dbr_excluded_label, "\n"),
+    min_box_height
+  )
+  dbr_notretrieved_height <- PRISMA_get_height_(
+    stringr::str_count(dbr_notretrieved_label, "\n"),
+    min_box_height
+  )
+  dbr_screened_excluded_height <- PRISMA_get_height_(
+    stringr::str_count(dbr_screened_excluded_label, "\n"),
+    min_box_height
+  )
+  dbr_notscreened_height <- PRISMA_get_height_(
+    stringr::str_count(dbr_notscreened_label, "\n"),
+    min_box_height
+  )
+  screening_box_height <- max(
+      c(
+        dbr_screened_height,
+        dbr_screened_excluded_height
+      )
+    ) + max(
+      c(
+        dbr_notretrieved_height,
+        dbr_sought_height,
+        other_sought_reports_height,
+        other_notretrieved_height
+      )
+    ) + max(
+      c(
+        dbr_assessed_height,
+        dbr_excluded_height,
+        other_assessed_height,
+        other_excluded_height
+      )
+    ) +
+    default_box_spacing * 3
+  identification_box_height <- max(
+      c(
+        dbr_identified_height,
+        dbr_notscreened_height,
+        prev_study_height
+      )
     )
+  included_box_height <- 
+    newstudy_newreports_height +
+    total_studies_height +
+    default_box_spacing
+  assessed_height <- max(
+    c(
+      dbr_assessed_height,
+      other_assessed_height,
+      dbr_excluded_height,
+      other_excluded_height
+    )
+  )
+  sought_height <- max(
+    c(
+      dbr_sought_height,
+      other_sought_reports_height,
+      dbr_notretrieved_height,
+      other_notretrieved_height
+    )
+  )
+  screened_height <- max(
+    c(
+      dbr_screened_height,
+      dbr_screened_excluded_height
+    )
+  )
+  identified_height <- max(
+    c(
+      dbr_identified_height,
+      dbr_notscreened_height,
+      other_identified_height,
+      prev_study_height
+    )
+  )
+  warning(included_box_height)
+  # here we set the x and y co-ordinates for new studies
+  # (other items depend on this being created)
+  dbr_box_x <- PRISMA_get_pos_(
+    diagram_start_x,
+    prev_study_offset + default_box_spacing,
+    prev_study_width,
+    default_box_width
+  )
+  dbr_removed_x <- PRISMA_get_pos_(
+    dbr_box_x,
+    default_box_spacing,
+    default_box_width,
+    default_box_width
+  )
+  newstudy_newreports_y <- PRISMA_get_pos_(
+    diagram_start_y,
+    default_box_spacing,
+    total_studies_height,
+    newstudy_newreports_height
+  )
+  assessed_y <- PRISMA_get_pos_(
+    newstudy_newreports_y,
+    default_box_spacing * 2,
+    newstudy_newreports_height,
+    assessed_height
+  )
+  sought_y <- PRISMA_get_pos_(
+    assessed_y,
+    default_box_spacing,
+    assessed_height,
+    sought_height
+  )
+  screened_y <- PRISMA_get_pos_(
+    sought_y,
+    default_box_spacing,
+    sought_height,
+    screened_height
+  )
+  identified_y <- PRISMA_get_pos_(
+    screened_y,
+    default_box_spacing * 2,
+    screened_height,
+    identified_height
+  )
+  top_box_y <- PRISMA_get_pos_(
+    identified_y,
+    default_box_spacing,
+    identified_height,
+    section_label_length
+  )
+  screening_y <- mean(c(screened_y, sought_y, assessed_y))
+  included_y <- if (total_studies_height > 0) {
+    mean(c(diagram_start_y, newstudy_newreports_y))
   } else {
-    cond_newstud <- ""
+    newstudy_newreports_y
   }
-  if (is.na(new_reports) == FALSE) {
-    cond_newreports <- paste0(
-      stringr::str_wrap(new_reports_text, width = 40),
-      "\n(n = ", new_reports, ")"
+  if (side_boxes == TRUE) {
+    sidebox <- paste0(
+      "node [
+        shape = box,
+        fontsize = ", fontsize, ",
+        fontname = ", font, ",
+        color = ", title_colour, "
+      ]
+      identification [
+        color = LightSteelBlue2,
+        label = ' ',
+        style = 'filled,rounded',
+        pos = '", diagram_start_x, ",", identified_y, "!',
+        width = ", section_label_length, ",
+        height = ", identification_box_height, ",
+        tooltip = '", tooltips["identification"], "'
+      ];
+      screening [
+        color = LightSteelBlue2,
+        label = ' ',
+        style = 'filled,rounded',
+        pos = '", diagram_start_x, ",", screening_y, "!',
+        width = ", section_label_length, ",
+        height = ", screening_box_height, ",
+        tooltip = '", tooltips["screening"], "'
+      ];
+      included [
+        color = LightSteelBlue2,
+        label = ' ',
+        style = 'filled,rounded',
+        pos = '", diagram_start_x, ",", included_y, "!',
+        width = ", section_label_length, ",
+        height = ", included_box_height, ",
+        tooltip = '", tooltips["included"], "'
+      ];\n"
     )
   } else {
-    cond_newreports <- ""
+    sidebox <- ""
+  }
+  if (previous == TRUE) {
+        A <- paste0( #nolint
+      "A [
+        label = '',
+        pos = '", prev_box_x, ",", diagram_start_y + 0, "!',
+        tooltip = ''
+      ]"
+    )
+    Aedge <- paste0( #nolint
+      "subgraph cluster0 {
+        edge [
+          color = White,
+          arrowhead = none,
+          arrowtail = none
+        ]
+        1->2;
+        edge [
+          color = ", arrow_colour, ",
+          arrowhead = none,
+          arrowtail = ", arrow_tail, "
+        ]
+        2->A;
+        edge [
+          color = ", arrow_colour, ",
+          arrowhead = ", arrow_head, ",
+          arrowtail = none,
+          constraint = FALSE
+        ]
+        A->19;
+      }"
+    )
+    bottomedge <- paste0(
+      "edge [
+        color = '", arrow_colour, "',
+        arrowhead = '", arrow_head, "',
+        arrowtail = '", arrow_tail, "'
+      ]
+      12->19;\n"
+    )
+    previous_nodes <- paste0(
+      "node [
+        shape = box,
+        fontsize = ", fontsize, ",
+        fontname = ", font, ",
+        color = ", greybox_colour, "
+      ]
+      1 [
+        label = '", previous_text, "',
+        style = 'rounded,filled',
+        width = ", default_box_width, ",
+        height = ", section_label_length, ",
+        pos = '",
+          prev_box_x,
+          ",",
+          top_box_y,
+          "!',
+        tooltip = '", tooltips["prevstud"], "'
+      ]
+      node [
+        shape = box,
+        fontname = ", font, ",
+        color = ", greybox_colour, "
+      ]
+      2 [
+        label = '", prev_study_label, "',
+        style = 'filled',
+        width = ", default_box_width, ",
+        height = ", prev_study_height, ",
+        fixed = 'true',
+        pos = '", prev_box_x, ",", identified_y, "!',
+        tooltip = '", tooltips["previous_studies"], "'
+      ]"
+    )
+    finalnode <- paste0(
+      "node [
+        shape = box,
+        fontname = ", font, ",
+        color = ", greybox_colour, "
+      ]
+      19 [
+        label = '", total_studies_label, "',
+        style = 'filled',
+        width = ", default_box_width, ",
+        height = ", total_studies_height, ",
+        fixedsize = 'true',
+        pos = '",
+          PRISMA_get_pos_(
+            diagram_start_x,
+            prev_study_offset + default_box_spacing,
+            prev_study_width,
+            default_box_width
+          ),
+          ",",
+          diagram_start_y,
+          "!',
+        tooltip = '", tooltips["total_studies"], "'
+      ]"
+    )
+    prev_rank1 <- "{rank = same; A; 19}"
+    prevnode1 <- "1; "
+    prevnode2 <- "2; "
+  }
+  if (other == TRUE) {
+    # positions
+    other_box_x <- PRISMA_get_pos_(
+      dbr_removed_x,
+      default_box_spacing,
+      default_box_width,
+      default_box_width
+    )
+    other_removed_x <- PRISMA_get_pos_(
+      other_box_x,
+      default_box_spacing,
+      default_box_width,
+      default_box_width
+    )
+    B <- paste0( #nolint
+      "B [
+        label = '',
+        pos = '", other_box_x, ",", newstudy_newreports_y, "!',
+        tooltip = ''
+      ]"
+    )
+    cluster2 <- paste0(
+      "subgraph cluster2 {
+        edge [
+          color = White,
+          arrowhead = none,
+          arrowtail = none
+        ]
+        13->14;
+        edge [
+          color = ", arrow_colour, ",
+          arrowhead = ", arrow_head, ",
+          arrowtail = ", arrow_tail,
+        "]
+        14->15;
+        15->16;
+        15->17;
+        17->18;
+        edge [
+          color = ", arrow_colour, ",
+          arrowhead = none,
+          arrowtail = ", arrow_tail,
+        "]
+        17->B;
+        edge [
+          color = ", arrow_colour, ",
+          arrowhead = ", arrow_head, ",
+          arrowtail = none,
+          constraint = FALSE
+        ]
+        B->12;
+      }"
+    )
+    othernodes <- paste0(
+      "node [
+        shape = box,
+        fontname = ", font, ",
+        color = ", greybox_colour,
+      "]
+      13 [
+        label = '", other_text, "',
+        style = 'rounded,filled',
+        width = ", top_box_width, ",
+        height = ", section_label_length, ",
+        pos = '",
+          mean(c(other_box_x, other_removed_x)),
+          ",",
+          top_box_y,
+          "!',
+        tooltip = '", tooltips["othstud"], "'
+      ]
+      node [
+        shape = box,
+        fontname = ", font, ",
+        color = ", greybox_colour,
+      "]
+      14 [
+        label = '", other_identified_label, "',
+        style = 'filled',
+        width = ", default_box_width, ",
+        height = ", other_identified_height, ",
+        pos = '", other_box_x, ",", identified_y, "!',
+        tooltip = '", tooltips["website_results"], "'
+      ]
+      node [
+        shape = box,
+        fontname = ", font, ",
+        color = ", greybox_colour,
+      "]
+      15 [
+        label = '", other_sought_reports_label, "',
+        style = 'filled',
+        width = ", default_box_width, ",
+        height = ", other_sought_reports_height, ",
+        pos = '", other_box_x, ",", sought_y, "!',
+        tooltip = '", tooltips["other_sought_reports"], "'
+      ]
+      node [
+        shape = box,
+        fontname = ", font, ",
+        color = ", greybox_colour,
+      "]
+      16 [
+        label = '", other_notretrieved_label, "',
+        style = 'filled',
+        width = ", default_box_width, ",
+        height = ", other_notretrieved_height, ",
+        pos = '", other_removed_x, ",", sought_y, "!',
+        tooltip = '", tooltips["other_notretrieved_reports"], "'
+      ]
+      node [
+        shape = box,
+        fontname = ", font, ",
+        color = ", greybox_colour, "
+      ]
+      17 [
+        label = '", other_assessed_label, "',
+        style = 'filled',
+        width = ", default_box_width, ",
+        height = ", other_assessed_height, ",
+        pos = '", other_box_x, ",", assessed_y, "!',
+        tooltip = '", tooltips["other_assessed"], "'
+      ]
+      node [
+        shape = box,
+        fontname = ", font, ",
+        color = ", greybox_colour,
+      "]
+      18 [
+        label = '", other_excluded_label, "',
+        style = 'filled',
+        width = ", default_box_width, ",
+        height = ", other_excluded_height, ",
+        pos = '",
+          other_removed_x,
+          ",",
+          assessed_y,
+        "!',
+        tooltip = '", tooltips["other_excluded"], "'
+      ]\n"
+    )
+    extraedges <- "16->18;"
+    othernode13 <- "; 13"
+    othernode14 <- "; 14"
+    othernode1516 <- "; 15; 16"
+    othernode1718 <- "; 17; 18"
+    othernodeB <- "; B" #nolint
+  } else {
+    B <- "" #nolint
+    cluster2 <- ""
+    othernodes <- ""
+    extraedges <- ""
+    othernode13 <- ""
+    othernode14 <- ""
+    othernode1516 <- ""
+    othernode1718 <- ""
+    othernodeB <- "" #nolint
   }
   x <- DiagrammeR::grViz(
     paste0(
       "digraph TD {
         graph[
-          splines=ortho,
-          layout=neato,
+          splines = ortho,
+          layout = neato,
           tooltip = 'Click the boxes for further information',
-          outputorder=edgesfirst
+          outputorder = edgesfirst,
         ]",
         sidebox,
         previous_nodes,
@@ -651,9 +946,13 @@ PRISMA_flowdiagram <- function( #nolint
         3 [
           label = '", newstud_text, "',
           style = 'rounded,filled',
-          width = 7.5,
-          height = 0.5,
-          pos = '", xstart + 7, ",", ystart + (id_adj_factor * 1.2), "!',
+          width = ", top_box_width, ",
+          height = ", section_label_length, ",
+          pos = '",
+            mean(c(dbr_box_x, dbr_removed_x)),
+            ",",
+            top_box_y,
+            "!',
           tooltip = '", tooltips["newstud"], "'
         ]
         node [
@@ -662,14 +961,10 @@ PRISMA_flowdiagram <- function( #nolint
           color = ", main_colour,
         "]
         4 [
-          label = 'Records identified from:\n",
-            cond_database,
-            cond_register,
-          "',
-          width = 3.5,
-          height = 0.5,
-          height = 0.5,
-          pos = '", xstart + 5, ",", ystart + id_adj_factor, "!',
+          label = '", dbr_identified_label, "',
+          width = ", default_box_width, ",
+          height = ", dbr_identified_height, ",
+          pos = '", dbr_box_x, ",", identified_y, "!',
           tooltip = '", tooltips["database_results"], "'
         ]
         node [
@@ -678,14 +973,10 @@ PRISMA_flowdiagram <- function( #nolint
           color = ", main_colour,
         "]
         5 [
-          label = 'Records removed before screening:\n",
-            cond_duplicates,
-            cond_automatic,
-            cond_exclother,
-          "',
-          width = 3.5,
-          height = 0.5,
-          pos = '", xstart + 9, ",", ystart + id_adj_factor, "!',
+          label = '", dbr_notscreened_label, "',
+          width = ", default_box_width, ",
+          height = ", min_box_height, ",
+          pos = '", dbr_removed_x, ",", identified_y, "!',
           tooltip = '", tooltips["duplicates"], "'
         ]
         node [
@@ -694,11 +985,10 @@ PRISMA_flowdiagram <- function( #nolint
           color = ", main_colour, "
         ]
         6 [
-          label = '", records_screened_text, "\n(n = ", records_screened, ")',
-          width = 3.5,
-          height = 0.5,
-          height = 0.5,
-          pos = '", xstart + 5, ",", ystart + 5.5, "!',
+          label = '", dbr_screened_label, "',
+          width = ", default_box_width, ",
+          height = ", dbr_screened_height, ",
+          pos = '", dbr_box_x, ",", screened_y, "!',
           tooltip = '", tooltips["records_screened"], "'
         ]
         node [
@@ -707,10 +997,10 @@ PRISMA_flowdiagram <- function( #nolint
           color = ", main_colour, "
         ]
         7 [
-          label = '", records_excluded_text, "\n(n = ", records_excluded, ")',
-          width = 3.5,
-          height = 0.5,
-          pos = '", xstart + 9, ",", ystart + 5.5, "!',
+          label = '", dbr_screened_excluded_label, "',
+          width = ", default_box_width, ",
+          height = ", min_box_height, ",
+          pos = '", dbr_removed_x, ",", screened_y, "!',
           tooltip = '", tooltips["records_excluded"], "'
         ]
         node [
@@ -719,12 +1009,10 @@ PRISMA_flowdiagram <- function( #nolint
           color = ", main_colour,
         "]
         8 [
-          label = '",
-            dbr_sought_reports_text,
-            "\n(n = ", dbr_sought_reports, ")',
-          width = 3.5,
-          height = 0.5,
-          pos = '", xstart + 5, ",", ystart + 4.5, "!',
+          label = '", dbr_sought_label, "',
+          width = ", default_box_width, ",
+          height = ", dbr_sought_height, ",
+          pos = '", dbr_box_x, ",", sought_y, "!',
           tooltip = '", tooltips["dbr_sought_reports"], "'
         ]
         node [
@@ -733,12 +1021,10 @@ PRISMA_flowdiagram <- function( #nolint
           color = ", main_colour,
         "]
         9 [
-          label = '",
-            dbr_notretrieved_reports_text,
-            "\n(n = ", dbr_notretrieved_reports, ")',
-          width = 3.5,
-          height = 0.5,
-          pos = '", xstart + 9, ",", ystart + 4.5, "!',
+          label = '", dbr_notretrieved_label, "',
+          width = ", default_box_width, ",
+          height = ", min_box_height, ",
+          pos = '", dbr_removed_x, ",", sought_y, "!',
           tooltip = '", tooltips["dbr_notretrieved_reports"], "'
         ]
         node [
@@ -747,10 +1033,10 @@ PRISMA_flowdiagram <- function( #nolint
           color = ", main_colour,
         "]
         10 [
-          label = '", dbr_assessed_text, "\n(n = ", dbr_assessed, ")',
-          width = 3.5,
-          height = 0.5,
-          pos = '", xstart + 5, ",", ystart + 3.5, "!',
+          label = '", dbr_assessed_label, "',
+          width = ", default_box_width, ",
+          height = ", dbr_assessed_height, ",
+          pos = '", dbr_box_x, ",", assessed_y, "!',
           tooltip = '", tooltips["dbr_assessed"], "'
         ]
         node [
@@ -761,13 +1047,13 @@ PRISMA_flowdiagram <- function( #nolint
           style = filled
         ]
         11 [
-          label = '", dbr_excluded_text, dbr_excluded_data, "',
-          width = 3.5,
-          height = 0.5,
+          label = '", dbr_excluded_label, "',
+          width = ", default_box_width, ",
+          height = ", min_box_height, ",
           pos = '",
-            xstart + 9,
+            dbr_removed_x,
             ",",
-            ystart + PRISMA_get_height_(dbr_excluded, 3.5),
+            assessed_y,
           "!',
           tooltip = '", tooltips["dbr_excluded"], "'
         ]
@@ -779,10 +1065,10 @@ PRISMA_flowdiagram <- function( #nolint
           style = solid
         ]
         12 [
-          label = '", cond_newstud, cond_newreports, "',
-          width = 3.5,
-          height = 0.5,
-          pos = '", xstart + 5, ",", ystart + 1.5, "!',
+          label = '", newstudy_newreports_label, "',
+          width = ", default_box_width, ",
+          height = ", newstudy_newreports_height, ",
+          pos = '", dbr_box_x, ",", newstudy_newreports_y, "!',
           tooltip = '", tooltips["new_studies"], "'
         ]",
         othernodes,
@@ -804,9 +1090,9 @@ PRISMA_flowdiagram <- function( #nolint
         ]
         C [
           label = '',
-          width = 3.5,
-          height = 0.5,
-          pos = '", xstart + 9, ",", ystart + 3.5, "!',
+          width = ", default_box_width, ",
+          height = ", min_box_height, ",
+          pos = '", dbr_removed_x, ",", assessed_y, "!',
           tooltip = ''
         ]
         subgraph cluster1 {
