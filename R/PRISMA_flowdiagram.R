@@ -1820,10 +1820,8 @@ PRISMA_save <- function( #nolint
   }
 }
 
-#' Plot interactive flow diagram for systematic reviews - DEPRECATED
-#' @description DEPRECATED -
-#' Converts a PRISMA systematic review flow diagram
-#' into an interactive HTML plot, for embedding links from each box.
+#' Defunct function - replaced by "PRISMA_interactive_"
+#' @description Defunct function - replaced by "PRISMA_interactive_"
 #' @seealso [PRISMA_interactive_()]
 #' @param plot A plot object from [PRISMA_flowdiagram()].
 #' @param urls A dataframe consisting of two columns: nodes and urls. The first
@@ -1833,24 +1831,17 @@ PRISMA_save <- function( #nolint
 #' [PRISMA_flowdiagram()]) specifying whether previous studies were sought.
 #' @param other Logical argument (TRUE or FALSE) (supplied through
 #' [PRISMA_flowdiagram()]) specifying whether other studies were sought.
-#' @return An interactive flow diagram plot.
-#' @export
 sr_flow_interactive <- function(plot,
                                 urls,
                                 previous,
                                 other) {
-  .Deprecated("PRISMA_interactive_")
-  return(PRISMA_interactive_(plot, urls, previous, other)) #nolint
+  .Defunct("PRISMA_interactive_")
 }
 
-#' Read in PRISMA flow diagram data - DEPRECATED
-#' @description DEPRECATED -
-#' read in a template CSV containing data for the flow diagram
+#' Defunct function - replaced by "PRISMA_data"
+#' @description Defunct function - replaced by "PRISMA_data"
 #' @seealso [PRISMA_data()]
 #' @param data File to read in.
-#' @return A list of objects needed to plot the flow diagram
-#' @export
 read_PRISMAdata <- function(data){ #nolint
-  .Deprecated("PRISMA_data")
-  return(PRISMA_data(data))
+  .Defunct("PRISMA_data")
 }

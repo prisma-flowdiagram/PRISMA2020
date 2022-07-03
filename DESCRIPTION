@@ -1,6 +1,6 @@
 Package: PRISMA2020
 Title: Make Interactive 'PRISMA' Flow Diagrams
-Version: 0.0.4
+Version: 1.0.0
 Authors@R: c(
     person(given = "Neal",
            family = "Haddaway",

@@ -3,8 +3,6 @@
 export(PRISMA_data)
 export(PRISMA_flowdiagram)
 export(PRISMA_save)
-export(read_PRISMAdata)
-export(sr_flow_interactive)
 importFrom(DT,addRow)
 importFrom(rio,import)
 importFrom(shiny,column)

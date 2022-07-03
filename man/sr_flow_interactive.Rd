@@ -2,7 +2,7 @@
 % Please edit documentation in R/PRISMA_flowdiagram.R
 \name{sr_flow_interactive}
 \alias{sr_flow_interactive}
-\title{Plot interactive flow diagram for systematic reviews - DEPRECATED}
+\title{Defunct function - replaced by "PRISMA_interactive_"}
 \usage{
 sr_flow_interactive(plot, urls, previous, other)
 }
@@ -19,13 +19,8 @@ column should contain a corresponding URL for each node.}
 \item{other}{Logical argument (TRUE or FALSE) (supplied through
 \code{\link[=PRISMA_flowdiagram]{PRISMA_flowdiagram()}}) specifying whether other studies were sought.}
 }
-\value{
-An interactive flow diagram plot.
-}
 \description{
-DEPRECATED -
-Converts a PRISMA systematic review flow diagram
-into an interactive HTML plot, for embedding links from each box.
+Defunct function - replaced by "PRISMA_interactive_"
 }
 \seealso{
 \code{\link[=PRISMA_interactive_]{PRISMA_interactive_()}}
