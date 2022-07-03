@@ -2,19 +2,15 @@
 % Please edit documentation in R/PRISMA_flowdiagram.R
 \name{read_PRISMAdata}
 \alias{read_PRISMAdata}
-\title{Read in PRISMA flow diagram data - DEPRECATED}
+\title{Defunct function - replaced by "PRISMA_data"}
 \usage{
 read_PRISMAdata(data)
 }
 \arguments{
 \item{data}{File to read in.}
 }
-\value{
-A list of objects needed to plot the flow diagram
-}
 \description{
-DEPRECATED -
-read in a template CSV containing data for the flow diagram
+Defunct function - replaced by "PRISMA_data"
 }
 \seealso{
 \code{\link[=PRISMA_data]{PRISMA_data()}}
