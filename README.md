@@ -22,6 +22,22 @@ A static version is produced otherwise.
 
 <a href="https://estech.shinyapps.io/prisma_flowdiagram/" target="_blank">Visit the web-based Shiny app for a point-and-click user interface here.</a>
 
+---
+## Docker Installation
+
+You can quickly install the PRISMA2020 package and run the included
+example shinyapp using [Docker](https://docs.docker.com/engine/install/).
+
+```bash
+docker build . -t prisma-shiny:1
+docker run -it --rm -p 3838:3838 prisma-shiny:1
+```
+
+Then visit http://localhost:3838 in your web browser.
+To stop the app, press `Ctrl+C` in the terminal.
+
+---
+
 Please cite as:<br>
  Haddaway, N. R., Page, M. J., Pritchard, C. C., & McGuinness, L. A. (2022). PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis. Campbell Systematic Reviews, 18, e1230. <a href=https://doi.org/10.1002/cl2.1230>https://doi.org/10.1002/cl2.1230</a><br>
 <a id="raw-url" href="https://raw.githubusercontent.com/nealhaddaway/PRISMA2020/master/inst/extdata/citation.ris">Citation in .ris format (right click 'Save Link As')</a>
