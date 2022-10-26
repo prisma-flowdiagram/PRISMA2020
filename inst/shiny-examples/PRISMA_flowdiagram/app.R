@@ -67,6 +67,12 @@ ui <- tagList(
           ),
           "You can provide the numbers in the data entry section
           of the 'Create flow diagram' tab.
+          These numbers will be initialised to any values provided in the
+          URL query string. For example, if you provide the URL path:
+          '?website_results=100&organisation_results=200', this will initialise
+          the website results to 100 and the organisation results to 200.
+          The name of the query string parameter should match the name of the
+          'data' column in the template file below.
           Alternatively, to allow for more customisation,
           you can use the template file below.",
           br(),
