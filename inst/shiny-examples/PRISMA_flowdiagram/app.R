@@ -384,10 +384,10 @@ server <- function(input, output, session) {
   # Use template data to populate editable table
   observe({
     if (is.null(input$data_upload)) {
-      # Override the default template with query string parameters if they are present
+      # Override default template with query string parameters if present
       query <- parseQueryString(session$clientData$url_search)
       if (length(query) > 0) {
-        for (i in 1:nrow(template)) {
+        for (i in seq_len(nrow(template))) {
           if (!is.null(query[[template[i, "data"]]])) {
             template[i, "n"] <- query[[template[i, "data"]]]
           }
