@@ -377,13 +377,22 @@ ui <- tagList(
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
   # Define reactive values
   rv <- shiny::reactiveValues()
   # Data Handling ----
   # Use template data to populate editable table
   observe({
     if (is.null(input$data_upload)) {
+      # Override the default template with query string parameters if they are present
+      query <- parseQueryString(session$clientData$url_search)
+      if (length(query) > 0) {
+        for (i in 1:nrow(template)) {
+          if (!is.null(query[[template[i, "data"]]])) {
+            template[i, "n"] <- query[[template[i, "data"]]]
+          }
+        }
+      }
       # Create inital value that is passed to UI
       rv$data_initial <- template
       # Create version that is edited and passed to graphing function
