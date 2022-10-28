@@ -31,7 +31,9 @@ COPY . /tmp/app
 RUN R CMD INSTALL /tmp/app
 
 # Copy the shiny app files
-COPY inst/shiny-examples/PRISMA_flowdiagram/. /srv/shiny-server/
+RUN mkdir -p /srv/shiny-server/prisma/app && \
+    echo "OK" > /srv/shiny-server/prisma/healthz.txt
+COPY inst/shiny-examples/PRISMA_flowdiagram/. /srv/shiny-server/prisma/app/
 
 # Clean up downloaded files
 RUN rm -rf /tmp/*/downloaded_packages /tmp/app

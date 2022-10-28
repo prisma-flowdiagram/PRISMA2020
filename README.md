@@ -33,7 +33,7 @@ docker build . -t prisma-shiny:1
 docker run -it --rm -p 3838:3838 prisma-shiny:1
 ```
 
-Then visit http://localhost:3838 in your web browser.
+Then visit http://localhost:3838/app in your web browser.
 To stop the app, press `Ctrl+C` in the terminal.
 
 ---
