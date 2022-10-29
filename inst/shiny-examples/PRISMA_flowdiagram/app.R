@@ -35,7 +35,8 @@ ui <- tagList(
         "defer",
         "data-website-id" = "72f80a48-0dea-4914-9619-465de3df82a4",
         "data-do-not-track" = "true",
-        "data-host-url" = "https://umami.christopherpritchard.co.uk"
+        "data-host-url" = "https://umami.christopherpritchard.co.uk",
+        "data-domains" = "estech.shinyapps.io"
       )
     }
   ),
