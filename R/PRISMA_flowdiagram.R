@@ -1738,7 +1738,7 @@ PRISMA_save <- function( #nolint
   filetype = NA,
   overwrite = FALSE
 ) {
-  if (!file.exists(filename) | overwrite == TRUE) {
+  if (!file.exists(filename) || overwrite == TRUE) {
     format_real <- PRISMA_calc_filetype_(filename, filetype) #nolint
     switch(
       format_real,
