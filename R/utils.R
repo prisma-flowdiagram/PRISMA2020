@@ -359,11 +359,9 @@ PRISMA_calc_filetype_ <- function(fn, ft) { #nolint
 #' @return the number with commas removed
 #' @keywords internal
 PRISMA_format_number_ <- function(x) { #nolint
-    if (is.na(x)) {
-      return(x)
-    }
     if (is.character(x)) {
       x <- gsub(",", "", x)
+      x <- gsub("[^0-9.]", "", x)
     }
     return(as.numeric(x))
 }
