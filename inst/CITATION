@@ -5,7 +5,7 @@ citEntry(
   title    = "PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis",
   author   = "Neal R Haddaway, Matthew J Page, Chris C Pritchard and Luke A McGuinness",
   year     = "2022",
-  doi      = "110.1002/cl2.1230",
+  doi      = "10.1002/cl2.1230",
   journal  = "Campbell Systematic Reviews",
   number   = "2",
   volume   = "18",
