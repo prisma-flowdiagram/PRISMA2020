@@ -1261,20 +1261,24 @@ PRISMA_data <- function(data) { #nolint
         )
       )
     ),
-    n = gsub(
-      ".*,",
-      "",
-      unlist(
-        strsplit(
-          as.character(
-            data[
-              grep(
-                "database_specific_results",
-                data[, 1]
+    n = scales::comma(
+      as.numeric(
+        gsub(
+          ".*,",
+          "",
+          unlist(
+            strsplit(
+              as.character(
+                data[
+                  grep(
+                    "database_specific_results",
+                    data[, 1]
+                  ),
+                ]$n
               ),
-            ]$n
-          ),
-          split = "; "
+              split = "; "
+            )
+          )
         )
       )
     )
@@ -1297,20 +1301,24 @@ PRISMA_data <- function(data) { #nolint
         )
       )
     ),
-    n = gsub(
-      ".*,",
-      "",
-      unlist(
-        strsplit(
-          as.character(
-            data[
-              grep(
-                "register_specific_results",
-                data[, 1]
+    n = scales::comma(
+      as.numeric(
+        gsub(
+          ".*,",
+          "",
+          unlist(
+            strsplit(
+              as.character(
+                data[
+                  grep(
+                    "register_specific_results",
+                    data[, 1]
+                  ),
+                ]$n
               ),
-            ]$n
-          ),
-          split = "; "
+              split = "; "
+            )
+          )
         )
       )
     )
@@ -1463,20 +1471,24 @@ PRISMA_data <- function(data) { #nolint
         )
       )
     ),
-    n = gsub(
-      ".*,",
-      "",
-      unlist(
-        strsplit(
-          as.character(
-            data[
-              grep(
-                "dbr_excluded",
-                data[, 1]
+    n = scales::comma(
+      as.numeric(
+        gsub(
+          ".*,",
+          "",
+          unlist(
+            strsplit(
+              as.character(
+                data[
+                  grep(
+                    "dbr_excluded",
+                    data[, 1]
+                  ),
+                ]$n
               ),
-            ]$n
-          ),
-          split = "; "
+              split = "; "
+            )
+          )
         )
       )
     )
@@ -1509,20 +1521,24 @@ PRISMA_data <- function(data) { #nolint
         )
       )
     ),
-    n = gsub(
-      ".*,",
-      "",
-      unlist(
-        strsplit(
-          as.character(
-            data[
-              grep(
-                "other_excluded",
-                data[, 1]
+    n = scales::comma(
+      as.numeric(
+        gsub(
+          ".*,",
+          "",
+          unlist(
+            strsplit(
+              as.character(
+                data[
+                  grep(
+                    "other_excluded",
+                    data[, 1]
+                  ),
+                ]$n
               ),
-            ]$n
-          ),
-          split = "; "
+              split = "; "
+            )
+          )
         )
       )
     )
