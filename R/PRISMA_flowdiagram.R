@@ -1204,7 +1204,7 @@ PRISMA_data <- function(data) { #nolint
   data <- as.data.frame(data)
   #Set parameters
   previous_studies <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "previous_studies",
@@ -1214,7 +1214,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   previous_reports <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "previous_reports",
@@ -1224,7 +1224,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   register_results <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "register_results",
@@ -1234,7 +1234,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   database_results <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "database_results",
@@ -1262,7 +1262,7 @@ PRISMA_data <- function(data) { #nolint
       )
     ),
     n = scales::comma(
-      PRISMA_format_number_(
+      PRISMA_format_number_( #nolint
         gsub(
           ".*?,(.*)",
           "\\1",
@@ -1302,7 +1302,7 @@ PRISMA_data <- function(data) { #nolint
       )
     ),
     n = scales::comma(
-      PRISMA_format_number_(
+      PRISMA_format_number_( #nolint
         gsub(
           ".*?,(.*)",
           "\\1",
@@ -1324,7 +1324,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   website_results <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "website_results",
@@ -1334,7 +1334,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   organisation_results <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "organisation_results",
@@ -1344,7 +1344,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   citations_results <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "citations_results",
@@ -1354,7 +1354,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   duplicates <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "duplicates",
@@ -1364,7 +1364,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
     excluded_automatic <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "excluded_automatic",
@@ -1374,7 +1374,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   excluded_other <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "excluded_other",
@@ -1384,7 +1384,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   records_screened <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "records_screened",
@@ -1394,7 +1394,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   records_excluded <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "records_excluded",
@@ -1404,7 +1404,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   dbr_sought_reports <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "dbr_sought_reports",
@@ -1414,7 +1414,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   dbr_notretrieved_reports <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "dbr_notretrieved_reports",
@@ -1424,7 +1424,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   other_sought_reports <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "other_sought_reports",
@@ -1434,7 +1434,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   other_notretrieved_reports <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "other_notretrieved_reports",
@@ -1444,7 +1444,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   dbr_assessed <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "dbr_assessed",
@@ -1472,7 +1472,7 @@ PRISMA_data <- function(data) { #nolint
       )
     ),
     n = scales::comma(
-      PRISMA_format_number_(
+      PRISMA_format_number_( #nolint
         gsub(
           ".*?,(.*)",
           "\\1",
@@ -1494,7 +1494,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   other_assessed <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "other_assessed",
@@ -1522,7 +1522,7 @@ PRISMA_data <- function(data) { #nolint
       )
     ),
     n = scales::comma(
-      PRISMA_format_number_(
+      PRISMA_format_number_( #nolint
         gsub(
           ".*?,(.*)",
           "\\1",
@@ -1544,7 +1544,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   new_studies <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "new_studies",
@@ -1554,7 +1554,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   new_reports <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "new_reports",
@@ -1564,7 +1564,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   total_studies <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "total_studies",
@@ -1574,7 +1574,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   total_reports <- scales::comma(
-    PRISMA_format_number_(
+    PRISMA_format_number_( #nolint
       data[
         grep(
           "total_reports",

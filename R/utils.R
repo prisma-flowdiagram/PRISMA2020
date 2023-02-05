@@ -233,8 +233,7 @@ PRISMA_interactive_ <- function( #nolint
       "node19",
       "node20"
     )
-  }
-  else if (previous == TRUE && other == FALSE) {
+  } else if (previous == TRUE && other == FALSE) {
     link <- data.frame(
       boxname = c(
         "identification",
@@ -276,8 +275,7 @@ PRISMA_interactive_ <- function( #nolint
       "node16",
       "node17"
     )
-  }
-  else {
+  } else {
     link <- data.frame(
       boxname = c(
         "identification",
@@ -343,7 +341,7 @@ PRISMA_interactive_ <- function( #nolint
 PRISMA_calc_filetype_ <- function(fn, ft) { #nolint
     # if the filetype is set, return that, otherwise
     # calculate the filetype from the extension (HTM becomes HTML)
-    if (!is.na(ft) & !is.null(ft)) {
+    if (!is.na(ft) && !is.null(ft)) {
       the_ft <- toupper(ft)
     } else {
       the_ft <- toupper(tools::file_ext(fn))
