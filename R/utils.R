@@ -354,6 +354,22 @@ PRISMA_calc_filetype_ <- function(fn, ft) { #nolint
     return(the_ft)
 }
 
+#' Format numbers with commas into numbers
+#'
+#' @description Turn strings containing numbers +/- commas into numbers
+#' @param x the number to format
+#' @return the number with commas removed
+#' @keywords internal
+PRISMA_format_number_ <- function(x) { #nolint
+    if (is.na(x)) {
+      return(x)
+    }
+    if (is.character(x)) {
+      x <- gsub(",", "", x)
+    }
+    return(as.numeric(x))
+}
+
 #' Generate a temporary SVG from a plot object
 #'
 #' @description Generate and save a temporary SVG from a plot object
