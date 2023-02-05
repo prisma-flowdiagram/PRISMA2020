@@ -47,6 +47,9 @@ ui <- tagList(
     tabPanel("Home",
       fluidRow(
         column(10, offset = 1,
+          h4("To get started, click \"Create flow diagram\" above,
+          or read the instructions below for more information."),
+          br(),
           "Systematic reviews should be described in
           a high degree of methodological detail. ",
           tags$a(
@@ -867,7 +870,32 @@ server <- function(input, output, session) {
         resetPaging = FALSE,
         rownames = FALSE)  # important
   })
-
+  # Define thank you modal
+  thank_you_modal <- modalDialog(
+          easyClose = TRUE,
+          title = "Thank You",
+          "Thank you for using the PRISMA Flow Diagram tool.
+          Your flow diagram is being downloaded.",
+          hr(),
+          "Please remember to cite the tool as: ",
+          br(),
+          "Haddaway, N. R., Page, M. J., Pritchard, C. C., &
+          McGuinness, L. A. (2022). PRISMA2020: An R package
+          and Shiny app for producing PRISMA 2020-compliant flow
+          diagrams, with interactivity for optimised digital transparency
+          and Open Synthesis Campbell Systematic Reviews, 18, e1230.",
+          tags$a(
+            href = "https://doi.org/10.1002/cl2.1230",
+            "https://doi.org/10.1002/cl2.1230"
+          ),
+          br(),
+          tags$a(
+            href = "Haddaway_et_al_2022.ris",
+            "Download citation (.ris)",
+            download = NA,
+            target = "_blank"
+          )
+  )
   # Reactive plot ----
   # Create plot
   plot <- reactive({
@@ -925,6 +953,9 @@ server <- function(input, output, session) {
   output$PRISMAflowdiagramPDF <- downloadHandler( #nolint
     filename = "prisma.pdf",
     content = function(file) {
+      showModal(
+        thank_you_modal
+      )
       PRISMA2020::PRISMA_save(plot(),
                  filename = file, filetype = "PDF")
     }
@@ -932,6 +963,9 @@ server <- function(input, output, session) {
   output$PRISMAflowdiagramPNG <- downloadHandler( #nolint
     filename = "prisma.png",
     content = function(file) {
+      showModal(
+        thank_you_modal
+      )
       PRISMA2020::PRISMA_save(plot(),
                  filename = file, filetype = "PNG")
     }
@@ -939,6 +973,9 @@ server <- function(input, output, session) {
   output$PRISMAflowdiagramSVG <- downloadHandler( #nolint
     filename = "prisma.svg",
     content = function(file) {
+      showModal(
+        thank_you_modal
+      )
       PRISMA2020::PRISMA_save(plot(),
                  filename = file, filetype = "SVG")
     }
@@ -946,6 +983,9 @@ server <- function(input, output, session) {
   output$PRISMAflowdiagramHTML <- downloadHandler( #nolint
     filename = "prisma.html",
     content = function(file) {
+      showModal(
+        thank_you_modal
+      )
       PRISMA2020::PRISMA_save(plot(),
                  filename = file, filetype = "html")
     }
@@ -953,6 +993,9 @@ server <- function(input, output, session) {
   output$PRISMAflowdiagramZIP <- downloadHandler( #nolint
     filename = "prisma.zip",
     content = function(file) {
+      showModal(
+        thank_you_modal
+      )
       PRISMA2020::PRISMA_save(plot(),
                  filename = file, filetype = "zip")
     }
