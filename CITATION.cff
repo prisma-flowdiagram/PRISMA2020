@@ -11,7 +11,7 @@ authors:
     given-names: Chris C
     orcid: https://orcid.org/0000-0002-1143-9751
 title: "PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams"
-version: 1.0.1
+version: 1.1.0
 doi: 10.5281/zenodo.4287834
 date-released: 2022-07-02
 license: MIT
