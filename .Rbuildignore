@@ -7,3 +7,5 @@ LICENSE.md
 CITATION.cff
 code-of-conduct.md
 contributing.md
+Dockerfile
+shiny-server.conf

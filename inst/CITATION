@@ -1,7 +1,6 @@
-citHeader("To cite PRISMA2020 in publications, please use:")
-
-citEntry(
-  entry    = "Article",
+bibentry(
+  header = "To cite PRISMA2020 in publications, please use:",
+  bibtype    = "Article",
   title    = "PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis",
   author   = "Neal R Haddaway, Matthew J Page, Chris C Pritchard and Luke A McGuinness",
   year     = "2022",
@@ -10,5 +9,4 @@ citEntry(
   number   = "2",
   volume   = "18",
   pages    = "e1230",
-  textVersion = "Haddaway, N. R., Page, M. J., Pritchard, C. C., & McGuinness, L. A. (2022). PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis. Campbell Systematic Reviews, 18, e1230. https://doi.org/10.1002/cl2.1230"
 )
