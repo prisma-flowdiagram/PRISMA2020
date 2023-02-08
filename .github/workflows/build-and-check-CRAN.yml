@@ -26,7 +26,7 @@ jobs:
           name: package
           path: "*.tar.gz"
   R-CMD-Check-As-CRAN:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs: R-CMD-Build
     steps:
       - uses: actions/checkout@v3
