@@ -24,7 +24,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: package
-          path: *.tar.gz
+          path: "*.tar.gz"
   R-CMD-Check-As-CRAN:
     runs-on: windows-latest
     needs: R-CMD-Build
@@ -49,7 +49,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: check
-          path: *.Rcheck
+          path: "*.Rcheck"
   release:
     runs-on: ubuntu-latest
     needs: R-CMD-Check-As-CRAN
