@@ -60,4 +60,4 @@ jobs:
     - uses: actions/download-artifact@v3
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: "**/*.tar.gz,**/*.Rcheck/00Check.log,**/*.Rcheck/*-manual.pdf"
+        artifacts: "**/*.tar.gz,**/*.Rcheck/*.log,**/*.Rcheck/*-manual.pdf"
