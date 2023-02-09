@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 name: Publish Release, Build & Check for CRAN
 jobs:
   R-CMD-Build:
@@ -62,4 +62,4 @@ jobs:
         name: package
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: "*.tar.gz,*.Rcheck/*.txt"
+        artifacts: "*.tar.gz,*.Rcheck/00Check.log,*.Rcheck/*-manual.pdf"
