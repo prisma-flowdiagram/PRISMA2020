@@ -4,6 +4,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/prisma-flowdiagram/PRISMA2020?style=social)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4287834.svg)](https://doi.org/10.5281/zenodo.4287834)
 [![DOI](https://zenodo.org/badge/DOI/10.1002/cl2.1230.svg)](https://doi.org/10.1002/cl2.1230)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/O5O4JQJ5W)
 <!-- badges: end -->
 
 # PRISMA2020 Flow Diagram <img src="https://raw.githubusercontent.com/prisma-flowdiagram/PRISMA2020/master/PRISMA2020-hex.png" align="right" width="15%"/>

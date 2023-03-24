@@ -88,7 +88,7 @@ PRISMA_add_hyperlink_ <- function( #nolint
   node,
   url
 ) {
-  t <- paste0(
+  t <- paste0( #nolint
     "const ",
       node,
     ' = document.getElementById("',

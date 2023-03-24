@@ -29,22 +29,8 @@ jobs:
       working-directory: "./inst/shiny-examples/PRISMA_flowdiagram"
       environment: "latest"
       renvironment-contents: |
-        PRISMA_ANALYTICS=TRUE      
-    secrets:
-      rsconnect-account-token: ${{ secrets.TOKEN }}
-      rsconnect-account-secret: ${{ secrets.SECRET }}
-  deploy-release:
-    needs: R-CMD-Check
-    if: github.event_name == 'release'
-    uses: prisma-flowdiagram/r-workflows/.github/workflows/deploy.yml@v1
-    with:
-      install-package: true
-      rsconnect-account-name: "estech"
-      rsconnect-app-name: "PRISMA_flowdiagram"
-      working-directory: "./inst/shiny-examples/PRISMA_flowdiagram"
-      environment: "release"
-      renvironment-contents: |
-        PRISMA_ANALYTICS=TRUE   
+        PRISMA_ANALYTICS=TRUE     
+        KOFI_DONATE=TRUE 
     secrets:
       rsconnect-account-token: ${{ secrets.TOKEN }}
       rsconnect-account-secret: ${{ secrets.SECRET }}

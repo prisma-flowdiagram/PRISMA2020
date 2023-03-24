@@ -1,26 +1,27 @@
 library(shiny)
 library(shinyjs)
 library(rsvg)
-library(DT)
+library(DT) #nolint
 library(rio)
 library(devtools)
-library(PRISMA2020)
+library(PRISMA2020) #nolint
 
-template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE)
+template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE) #nolint
 
 # Define UI for application that draws a histogram
-ui <- tagList(
+ui <- tagList( #nolint
   tags$head(
     tags$script(
       src = "labels.js"
     ),
     tags$style(
-      type = "text/css",
-      "body {padding-top: 70px;}"
+      type = "text/css",#nolint
+      "body {padding-top: 70px;}", #nolint
+      "body {padding-bottom: 50px;}" #nolint
     ),
     tags$link(
-      rel = "shortcut icon",
-      href = "favicon.ico"
+      rel = "shortcut icon", #nolint
+      href = "favicon.ico" #nolint
     ),
     # the below enables us to utilise analytics when pushing to shinyapps.io.
     # if self hosting you can insert your own analytics code here
@@ -28,15 +29,25 @@ ui <- tagList(
     # the EU GDPR. we use a self-hosted version of umami,
     # configured not to store any cookies or personally identifiable data.
     # We also respect the "do-not-track" header.
-    analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) {
+    analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) { #nolint
       tags$script(
-        src = "https://umami.christopherpritchard.co.uk/umami.js",
+        src = "https://umami.christopherpritchard.co.uk/umami.js", # nolint
         "async",
         "defer",
-        "data-website-id" = "72f80a48-0dea-4914-9619-465de3df82a4",
-        "data-do-not-track" = "true",
-        "data-host-url" = "https://umami.christopherpritchard.co.uk",
-        "data-domains" = "estech.shinyapps.io"
+        "data-website-id" = "72f80a48-0dea-4914-9619-465de3df82a4", # nolint
+        "data-do-not-track" = "true", # nolint
+        "data-host-url" = "https://umami.christopherpritchard.co.uk", # nolint
+        "data-domains" = "estech.shinyapps.io" # nolint
+      )
+    },
+    kofi_load <- if (Sys.getenv("KOFI_DONATE") == TRUE) { #nolint
+      tags$script(
+        src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js' # nolint
+      )
+    },
+    kofi_show <- if (Sys.getenv("KOFI_DONATE") == TRUE) { #nolint
+      tags$script(
+        src = "kofi.js"
       )
     }
   ),
@@ -169,7 +180,9 @@ ui <- tagList(
           ),
           "Created November 2020, Updated June 2022"
         )
-      )
+      ),
+      kofi_load,
+      kofi_show
     ),
     # Tab 2 ----
     tabPanel(
