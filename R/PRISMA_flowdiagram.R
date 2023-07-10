@@ -537,7 +537,7 @@ PRISMA_flowdiagram <- function( #nolint
         other_excluded_height
       )
     ) +
-    default_box_spacing * 3
+    default_box_spacing * 2
   identification_box_height <- max(
       c(
         dbr_identified_height,
@@ -630,7 +630,13 @@ PRISMA_flowdiagram <- function( #nolint
     identified_height,
     section_label_length
   )
-  screening_y <- mean(c(screened_y, sought_y, assessed_y))
+  screening_y <-
+    mean(
+      c(
+        (screened_y + (screened_height / 2)),
+        (assessed_y - (dbr_excluded_height / 2))
+      )
+    )
   included_y <- if (total_studies_height > 0) {
     mean(c(diagram_start_y, newstudy_newreports_y))
   } else {
