@@ -7,6 +7,18 @@ library(devtools)
 library(PRISMA2020) #nolint
 
 template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE) #nolint
+the_options <- c(
+  "Included",
+  "Not Included",
+  "Not Included",
+  "Not Included"
+)
+names(the_options) <- c(
+  "previous",
+  "other",
+  "dbDetail",
+  "regDetail"
+)
 
 # Define UI for application that draws a histogram
 ui <- tagList( #nolint
@@ -86,9 +98,11 @@ ui <- tagList( #nolint
           '?website_results=100&organisation_results=200', this will initialise
           the website results to 100 and the organisation results to 200.
           The name of the query string parameter should match the name of the
-          'data' column in the template file below.
-          Alternatively, to allow for more customisation,
-          you can use the template file below.",
+          'data' column in the template file below. The additional arguments
+          \"previous\", \"other\", \"dbDetail\", and \"regDetail\" can be
+          used to set the initial main options for further customisation.
+          Alternatively, you can use the template file below to specify any
+          values, and to change somé of the labels within the diagram.",
           br(),
           br(),
           "This tool also allows you to download an interactive HTML
@@ -198,51 +212,18 @@ ui <- tagList( #nolint
               )
             )
           ),
-          h3("Main options"),
-          splitLayout(
-            selectInput(
-              "previous",
-              "Previous studies",
-              choices <- c(
-                "Not included",
-                "Included"
-              )
-            ),
-            selectInput(
-              "other",
-              "Other searches for studies",
-              choices <- c(
-                "Included",
-                "Not included"
-              )
-            )
-          ),
-          splitLayout(
-            selectInput(
-              "dbDetail",
-              "Individual databases",
-              choices = c(
-                "Not included",
-                "Included"
-              )
-            ),
-            selectInput(
-              "regDetail",
-              "Individual registers",
-              choices = c(
-                "Not Included",
-                "Included"
-              )
-            )
+          div(
+            id = "options",
+            uiOutput("options")
           ),
           hr(),
           actionButton(
             "reset",
             "Click to reset"
           ),
+          hr(),
           div(
             id = "inputs",
-            h3("Identification"),
             uiOutput("selection")
           ),
           hr(),
@@ -409,6 +390,34 @@ server <- function(input, output, session) {
       # Override default template with query string parameters if present
       query <- parseQueryString(session$clientData$url_search)
       if (length(query) > 0) {
+        if ("previous" %in% names(query)) {
+          if (query$previous == 1) {
+            the_options["previous"] <- "Included"
+          } else if (query$previous == 0) {
+            the_options["previous"] <- "Not Included"
+          }
+        }
+        if ("other" %in% names(query)) {
+          if (query$other == 1) {
+            the_options["other"] <- "Included"
+          } else if (query$other == 0) {
+            the_options["other"] <- "Not Included"
+          }
+        }
+        if ("dbDetail" %in% names(query)) {
+          if (query$dbDetail == 1) {
+            the_options["dbDetail"] <- "Included"
+          } else if (query$dbDetail == 0) {
+            the_options["dbDetail"] <- "Not Included"
+          }
+        }
+        if ("regDetail" %in% names(query)) {
+          if (query$regDetail == 1) {
+            the_options["regDetail"] <- "Included"
+          } else if (query$regDetail == 0) {
+            the_options["regDetail"] <- "Not Included"
+          }
+        }
         for (i in seq_len(nrow(template))) {
           if (!is.null(query[[template[i, "data"]]])) {
             template[i, "n"] <- query[[template[i, "data"]]]
@@ -417,13 +426,17 @@ server <- function(input, output, session) {
       }
       # Create inital value that is passed to UI
       rv$data_initial <- template
+      rv$opts_initial <- the_options
       # Create version that is edited and passed to graphing function
       rv$data <- template
+      rv$opts <- the_options
     } else {
       # Create inital value that is passed to UI
       rv$data_initial <- read.csv(input$data_upload$datapath)
+      rv$opts_initial <- the_options
       # Create version that is edited and passed to graphing function
       rv$data <- read.csv(input$data_upload$datapath)
+      rv$opts <- the_options
     }
   })
 
@@ -438,6 +451,7 @@ server <- function(input, output, session) {
         rv$data <- read.csv(input$data_upload$datapath)
       }
       shinyjs::reset("inputs")
+      shinyjs::reset("options")
     }
   )
   # Reset to blank button
@@ -446,9 +460,56 @@ server <- function(input, output, session) {
       shinyjs::reset("data_upload")
     }
   )
+  # Set up default options
+  output$options <- renderUI({
+    tagList(
+      h3("Main options"),
+      splitLayout(
+        selectInput(
+          "previous",
+          "Previous studies",
+          choices = c(
+            "Not Included",
+            "Included"
+          ),
+          selected = rv$opts_initial["previous"]
+        ),
+        selectInput(
+          "other",
+          "Other searches for studies",
+          choices = c(
+            "Not Included",
+            "Included"
+          ),
+          selected = rv$opts_initial["other"]
+        )
+      ),
+          splitLayout(
+            selectInput(
+              "dbDetail",
+              "Individual databases",
+              choices = c(
+                "Not Included",
+                "Included"
+              ),
+              selected = rv$opts_initial["dbDetail"]
+            ),
+            selectInput(
+              "regDetail",
+              "Individual registers",
+              choices = c(
+                "Not Included",
+                "Included"
+              ),
+              selected = rv$opts_initial["regDetail"]
+            )
+          )
+    )
+  })
   # Set up default values in data entry boxes
   output$selection <- renderUI({
     tagList(
+      h3("Identification"),
       conditionalPanel(
         condition = "input.previous == 'Included'",
         splitLayout(
@@ -861,6 +922,18 @@ server <- function(input, output, session) {
       "n"
     ] <- input$total_reports
   })
+  observeEvent(input$previous, {
+    rv$opts["previous"] <- input$previous
+  })
+  observeEvent(input$other, {
+    rv$opts["other"] <- input$other
+  })
+  observeEvent(input$dbDetail, {
+    rv$opts["dbDetail"] <- input$dbDetail
+  })
+  observeEvent(input$regDetail, {
+    rv$opts["regDetail"] <- input$regDetail
+  })
   # Define table proxy
   proxy <- DT::dataTableProxy("mytable")
   # Update reactive dataset on cell edit
@@ -913,22 +986,22 @@ server <- function(input, output, session) {
   # Create plot
   plot <- reactive({
     data <- PRISMA2020::PRISMA_data(rv$data)
-    if (input$previous == "Included") {
+    if (rv$opts["previous"] == "Included") {
       include_previous <- TRUE
     } else {
       include_previous <- FALSE
     }
-    if (input$other == "Included") {
+    if (rv$opts["other"] == "Included") {
       include_other <- TRUE
     } else {
       include_other <- FALSE
     }
-    if (input$dbDetail == "Included") {
+    if (rv$opts["dbDetail"] == "Included") {
       detail_databases <- TRUE
     } else {
       detail_databases <- FALSE
     }
-    if (input$regDetail == "Included") {
+    if (rv$opts["regDetail"] == "Included") {
       detail_registers <- TRUE
     } else {
       detail_registers <- FALSE
