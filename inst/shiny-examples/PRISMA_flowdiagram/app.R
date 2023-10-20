@@ -8,8 +8,8 @@ library(PRISMA2020) #nolint
 
 template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE) #nolint
 the_options <- c(
-  "Included",
   "Not Included",
+  "Included",
   "Not Included",
   "Not Included"
 )
