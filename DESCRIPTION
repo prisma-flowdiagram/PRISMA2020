@@ -46,6 +46,8 @@ Imports:
     tools,
     zip
 License: MIT + file LICENSE
+URL: https://github.com/prisma-flowdiagram/PRISMA2020
+BugReports: https://github.com/prisma-flowdiagram/PRISMA2020/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
