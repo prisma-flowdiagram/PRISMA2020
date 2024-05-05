@@ -37,6 +37,9 @@
     <loc>/reference/PRISMA_format_number_.html</loc>
   </url>
   <url>
+    <loc>/reference/PRISMA_format_reasons_.html</loc>
+  </url>
+  <url>
     <loc>/reference/PRISMA_gen_tmp_svg_.html</loc>
   </url>
   <url>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>/reference/PRISMA_interactive_.html</loc>
+  </url>
+  <url>
+    <loc>/reference/PRISMA_parse_reasons_.html</loc>
   </url>
   <url>
     <loc>/reference/PRISMA_save.html</loc>
