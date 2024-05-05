@@ -234,24 +234,7 @@ PRISMA_flowdiagram <- function( #nolint
     } else {
       cond_citation <- ""
     }
-    if (is.data.frame(other_excluded) == TRUE) {
-      other_excluded_data <- paste0(
-        ":",
-        paste(
-          paste(
-            "\n",
-            other_excluded[, 1],
-            " (n = ", other_excluded[, 2], ")",
-            sep = ""
-          ),
-        collapse = ""
-        )
-      )
-    } else {
-      other_excluded_data <- paste0(
-        "\n", "(n = ", other_excluded, ")"
-      )
-    }
+    other_excluded_data <- PRISMA_format_reasons_(other_excluded)
     # labels
     other_identified_label <- paste0(
       "Records identified from:",
@@ -319,36 +302,13 @@ PRISMA_flowdiagram <- function( #nolint
     cond_newreports <- ""
   }
   if (detail_databases == TRUE) {
-    db_specific_data_nr <- paste(
-      paste(
-        "\n",
-        database_specific_results[, 1],
-        " (n = ", database_specific_results[, 2], ")",
-      sep = ""
-      ),
-    collapse = ""
-    )
-    db_specific_data <- paste0(
-      ":",
-      db_specific_data_nr
-    )
+    db_specific_data <- PRISMA_format_reasons_(database_specific_results)
   } else {
     db_specific_data <- ""
     db_specific_data_nr <- ""
   }
   if (detail_registers == TRUE) {
-    reg_specific_data_nr <- paste(
-      paste(
-        "\n", register_specific_results[, 1],
-        " (n = ", register_specific_results[, 2], ")",
-      sep = ""
-      ),
-    collapse = ""
-    )
-    reg_specific_data <- paste0(
-      ":",
-      reg_specific_data_nr
-    )
+    reg_specific_data <- PRISMA_format_reasons_(register_specific_results)
   } else {
     reg_specific_data <- ""
     reg_specific_data_nr <- ""
@@ -369,22 +329,7 @@ PRISMA_flowdiagram <- function( #nolint
   } else {
     cond_register <- paste0("", reg_specific_data_nr)
   }
-  if (any(!grepl("\\D", dbr_excluded)) == FALSE) {
-    dbr_excluded_data <- paste0(
-      ":",
-      paste(
-        paste(
-          "\n",
-          dbr_excluded[, 1],
-          " (n = ", dbr_excluded[, 2], ")",
-        sep = ""
-        ),
-      collapse = ""
-      )
-    )
-  } else {
-    dbr_excluded_data <- paste0("\n", "(n = ", dbr_excluded, ")")
-  }
+  dbr_excluded_data <- PRISMA_format_reasons_(dbr_excluded)
   if (is.na(duplicates) == FALSE) {
     cond_duplicates <- paste0(
       stringr::str_wrap(
@@ -1249,85 +1194,19 @@ PRISMA_data <- function(data) { #nolint
       ]$n
     )
   )
-  database_specific_results <- data.frame(
-    reason = gsub(
-      ",.*$",
-      "",
-      unlist(
-        strsplit(
-          as.character(
-            data[
-              grep(
-                "database_specific_results",
-                data[, 1]
-              ),
-            ]$n
-          ),
-          split = "; "
-        )
-      )
-    ),
-    n = scales::comma(
-      PRISMA_format_number_( #nolint
-        gsub(
-          ".*?,(.*)",
-          "\\1",
-          unlist(
-            strsplit(
-              as.character(
-                data[
-                  grep(
-                    "database_specific_results",
-                    data[, 1]
-                  ),
-                ]$n
-              ),
-              split = "; "
-            )
-          )
-        )
-      )
-    )
+  database_specific_results <- PRISMA_parse_reasons_(data[
+      grep(
+        "database_specific_results",
+        data[, 1]
+      ),
+    ]$n
   )
-  register_specific_results <- data.frame(
-    reason = gsub(
-      ",.*$",
-      "",
-      unlist(
-        strsplit(
-          as.character(
-            data[
-              grep(
-                "register_specific_results",
-                data[, 1]
-              ),
-            ]$n
-          ),
-          split = "; "
-        )
-      )
-    ),
-    n = scales::comma(
-      PRISMA_format_number_( #nolint
-        gsub(
-          ".*?,(.*)",
-          "\\1",
-          unlist(
-            strsplit(
-              as.character(
-                data[
-                  grep(
-                    "register_specific_results",
-                    data[, 1]
-                  ),
-                ]$n
-              ),
-              split = "; "
-            )
-          )
-        )
-      )
-    )
+  register_specific_results <- PRISMA_parse_reasons_(data[
+      grep(
+        "register_specific_results",
+        data[, 1]
+      ),
+    ]$n
   )
   website_results <- scales::comma(
     PRISMA_format_number_( #nolint
@@ -1459,45 +1338,12 @@ PRISMA_data <- function(data) { #nolint
       ]$n
     )
   )
-  dbr_excluded <- data.frame(
-    reason = gsub(
-      ",.*$",
-      "",
-      unlist(
-        strsplit(
-          as.character(
-            data[
-              grep(
-                "dbr_excluded",
-                data[, 1]
-              ),
-            ]$n
-          ),
-          split = "; "
-        )
-      )
-    ),
-    n = scales::comma(
-      PRISMA_format_number_( #nolint
-        gsub(
-          ".*?,(.*)",
-          "\\1",
-          unlist(
-            strsplit(
-              as.character(
-                data[
-                  grep(
-                    "dbr_excluded",
-                    data[, 1]
-                  ),
-                ]$n
-              ),
-              split = "; "
-            )
-          )
-        )
-      )
-    )
+  dbr_excluded <- PRISMA_parse_reasons_(data[
+      grep(
+        "dbr_excluded",
+        data[, 1]
+      ),
+    ]$n
   )
   other_assessed <- scales::comma(
     PRISMA_format_number_( #nolint
@@ -1509,45 +1355,12 @@ PRISMA_data <- function(data) { #nolint
       ]$n
     )
   )
-  other_excluded <- data.frame(
-    reason = gsub(
-      ",.*$",
-      "",
-      unlist(
-        strsplit(
-          as.character(
-            data[
-              grep(
-                "other_excluded",
-                data[, 1]
-              ),
-            ]$n
-          ),
-          split = "; "
-        )
-      )
-    ),
-    n = scales::comma(
-      PRISMA_format_number_( #nolint
-        gsub(
-          ".*?,(.*)",
-          "\\1",
-          unlist(
-            strsplit(
-              as.character(
-                data[
-                  grep(
-                    "other_excluded",
-                    data[, 1]
-                  ),
-                ]$n
-              ),
-              split = "; "
-            )
-          )
-        )
-      )
-    )
+  other_excluded <- PRISMA_parse_reasons_(data[
+      grep(
+        "other_excluded",
+        data[, 1]
+      ),
+    ]$n
   )
   new_studies <- scales::comma(
     PRISMA_format_number_( #nolint
