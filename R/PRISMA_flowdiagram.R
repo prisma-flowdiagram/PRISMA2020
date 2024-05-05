@@ -234,7 +234,7 @@ PRISMA_flowdiagram <- function( #nolint
     } else {
       cond_citation <- ""
     }
-    other_excluded_data <- PRISMA_format_reasons_(other_excluded)
+    other_excluded_data <- PRISMA_format_reasons_(other_excluded) #nolint
     # labels
     other_identified_label <- paste0(
       "Records identified from:",
@@ -302,13 +302,13 @@ PRISMA_flowdiagram <- function( #nolint
     cond_newreports <- ""
   }
   if (detail_databases == TRUE) {
-    db_specific_data <- PRISMA_format_reasons_(database_specific_results)
+    db_specific_data <- PRISMA_format_reasons_(database_specific_results) #nolint
   } else {
     db_specific_data <- ""
     db_specific_data_nr <- ""
   }
   if (detail_registers == TRUE) {
-    reg_specific_data <- PRISMA_format_reasons_(register_specific_results)
+    reg_specific_data <- PRISMA_format_reasons_(register_specific_results) #nolint
   } else {
     reg_specific_data <- ""
     reg_specific_data_nr <- ""
@@ -329,7 +329,7 @@ PRISMA_flowdiagram <- function( #nolint
   } else {
     cond_register <- paste0("", reg_specific_data_nr)
   }
-  dbr_excluded_data <- PRISMA_format_reasons_(dbr_excluded)
+  dbr_excluded_data <- PRISMA_format_reasons_(dbr_excluded) #nolint
   if (is.na(duplicates) == FALSE) {
     cond_duplicates <- paste0(
       stringr::str_wrap(
@@ -1194,14 +1194,14 @@ PRISMA_data <- function(data) { #nolint
       ]$n
     )
   )
-  database_specific_results <- PRISMA_parse_reasons_(data[
+  database_specific_results <- PRISMA_parse_reasons_(data[ #nolint
       grep(
         "database_specific_results",
         data[, 1]
       ),
     ]$n
   )
-  register_specific_results <- PRISMA_parse_reasons_(data[
+  register_specific_results <- PRISMA_parse_reasons_(data[ #nolint
       grep(
         "register_specific_results",
         data[, 1]
@@ -1338,7 +1338,7 @@ PRISMA_data <- function(data) { #nolint
       ]$n
     )
   )
-  dbr_excluded <- PRISMA_parse_reasons_(data[
+  dbr_excluded <- PRISMA_parse_reasons_(data[ #nolint
       grep(
         "dbr_excluded",
         data[, 1]
@@ -1355,7 +1355,7 @@ PRISMA_data <- function(data) { #nolint
       ]$n
     )
   )
-  other_excluded <- PRISMA_parse_reasons_(data[
+  other_excluded <- PRISMA_parse_reasons_(data[ #nolint
       grep(
         "other_excluded",
         data[, 1]
@@ -1555,6 +1555,12 @@ PRISMA_data <- function(data) { #nolint
 #' alongside supporting javascript and css files in an adjacent folder,
 #' instead of embedded base64 within the HTML file
 #' @param overwrite if TRUE, will overwrite an existing file
+#' @param width passed as the width argument to
+#' [rsvg::rsvg()] and similar functions
+#' @param height passed as the height argument to
+#' [rsvg::rsvg()] and similar functions
+#' @param css passed as the css argument to
+#' [rsvg::rsvg()] and similar functions
 #' @return the absolute filename of the saved diagram plot.
 #' @examples
 #' csvFile <- system.file("extdata", "PRISMA.csv", package = "PRISMA2020")
@@ -1571,7 +1577,10 @@ PRISMA_save <- function( #nolint
   plotobj,
   filename = "PRISMA2020_flowdiagram.html",
   filetype = NA,
-  overwrite = FALSE
+  overwrite = FALSE,
+  width = NULL,
+  height = NULL,
+  css = NULL
 ) {
   if (!file.exists(filename) || overwrite == TRUE) {
     format_real <- PRISMA_calc_filetype_(filename, filetype) #nolint
@@ -1622,12 +1631,24 @@ PRISMA_save <- function( #nolint
       },
       "PDF" = {
         tmp_svg <- PRISMA_gen_tmp_svg_(plotobj) #nolint
-        rsvg::rsvg_pdf(tmp_svg, filename)
+        rsvg::rsvg_pdf(
+          tmp_svg,
+          filename,
+          width = width,
+          height = height,
+          css = css
+        )
         file.remove(tmp_svg)
       },
       "PNG" = {
         tmp_svg <- PRISMA_gen_tmp_svg_(plotobj) #nolint
-        rsvg::rsvg_png(tmp_svg, filename)
+        rsvg::rsvg_png(
+          tmp_svg,
+          filename,
+          width = width,
+          height = height,
+          css = css
+        )
         file.remove(tmp_svg)
       },
       "SVG" = {
@@ -1639,12 +1660,24 @@ PRISMA_save <- function( #nolint
       },
       "PS" = {
         tmp_svg <- PRISMA_gen_tmp_svg_(plotobj) #nolint
-        rsvg::rsvg_ps(tmp_svg, filename)
+        rsvg::rsvg_ps(
+          tmp_svg,
+          filename,
+          width = width,
+          height = height,
+          css = css
+        )
         file.remove(tmp_svg)
       },
       "WEBP" = {
         tmp_svg <- PRISMA_gen_tmp_svg_(plotobj) #nolint
-        rsvg::rsvg_webp(tmp_svg, filename)
+        rsvg::rsvg_webp(
+          tmp_svg,
+          filename,
+          width = width,
+          height = height,
+          css = css
+        )
         file.remove(tmp_svg)
       },
       stop("Please choose one of the supported file types")

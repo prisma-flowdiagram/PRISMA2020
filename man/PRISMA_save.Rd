@@ -8,7 +8,10 @@ PRISMA_save(
   plotobj,
   filename = "PRISMA2020_flowdiagram.html",
   filetype = NA,
-  overwrite = FALSE
+  overwrite = FALSE,
+  width = NULL,
+  height = NULL,
+  css = NULL
 )
 }
 \arguments{
@@ -25,6 +28,15 @@ alongside supporting javascript and css files in an adjacent folder,
 instead of embedded base64 within the HTML file}
 
 \item{overwrite}{if TRUE, will overwrite an existing file}
+
+\item{width}{passed as the width argument to
+\code{\link[rsvg:rsvg]{rsvg::rsvg()}} and similar functions}
+
+\item{height}{passed as the height argument to
+\code{\link[rsvg:rsvg]{rsvg::rsvg()}} and similar functions}
+
+\item{css}{passed as the css argument to
+\code{\link[rsvg:rsvg]{rsvg::rsvg()}} and similar functions}
 }
 \value{
 the absolute filename of the saved diagram plot.
