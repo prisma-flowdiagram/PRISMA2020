@@ -4,7 +4,7 @@ working directory."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -29,20 +29,20 @@ working directory."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/prisma-flowdiagram/PRISMA2020/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Save PRISMA2020 flow diagram</h1>
-    <small class="dont-index">Source: <a href="https://github.com/prisma-flowdiagram/PRISMA2020/blob/HEAD/R/PRISMA_flowdiagram.R" class="external-link"><code>R/PRISMA_flowdiagram.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/prisma-flowdiagram/PRISMA2020/blob/main/R/PRISMA_flowdiagram.R" class="external-link"><code>R/PRISMA_flowdiagram.R</code></a></small>
     <div class="hidden name"><code>PRISMA_save.Rd</code></div>
     </div>
 
@@ -65,15 +65,17 @@ working directory.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>plotobj</dt>
+
+
+<dl><dt id="arg-plotobj">plotobj<a class="anchor" aria-label="anchor" href="#arg-plotobj"></a></dt>
 <dd><p>A plot produced using <code><a href="PRISMA_flowdiagram.html">PRISMA_flowdiagram()</a></code>.</p></dd>
 
 
-<dt>filename</dt>
+<dt id="arg-filename">filename<a class="anchor" aria-label="anchor" href="#arg-filename"></a></dt>
 <dd><p>The filename to save (including extension)</p></dd>
 
 
-<dt>filetype</dt>
+<dt id="arg-filetype">filetype<a class="anchor" aria-label="anchor" href="#arg-filetype"></a></dt>
 <dd><p>The filetype to save the plot in, supports:
 HTML, ZIP, PDF, PNG, SVG, PS and WEBP
 (if NA, the filetype will be calculated out based on the file extension)
@@ -83,30 +85,28 @@ alongside supporting javascript and css files in an adjacent folder,
 instead of embedded base64 within the HTML file</p></dd>
 
 
-<dt>overwrite</dt>
+<dt id="arg-overwrite">overwrite<a class="anchor" aria-label="anchor" href="#arg-overwrite"></a></dt>
 <dd><p>if TRUE, will overwrite an existing file</p></dd>
 
 
-<dt>width</dt>
+<dt id="arg-width">width<a class="anchor" aria-label="anchor" href="#arg-width"></a></dt>
 <dd><p>passed as the width argument to
 <code><a href="https://docs.ropensci.org/rsvg/reference/rsvg.html" class="external-link">rsvg::rsvg()</a></code> and similar functions</p></dd>
 
 
-<dt>height</dt>
+<dt id="arg-height">height<a class="anchor" aria-label="anchor" href="#arg-height"></a></dt>
 <dd><p>passed as the height argument to
 <code><a href="https://docs.ropensci.org/rsvg/reference/rsvg.html" class="external-link">rsvg::rsvg()</a></code> and similar functions</p></dd>
 
 
-<dt>css</dt>
+<dt id="arg-css">css<a class="anchor" aria-label="anchor" href="#arg-css"></a></dt>
 <dd><p>passed as the css argument to
 <code><a href="https://docs.ropensci.org/rsvg/reference/rsvg.html" class="external-link">rsvg::rsvg()</a></code> and similar functions</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>the absolute filename of the saved diagram plot.</p>
+    <p>the absolute filename of the saved diagram plot.</p>
     </div>
 
     <div id="ref-examples">
@@ -119,9 +119,9 @@ instead of embedded base64 within the HTML file</p></dd>
 <span class="r-in"><span>                interactive <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                previous <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                other <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>;</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1.5</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2.5</span>
 <span class="r-in"><span><span class="fu">PRISMA_save</span><span class="op">(</span><span class="va">plot</span>, filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span>, filetype<span class="op">=</span><span class="st">"html"</span><span class="op">)</span>;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpRANbgv/file18b540c326cd"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpgYk5Zr/file71db7724175e"</span>
 </code></pre></div>
     </div>
   </div>
@@ -136,15 +136,15 @@ instead of embedded base64 within the HTML file</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

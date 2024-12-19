@@ -7,7 +7,7 @@ Data can be imported from the standard CSV template provided."><!-- mathjax --><
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- dependencies from examples --><script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="libs/viz-1.8.2/viz.js"></script><link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet"><script src="libs/grViz-binding-1.0.11/grViz.js"></script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -32,20 +32,20 @@ Data can be imported from the standard CSV template provided."><!-- mathjax --><
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/prisma-flowdiagram/PRISMA2020/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot interactive flow diagrams for systematic reviews</h1>
-    <small class="dont-index">Source: <a href="https://github.com/prisma-flowdiagram/PRISMA2020/blob/HEAD/R/PRISMA_flowdiagram.R" class="external-link"><code>R/PRISMA_flowdiagram.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/prisma-flowdiagram/PRISMA2020/blob/main/R/PRISMA_flowdiagram.R" class="external-link"><code>R/PRISMA_flowdiagram.R</code></a></small>
     <div class="hidden name"><code>PRISMA_flowdiagram.Rd</code></div>
     </div>
 
@@ -65,6 +65,7 @@ Data can be imported from the standard CSV template provided.</p>
 <span>  other <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  detail_databases <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  detail_registers <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  meta_analysis <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  fontsize <span class="op">=</span> <span class="fl">7</span>,</span>
 <span>  font <span class="op">=</span> <span class="st">"Helvetica"</span>,</span>
 <span>  title_colour <span class="op">=</span> <span class="st">"Goldenrod1"</span>,</span>
@@ -79,7 +80,9 @@ Data can be imported from the standard CSV template provided.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>data</dt>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>List of data inputs including numbers of studies,
 box text, tooltips, and urls for hyperlinks.
 Data inputted via the <code><a href="PRISMA_data.html">PRISMA_data()</a></code> function.
@@ -88,85 +91,88 @@ listed in the  <code><a href="PRISMA_data.html">PRISMA_data()</a></code>) functi
 combine them in a list using <code>data &lt;- list()</code>.</p></dd>
 
 
-<dt>interactive</dt>
+<dt id="arg-interactive">interactive<a class="anchor" aria-label="anchor" href="#arg-interactive"></a></dt>
 <dd><p>Logical argument TRUE or FALSE
 whether to plot interactivity (tooltips and hyperlinked boxes).</p></dd>
 
 
-<dt>previous</dt>
+<dt id="arg-previous">previous<a class="anchor" aria-label="anchor" href="#arg-previous"></a></dt>
 <dd><p>Logical argument (TRUE or FALSE) specifying whether previous
 studies were sought.</p></dd>
 
 
-<dt>other</dt>
+<dt id="arg-other">other<a class="anchor" aria-label="anchor" href="#arg-other"></a></dt>
 <dd><p>Logical argument (TRUE or FALSE) specifying whether
 other studies were sought.</p></dd>
 
 
-<dt>detail_databases</dt>
+<dt id="arg-detail-databases">detail_databases<a class="anchor" aria-label="anchor" href="#arg-detail-databases"></a></dt>
 <dd><p>Logical argument (TRUE or FALSE) specifying whether
 to list specific databases.</p></dd>
 
 
-<dt>detail_registers</dt>
+<dt id="arg-detail-registers">detail_registers<a class="anchor" aria-label="anchor" href="#arg-detail-registers"></a></dt>
 <dd><p>Logical argument (TRUE or FALSE) specifying whether
 to list specific registers.</p></dd>
 
 
-<dt>fontsize</dt>
+<dt id="arg-meta-analysis">meta_analysis<a class="anchor" aria-label="anchor" href="#arg-meta-analysis"></a></dt>
+<dd><p>Logical argument (TRUE or FALSE) specifying whether to
+display a box for meta-analysis</p></dd>
+
+
+<dt id="arg-fontsize">fontsize<a class="anchor" aria-label="anchor" href="#arg-fontsize"></a></dt>
 <dd><p>The font size for text in each box. The default is '12'.</p></dd>
 
 
-<dt>font</dt>
+<dt id="arg-font">font<a class="anchor" aria-label="anchor" href="#arg-font"></a></dt>
 <dd><p>The font for text in each box. The default is 'Helvetica'.</p></dd>
 
 
-<dt>title_colour</dt>
+<dt id="arg-title-colour">title_colour<a class="anchor" aria-label="anchor" href="#arg-title-colour"></a></dt>
 <dd><p>The colour for the upper middle title box (new studies).
 The default is 'Goldenrod1'. See 'DiagrammeR' colour scheme.
 <a href="http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors" class="external-link">http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors</a>.</p></dd>
 
 
-<dt>greybox_colour</dt>
+<dt id="arg-greybox-colour">greybox_colour<a class="anchor" aria-label="anchor" href="#arg-greybox-colour"></a></dt>
 <dd><p>The colour for the left and right column boxes. The
 default is 'Gainsboro'. See 'DiagrammeR' colour scheme
 <a href="http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors" class="external-link">http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors</a>.</p></dd>
 
 
-<dt>main_colour</dt>
+<dt id="arg-main-colour">main_colour<a class="anchor" aria-label="anchor" href="#arg-main-colour"></a></dt>
 <dd><p>The colour for the main box borders. The default is
 'Black'. See 'DiagrammeR' colour scheme
 <a href="http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors" class="external-link">http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors</a>.</p></dd>
 
 
-<dt>arrow_colour</dt>
+<dt id="arg-arrow-colour">arrow_colour<a class="anchor" aria-label="anchor" href="#arg-arrow-colour"></a></dt>
 <dd><p>The colour for the connecting lines. The default
 is 'Black'. See 'DiagrammeR' colour scheme
 <a href="http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors" class="external-link">http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors</a>.</p></dd>
 
 
-<dt>arrow_head</dt>
+<dt id="arg-arrow-head">arrow_head<a class="anchor" aria-label="anchor" href="#arg-arrow-head"></a></dt>
 <dd><p>The head shape for the line connectors. The default is
 'normal'. See DiagrammeR arrow shape specification
 <a href="http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes" class="external-link">http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes</a>. #nolint</p></dd>
 
 
-<dt>arrow_tail</dt>
+<dt id="arg-arrow-tail">arrow_tail<a class="anchor" aria-label="anchor" href="#arg-arrow-tail"></a></dt>
 <dd><p>The tail shape for the line connectors. The default is
 'none'. See DiagrammeR arrow shape specification
 <a href="http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes" class="external-link">http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes</a>. #nolint</p></dd>
 
 
-<dt>side_boxes</dt>
+<dt id="arg-side-boxes">side_boxes<a class="anchor" aria-label="anchor" href="#arg-side-boxes"></a></dt>
 <dd><p>Whether or not to include the
 blue label boxes along the side</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A flow diagram plot.</p>
+    <p>A flow diagram plot.</p>
     </div>
 
     <div id="ref-examples">
@@ -179,7 +185,7 @@ blue label boxes along the side</p></dd>
 <span class="r-in"><span>                interactive <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>                previous <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>                other <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>;</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1.5</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>2.5</span>
 <span class="r-in"><span><span class="va">plot</span></span></span>
 <script>
   HTMLWidgets.addPostRenderHandler(function() {
@@ -247,7 +253,7 @@ node20.innerHTML = linknode20;
 </script><div id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:700px;height:432.632880098888px;" class="grViz html-widget"></div>
 <script>
   HTMLWidgets.addPostRenderHandler(function() {
-  
+
        const nodeMap = new Map([["node1","Identification"], ["node2","Screening"], ["node3","Included"]]);
        for (const [node, label] of nodeMap) {
          var theDiv = document.getElementById(node);
@@ -260,9 +266,9 @@ node20.innerHTML = linknode20;
          theText.setAttribute("dominant-baseline", "middle")
          theText.innerHTML = label;
        }
-    
+
   });
-</script><script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"diagram":"digraph TD {\n        graph[\n          splines = ortho,\n          layout = neato,\n          tooltip = \"Click the boxes for further information\",\n          outputorder = edgesfirst,\n        ]node [\n        shape = box,\n        fontsize = 12,\n        fontname = Helvetica,\n        color = Goldenrod1\n      ]\n      identification [\n        color = LightSteelBlue2,\n        label = \" \",\n        style = \"filled,rounded\",\n        pos = \"0,7.125!\",\n        width = 0.4,\n        height = 1.25,\n        tooltip = \"Blue identification box\"\n      ];\n      screening [\n        color = LightSteelBlue2,\n        label = \" \",\n        style = \"filled,rounded\",\n        pos = \"0,4!\",\n        width = 0.4,\n        height = 3,\n        tooltip = \"Blue screening box\"\n      ];\n      included [\n        color = LightSteelBlue2,\n        label = \" \",\n        style = \"filled,rounded\",\n        pos = \"0,1!\",\n        width = 0.4,\n        height = 1.5,\n        tooltip = \"Blue included box\"\n      ];\nnode [\n          shape = box,\n          fontsize = 12,\n          fontname = Helvetica,\n          color = Goldenrod1]\n        3 [\n          label = \"Identification of new studies via databases and registers\",\n          style = \"rounded,filled\",\n          width = 7.5,\n          height = 0.4,\n          pos = \"4.25,8.45!\",\n          tooltip = \"Yellow title box; Identification of new studies via databases and registers\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black]\n        4 [\n          label = \"Records identified from:\nDatabases (n = 0)\nRegisters (n = 0)\",\n          width = 3.5,\n          height = 0.75,\n          pos = \"2.25,7.125!\",\n          tooltip = \"Records identified from: Databases and Registers\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black]\n        5 [\n          label = \"Records removed before screening:\nDuplicate records (n = 0)\nRecords marked as ineligible by automation\ntools (n = 0)\nRecords removed for other reasons (n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"6.25,7.125!\",\n          tooltip = \"Duplicate records\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black\n        ]\n        6 [\n          label = \"Records screened\n(n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"2.25,5.25!\",\n          tooltip = \"Records screened (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black\n        ]\n        7 [\n          label = \"Records excluded\n(n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"6.25,5.25!\",\n          tooltip = \"Records excluded (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black]\n        8 [\n          label = \"Reports sought for retrieval\n(n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"2.25,4.25!\",\n          tooltip = \"Reports sought for retrieval (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black]\n        9 [\n          label = \"Reports not retrieved\n(n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"6.25,4.25!\",\n          tooltip = \"Reports not retrieved (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black]\n        10 [\n          label = \"Reports assessed for eligibility\n(n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"2.25,3!\",\n          tooltip = \"Reports assessed for eligibility (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black,\n          fillcolor = White,\n          style = filled\n        ]\n        11 [\n          label = \"Reports excluded:\nReason1 (n = NA)\nReason2 (n = NA)\nReason3 (n = NA)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"6.25,3!\",\n          tooltip = \"Reports excluded (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black,\n          fillcolor = \"\",\n          style = solid\n        ]\n        12 [\n          label = \"New studies included in review\n(n = 0)\nReports of new included studies\n(n = 0)\",\n          width = 3.5,\n          height = 1,\n          pos = \"2.25,1!\",\n          tooltip = \"New studies included in review\"\n        ]node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro]\n      13 [\n        label = \"Identification of new studies via other methods\",\n        style = \"rounded,filled\",\n        width = 7.5,\n        height = 0.4,\n        pos = \"12.25,8.45!\",\n        tooltip = \"Grey title box; Identification of new studies via other methods\"\n      ]\n      node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro]\n      14 [\n        label = \"Records identified from:\nWebsites (n = 0)\nOrganisations (n = 0)\nCitation searching (n = 0)\",\n        style = \"filled\",\n        width = 3.5,\n        height = 1,\n        pos = \"10.25,7.125!\",\n        tooltip = \"Records identified from: Websites, Organisations and Citation Searching\"\n      ]\n      node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro]\n      15 [\n        label = \"Reports sought for retrieval\n(n = 0)\",\n        style = \"filled\",\n        width = 3.5,\n        height = 0.5,\n        pos = \"10.25,4.25!\",\n        tooltip = \"Reports sought for retrieval (other)\"\n      ]\n      node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro]\n      16 [\n        label = \"Reports not retrieved\n(n = 0)\",\n        style = \"filled\",\n        width = 3.5,\n        height = 0.5,\n        pos = \"14.25,4.25!\",\n        tooltip = \"Reports not retrieved (other)\"\n      ]\n      node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro\n      ]\n      17 [\n        label = \"Reports assessed for eligibility\n(n = 0)\",\n        style = \"filled\",\n        width = 3.5,\n        height = 0.5,\n        pos = \"10.25,3!\",\n        tooltip = \"Reports assessed for eligibility (other)\"\n      ]\n      node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro]\n      18 [\n        label = \"Reports excluded:\nReason1 (n = NA)\nReason2 (n = NA)\nReason3 (n = NA)\",\n        style = \"filled\",\n        width = 3.5,\n        height = 1,\n        pos = \"14.25,3!\",\n        tooltip = \"Reports excluded (other)\"\n      ]\nnode [\n          shape = square,\n          width = 0,\n          color=White\n        ]\n\nB [\n        label = \"\",\n        pos = \"10.25,1!\",\n        tooltip = \"\"\n      ]\nnode [\n          shape = square,\n          width = 0,\n          style=invis\n        ]\n        C [\n          label = \"\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"6.25,3!\",\n          tooltip = \"\"\n        ]\n        subgraph cluster1 {\n          edge [\n            style = invis\n          ]\n          3->4;\n          3->5;\n          edge [\n            color = Black,\n            arrowhead = normal,\n            arrowtail = none,\n            style = filled\n          ]\n          4->5;\n          4->6;\n          6->7;\n          6->8;\n          8->9;\n          8->10;\n          10->C;\n          10->12;\n          edge [\n            style = invis\n          ]\n          5->7;\n          7->9;\n          9->11;\n          16->18;\n        }subgraph cluster2 {\n        edge [\n          color = White,\n          arrowhead = none,\n          arrowtail = none\n        ]\n        13->14;\n        edge [\n          color = Black,\n          arrowhead = normal,\n          arrowtail = none]\n        14->15;\n        15->16;\n        15->17;\n        17->18;\n        edge [\n          color = Black,\n          arrowhead = none,\n          arrowtail = none]\n        17->B;\n        edge [\n          color = Black,\n          arrowhead = normal,\n          arrowtail = none,\n          constraint = FALSE\n        ]\n        B->12;\n      }\n\n\n\n{\n          rank = same; 3; 13}\n        {\n          rank = same; 4; 5; 14}\n        {\n          rank = same; 6; 7\n        }\n        {\n          rank = same; 8; 9; 15; 16}\n        {\n          rank = same; 10; 11; 17; 18}\n        {\n          rank = same; 12; B}\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></code></pre></div>
+</script><script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"diagram":"digraph TD {\n        graph[\n          splines = ortho,\n          layout = neato,\n          tooltip = \"Click the boxes for further information\",\n          outputorder = edgesfirst,\n        ]node [\n        shape = box,\n        fontsize = 12,\n        fontname = Helvetica,\n        color = Goldenrod1\n      ]\n      identification [\n        color = LightSteelBlue2,\n        label = \" \",\n        style = \"filled,rounded\",\n        pos = \"0,7.125!\",\n        width = 0.4,\n        height = 1.75,\n        tooltip = \"Blue identification box\"\n      ];\n      screening [\n        color = LightSteelBlue2,\n        label = \" \",\n        style = \"filled,rounded\",\n        pos = \"0,4!\",\n        width = 0.4,\n        height = 3,\n        tooltip = \"Blue screening box\"\n      ];\n      included [\n        color = LightSteelBlue2,\n        label = \" \",\n        style = \"filled,rounded\",\n        pos = \"0,1!\",\n        width = 0.4,\n        height = 2.5,\n        tooltip = \"Blue included box\"\n      ];\nnode [\n          shape = box,\n          fontsize = 12,\n          fontname = Helvetica,\n          color = Goldenrod1]\n        3 [\n          label = \"Identification of new studies via databases and registers\",\n          style = \"rounded,filled\",\n          width = 7.5,\n          height = 0.4,\n          pos = \"4.25,8.45!\",\n          tooltip = \"Yellow title box; Identification of new studies via databases and registers\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black]\n        4 [\n          label = \"Records identified from:\nDatabases (n = 0)\nRegisters (n = 0)\",\n          width = 3.5,\n          height = 0.75,\n          pos = \"2.25,7.125!\",\n          tooltip = \"Records identified from: Databases and Registers\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black]\n        5 [\n          label = \"Records removed before screening:\nDuplicate records (n = 0)\nRecords marked as ineligible by automation\ntools (n = 0)\nRecords removed for other reasons (n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"6.25,7.125!\",\n          tooltip = \"Duplicate records\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black\n        ]\n        6 [\n          label = \"Records screened\n(n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"2.25,5.25!\",\n          tooltip = \"Records screened (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black\n        ]\n        7 [\n          label = \"Records excluded\n(n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"6.25,5.25!\",\n          tooltip = \"Records excluded (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black]\n        8 [\n          label = \"Reports sought for retrieval\n(n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"2.25,4.25!\",\n          tooltip = \"Reports sought for retrieval (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black]\n        9 [\n          label = \"Reports not retrieved\n(n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"6.25,4.25!\",\n          tooltip = \"Reports not retrieved (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black]\n        10 [\n          label = \"Reports assessed for eligibility\n(n = 0)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"2.25,3!\",\n          tooltip = \"Reports assessed for eligibility (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black,\n          fillcolor = White,\n          style = filled\n        ]\n        11 [\n          label = \"Reports excluded:\nReason1 (n = NA)\nReason2 (n = NA)\nReason3 (n = NA)\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"6.25,3!\",\n          tooltip = \"Reports excluded (databases and registers)\"\n        ]\n        node [\n          shape = box,\n          fontname = Helvetica,\n          color = Black,\n          fillcolor = \"\",\n          style = solid\n        ]\n        12 [\n          label = \"New studies included in review\n(n = 0)\nReports of new included studies\n(n = 0)\",\n          width = 3.5,\n          height = 1,\n          pos = \"2.25,1!\",\n          tooltip = \"New studies included in review\"\n        ]node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro]\n      13 [\n        label = \"Identification of new studies via other methods\",\n        style = \"rounded,filled\",\n        width = 7.5,\n        height = 0.4,\n        pos = \"12.25,8.45!\",\n        tooltip = \"Grey title box; Identification of new studies via other methods\"\n      ]\n      node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro]\n      14 [\n        label = \"Records identified from:\nWebsites (n = 0)\nOrganisations (n = 0)\nCitation searching (n = 0)\",\n        style = \"filled\",\n        width = 3.5,\n        height = 1,\n        pos = \"10.25,7.125!\",\n        tooltip = \"Records identified from: Websites, Organisations and Citation Searching\"\n      ]\n      node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro]\n      15 [\n        label = \"Reports sought for retrieval\n(n = 0)\",\n        style = \"filled\",\n        width = 3.5,\n        height = 0.5,\n        pos = \"10.25,4.25!\",\n        tooltip = \"Reports sought for retrieval (other)\"\n      ]\n      node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro]\n      16 [\n        label = \"Reports not retrieved\n(n = 0)\",\n        style = \"filled\",\n        width = 3.5,\n        height = 0.5,\n        pos = \"14.25,4.25!\",\n        tooltip = \"Reports not retrieved (other)\"\n      ]\n      node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro\n      ]\n      17 [\n        label = \"Reports assessed for eligibility\n(n = 0)\",\n        style = \"filled\",\n        width = 3.5,\n        height = 0.5,\n        pos = \"10.25,3!\",\n        tooltip = \"Reports assessed for eligibility (other)\"\n      ]\n      node [\n        shape = box,\n        fontname = Helvetica,\n        color = Gainsboro]\n      18 [\n        label = \"Reports excluded:\nReason1 (n = NA)\nReason2 (n = NA)\nReason3 (n = NA)\",\n        style = \"filled\",\n        width = 3.5,\n        height = 1,\n        pos = \"14.25,3!\",\n        tooltip = \"Reports excluded (other)\"\n      ]\nnode [\n          shape = square,\n          width = 0,\n          color=White\n        ]\n\nB [\n        label = \"\",\n        pos = \"10.25,1!\",\n        tooltip = \"\"\n      ]\nnode [\n          shape = square,\n          width = 0,\n          style=invis\n        ]\n        C [\n          label = \"\",\n          width = 3.5,\n          height = 0.5,\n          pos = \"6.25,3!\",\n          tooltip = \"\"\n        ]\n        subgraph cluster1 {\n          edge [\n            style = invis\n          ]\n          3->4;\n          3->5;\n          edge [\n            color = Black,\n            arrowhead = normal,\n            arrowtail = none,\n            style = filled\n          ]\n          4->5;\n          4->6;\n          6->7;\n          6->8;\n          8->9;\n          8->10;\n          10->C;\n          10->12;\n          edge [\n            style = invis\n          ]\n          5->7;\n          7->9;\n          9->11;\n          16->18;\n        }subgraph cluster2 {\n        edge [\n          color = White,\n          arrowhead = none,\n          arrowtail = none\n        ]\n        13->14;\n        edge [\n          color = Black,\n          arrowhead = normal,\n          arrowtail = none]\n        14->15;\n        15->16;\n        15->17;\n        17->18;\n        edge [\n          color = Black,\n          arrowhead = none,\n          arrowtail = none]\n        17->B;\n        edge [\n          color = Black,\n          arrowhead = normal,\n          arrowtail = none,\n          constraint = FALSE\n        ]\n        B->12;\n      }\n\n\n\n{\n          rank = same; 3; 13}\n        {\n          rank = same; 4; 5; 14}\n        {\n          rank = same; 6; 7\n        }\n        {\n          rank = same; 8; 9; 15; 16}\n        {\n          rank = same; 10; 11; 17; 18}\n        {\n          rank = same; 12; B}\n      }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -276,15 +282,15 @@ node20.innerHTML = linknode20;
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 

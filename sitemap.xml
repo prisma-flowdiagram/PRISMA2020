@@ -1,72 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/code-of-conduct.html</loc>
-  </url>
-  <url>
-    <loc>/contributing.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_add_hyperlink_.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_calc_filetype_.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_flowdiagram.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_format_number_.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_format_reasons_.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_gen_tmp_svg_.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_get_height_.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_get_pos_.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_insert_js_.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_interactive_.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_parse_reasons_.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PRISMA_save.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_PRISMAdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sr_flow_interactive.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/code-of-conduct.html</loc></url>
+<url><loc>/contributing.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/PRISMA_add_hyperlink_.html</loc></url>
+<url><loc>/reference/PRISMA_calc_filetype_.html</loc></url>
+<url><loc>/reference/PRISMA_data.html</loc></url>
+<url><loc>/reference/PRISMA_flowdiagram.html</loc></url>
+<url><loc>/reference/PRISMA_format_number_.html</loc></url>
+<url><loc>/reference/PRISMA_format_reasons_.html</loc></url>
+<url><loc>/reference/PRISMA_gen_tmp_svg_.html</loc></url>
+<url><loc>/reference/PRISMA_get_height_.html</loc></url>
+<url><loc>/reference/PRISMA_get_pos_.html</loc></url>
+<url><loc>/reference/PRISMA_insert_js_.html</loc></url>
+<url><loc>/reference/PRISMA_interactive_.html</loc></url>
+<url><loc>/reference/PRISMA_parse_reasons_.html</loc></url>
+<url><loc>/reference/PRISMA_save.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/read_PRISMAdata.html</loc></url>
+<url><loc>/reference/sr_flow_interactive.html</loc></url>
 </urlset>
+

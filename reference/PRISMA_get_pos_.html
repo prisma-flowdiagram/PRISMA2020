@@ -3,7 +3,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -28,20 +28,20 @@
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/prisma-flowdiagram/PRISMA2020/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate the correct position of a node</h1>
-    <small class="dont-index">Source: <a href="https://github.com/prisma-flowdiagram/PRISMA2020/blob/HEAD/R/utils.R" class="external-link"><code>R/utils.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/prisma-flowdiagram/PRISMA2020/blob/main/R/utils.R" class="external-link"><code>R/utils.R</code></a></small>
     <div class="hidden name"><code>PRISMA_get_pos_.Rd</code></div>
     </div>
 
@@ -50,32 +50,42 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRISMA_get_pos_</span><span class="op">(</span><span class="va">first_box_location</span>, <span class="va">offset</span>, <span class="va">length_orig</span>, <span class="va">length_new</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRISMA_get_pos_</span><span class="op">(</span></span>
+<span>  <span class="va">first_box_location</span>,</span>
+<span>  <span class="va">offset</span>,</span>
+<span>  <span class="va">length_orig</span>,</span>
+<span>  <span class="va">length_new</span>,</span>
+<span>  negative_offset <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>first_box_location</dt>
+
+
+<dl><dt id="arg-first-box-location">first_box_location<a class="anchor" aria-label="anchor" href="#arg-first-box-location"></a></dt>
 <dd><p>the location of the first node</p></dd>
 
 
-<dt>offset</dt>
+<dt id="arg-offset">offset<a class="anchor" aria-label="anchor" href="#arg-offset"></a></dt>
 <dd><p>the offset from the first node</p></dd>
 
 
-<dt>length_orig</dt>
+<dt id="arg-length-orig">length_orig<a class="anchor" aria-label="anchor" href="#arg-length-orig"></a></dt>
 <dd><p>the width/height of the original node</p></dd>
 
 
-<dt>length_new</dt>
+<dt id="arg-length-new">length_new<a class="anchor" aria-label="anchor" href="#arg-length-new"></a></dt>
 <dd><p>the width/height of the new node</p></dd>
+
+
+<dt id="arg-negative-offset">negative_offset<a class="anchor" aria-label="anchor" href="#arg-negative-offset"></a></dt>
+<dd><p>is the offset negative (defaults to false)</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>the position of the node</p>
+    <p>the position of the node</p>
     </div>
 
   </div>
@@ -90,15 +100,15 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 
