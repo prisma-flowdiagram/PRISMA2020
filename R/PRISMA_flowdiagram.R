@@ -29,6 +29,8 @@ NULL
 #' to list specific databases.
 #' @param detail_registers Logical argument (TRUE or FALSE) specifying whether
 #' to list specific registers.
+#' @param meta_analysis Logical argument (TRUE or FALSE) specifying whether to
+#' display a box for meta-analysis
 #' @param font The font for text in each box. The default is 'Helvetica'.
 #' @param fontsize The font size for text in each box. The default is '12'.
 #' @param title_colour The colour for the upper middle title box (new studies).
