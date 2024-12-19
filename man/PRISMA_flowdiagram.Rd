@@ -11,6 +11,7 @@ PRISMA_flowdiagram(
   other = TRUE,
   detail_databases = FALSE,
   detail_registers = FALSE,
+  meta_analysis = FALSE,
   fontsize = 7,
   font = "Helvetica",
   title_colour = "Goldenrod1",
@@ -44,6 +45,9 @@ to list specific databases.}
 
 \item{detail_registers}{Logical argument (TRUE or FALSE) specifying whether
 to list specific registers.}
+
+\item{meta_analysis}{Logical argument (TRUE or FALSE) specifying whether to
+display a box for meta-analysis}
 
 \item{fontsize}{The font size for text in each box. The default is '12'.}
 
