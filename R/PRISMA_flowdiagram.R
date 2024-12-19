@@ -70,6 +70,7 @@ PRISMA_flowdiagram <- function( #nolint
   other = TRUE,
   detail_databases = FALSE,
   detail_registers = FALSE,
+  meta_analysis = FALSE,
   fontsize = 7,
   font = "Helvetica",
   title_colour = "Goldenrod1",
@@ -91,6 +92,7 @@ PRISMA_flowdiagram <- function( #nolint
   prev_study_offset <- 0
   prev_study_height <- 0
   total_studies_height <- 0
+  total_ma_height <- 0
   other_identified_height <- 0
   other_sought_reports_height <- 0
   other_notretrieved_height <- 0
@@ -106,6 +108,7 @@ PRISMA_flowdiagram <- function( #nolint
   bottomedge <- ""
   previous_nodes <- ""
   finalnode <- ""
+  metanode <- ""
   prev_rank1 <- ""
   prevnode1 <- ""
   prevnode2 <- ""
@@ -301,6 +304,31 @@ PRISMA_flowdiagram <- function( #nolint
   } else {
     cond_newreports <- ""
   }
+  if (is.na(total_studies_ma) == FALSE) {
+    cond_total_studies_ma <- paste0(
+      stringr::str_wrap(
+        paste0(
+          total_studies_ma_text,
+          " (n = ", total_studies_ma, ")"
+        ),
+        width = 33
+      ),
+      "\n"
+    )
+  } else {
+    cond_total_studies_ma <- ""
+  }
+  if (is.na(total_reports_ma) == FALSE) {
+    cond_total_reports_ma <- stringr::str_wrap(
+      paste0(
+        total_reports_ma_text,
+        " (n = ", total_reports_ma, ")"
+      ),
+      width = 33
+    )
+  } else {
+    cond_total_reports_ma <- ""
+  }
   if (detail_databases == TRUE) {
     db_specific_data <- PRISMA_format_reasons_(database_specific_results) #nolint
   } else {
@@ -380,6 +408,7 @@ PRISMA_flowdiagram <- function( #nolint
   }
   # labels for the nodes
   newstudy_newreports_label <- paste0(cond_newstud, cond_newreports)
+  total_ma_label <- paste0(cond_total_studies_ma, cond_total_reports_ma)
   dbr_assessed_label <- paste0(
     dbr_assessed_text,
     "\n(n = ",
@@ -430,6 +459,15 @@ PRISMA_flowdiagram <- function( #nolint
     stringr::str_count(newstudy_newreports_label, "\n"),
     min_box_height
   )
+  if (is.na(total_reports_ma) == TRUE && is.na(total_studies_ma) == TRUE) {
+    meta_analysis <- FALSE
+  }
+  if (meta_analysis == TRUE) {
+    total_ma_height <- PRISMA_get_height_(
+      stringr::str_count(total_ma_label, "\n"),
+      min_box_height
+    )
+  }
   dbr_assessed_height <- PRISMA_get_height_(
     stringr::str_count(dbr_assessed_label, "\n"),
     min_box_height
@@ -483,17 +521,21 @@ PRISMA_flowdiagram <- function( #nolint
       )
     ) +
     default_box_spacing * 2
-  identification_box_height <- max(
+  identification_box_height <- 
+    max(
       c(
         dbr_identified_height,
         dbr_notscreened_height,
-        prev_study_height
+        prev_study_height,
+        other_identified_height
       )
-    )
+    ) +
+    default_box_spacing
   included_box_height <-
     newstudy_newreports_height +
     total_studies_height +
-    default_box_spacing
+    total_ma_height +
+    default_box_spacing * 3
   assessed_height <- max(
     c(
       dbr_assessed_height,
@@ -545,6 +587,23 @@ PRISMA_flowdiagram <- function( #nolint
     total_studies_height,
     newstudy_newreports_height
   )
+  if (previous == TRUE) {
+    total_ma_y <- PRISMA_get_pos_(
+      diagram_start_y,
+      default_box_spacing,
+      total_studies_height,
+      total_ma_height,
+      negative_offset = TRUE
+    )
+  } else {
+    total_ma_y <- PRISMA_get_pos_(
+      newstudy_newreports_y,
+      default_box_spacing,
+      newstudy_newreports_height,
+      total_ma_height,
+      negative_offset = TRUE
+    )
+  }
   assessed_y <- PRISMA_get_pos_(
     newstudy_newreports_y,
     default_box_spacing * 2,
@@ -582,8 +641,12 @@ PRISMA_flowdiagram <- function( #nolint
         (assessed_y - (dbr_excluded_height / 2))
       )
     )
-  included_y <- if (total_studies_height > 0) {
+  included_y <- if (total_studies_height > 0 && total_ma_height > 0) {
+    mean(c(diagram_start_y, newstudy_newreports_y, total_ma_y))
+  } else if (total_studies_height > 0) {
     mean(c(diagram_start_y, newstudy_newreports_y))
+  } else if (total_ma_height > 0) {
+    mean(c(newstudy_newreports_y, total_ma_y))
   } else {
     newstudy_newreports_y
   }
@@ -886,6 +949,41 @@ PRISMA_flowdiagram <- function( #nolint
     othernode1718 <- ""
     othernodeB <- "" #nolint
   }
+  if (meta_analysis == TRUE) {
+    metanode <- paste0("node [
+      shape = box,
+      fontname = ", font, ",
+      color = ", main_colour, ",
+      fillcolor = '',
+      style = solid
+    ]
+    23 [
+      label = '", total_ma_label, "',
+      width = ", default_box_width, ",
+      height = ", total_ma_height, ",
+      pos = '", dbr_box_x, ",", total_ma_y, "!',
+      tooltip = '", tooltips["total_studies_ma"], "'
+    ]")
+    if (previous == TRUE) {
+      bottomedge <- paste0(
+        bottomedge, "edge [
+          color = '", arrow_colour, "',
+          arrowhead = '", arrow_head, "',
+          arrowtail = '", arrow_tail, "'
+        ]
+        19->23;\n"
+      )
+    } else {
+      bottomedge <- paste0(
+        bottomedge, "edge [
+          color = '", arrow_colour, "',
+          arrowhead = '", arrow_head, "',
+          arrowtail = '", arrow_tail, "'
+        ]
+        12->23;\n"
+      )
+    }
+  }
   x <- DiagrammeR::grViz(
     paste0(
       "digraph TD {
@@ -1033,6 +1131,7 @@ PRISMA_flowdiagram <- function( #nolint
         ]",
         othernodes,
         finalnode,
+        metanode,
         "node [
           shape = square,
           width = 0,
@@ -1386,7 +1485,7 @@ PRISMA_data <- function(data) { #nolint
     PRISMA_format_number_( #nolint
       data[
         grep(
-          "total_studies",
+          "total_studies$",
           data[, 1]
         ),
       ]$n
@@ -1396,7 +1495,27 @@ PRISMA_data <- function(data) { #nolint
     PRISMA_format_number_( #nolint
       data[
         grep(
-          "total_reports",
+          "total_reports$",
+          data[, 1]
+        ),
+      ]$n
+    )
+  )
+  total_studies_ma <- scales::comma(
+    PRISMA_format_number_( #nolint
+      data[
+        grep(
+          "total_studies_ma",
+          data[, 1]
+        ),
+      ]$n
+    )
+  )
+  total_reports_ma <- scales::comma(
+    PRISMA_format_number_( #nolint
+      data[
+        grep(
+          "total_reports_ma",
           data[, 1]
         ),
       ]$n
@@ -1474,11 +1593,13 @@ PRISMA_data <- function(data) { #nolint
   other_excluded_text <- data[grep("other_excluded", data[, 1]), ]$boxtext
   new_studies_text <- data[grep("new_studies", data[, 1]), ]$boxtext
   new_reports_text <- data[grep("new_reports", data[, 1]), ]$boxtext
-  total_studies_text <- data[grep("total_studies", data[, 1]), ]$boxtext
-  total_reports_text <- data[grep("total_reports", data[, 1]), ]$boxtext
+  total_studies_text <- data[grep("total_studies$", data[, 1]), ]$boxtext
+  total_reports_text <- data[grep("total_reports$", data[, 1]), ]$boxtext
   identification_text <- data[grep("identification", data[, 1]), ]$boxtext
   screening_text <- data[grep("screening", data[, 1]), ]$boxtext
   included_text <- data[grep("included", data[, 1]), ]$boxtext
+  total_studies_ma_text <- data[grep("total_studies_ma", data[, 1]), ]$boxtext
+  total_reports_ma_text <- data[grep("total_reports_ma", data[, 1]), ]$boxtext
   x <- list(
     previous_studies = previous_studies,
     previous_reports = previous_reports,
@@ -1506,6 +1627,8 @@ PRISMA_data <- function(data) { #nolint
     new_reports = new_reports,
     total_studies = total_studies,
     total_reports = total_reports,
+    total_studies_ma = total_studies_ma,
+    total_reports_ma = total_reports_ma,
     previous_text = previous_text,
     newstud_text = newstud_text,
     other_text = other_text,
@@ -1533,6 +1656,8 @@ PRISMA_data <- function(data) { #nolint
     new_reports_text = new_reports_text,
     total_studies_text = total_studies_text,
     total_reports_text = total_reports_text,
+    total_studies_ma_text = total_studies_ma_text,
+    total_reports_ma_text = total_reports_ma_text,
     identification_text = identification_text,
     screening_text = screening_text,
     included_text = included_text,

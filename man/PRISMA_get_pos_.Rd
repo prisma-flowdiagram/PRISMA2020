@@ -4,7 +4,13 @@
 \alias{PRISMA_get_pos_}
 \title{Calculate the correct position of a node}
 \usage{
-PRISMA_get_pos_(first_box_location, offset, length_orig, length_new)
+PRISMA_get_pos_(
+  first_box_location,
+  offset,
+  length_orig,
+  length_new,
+  negative_offset = FALSE
+)
 }
 \arguments{
 \item{first_box_location}{the location of the first node}
@@ -14,6 +20,8 @@ PRISMA_get_pos_(first_box_location, offset, length_orig, length_new)
 \item{length_orig}{the width/height of the original node}
 
 \item{length_new}{the width/height of the new node}
+
+\item{negative_offset}{is the offset negative (defaults to false)}
 }
 \value{
 the position of the node
