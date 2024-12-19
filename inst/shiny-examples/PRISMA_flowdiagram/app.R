@@ -11,13 +11,15 @@ the_options <- c(
   "Not Included",
   "Included",
   "Not Included",
+  "Not Included",
   "Not Included"
 )
 names(the_options) <- c(
   "previous",
   "other",
   "dbDetail",
-  "regDetail"
+  "regDetail",
+  "metaAnalysis"
 )
 
 # Define UI for application that draws a histogram
@@ -418,6 +420,13 @@ server <- function(input, output, session) { #nolint
             the_options["regDetail"] <- "Not Included"
           }
         }
+        if ("metaAnalysis" %in% names(query)) {
+          if (query$metaAnalysis == 1) {
+            the_options["metaAnalysis"] <- "Included"
+          } else if (query$metaAnalysis == 0) {
+            the_options["metaAnalysis"] <- "Not Included"
+          }
+        }
         for (i in seq_len(nrow(template))) {
           if (!is.null(query[[template[i, "data"]]])) {
             template[i, "n"] <- query[[template[i, "data"]]]
@@ -484,26 +493,35 @@ server <- function(input, output, session) { #nolint
           selected = rv$opts_initial["other"]
         )
       ),
-          splitLayout(
-            selectInput(
-              "dbDetail",
-              "Individual databases",
-              choices = c(
-                "Not Included",
-                "Included"
-              ),
-              selected = rv$opts_initial["dbDetail"]
-            ),
-            selectInput(
-              "regDetail",
-              "Individual registers",
-              choices = c(
-                "Not Included",
-                "Included"
-              ),
-              selected = rv$opts_initial["regDetail"]
-            )
-          )
+      splitLayout(
+        selectInput(
+          "dbDetail",
+          "Individual databases",
+          choices = c(
+            "Not Included",
+            "Included"
+          ),
+          selected = rv$opts_initial["dbDetail"]
+        ),
+        selectInput(
+          "regDetail",
+          "Individual registers",
+          choices = c(
+            "Not Included",
+            "Included"
+          ),
+          selected = rv$opts_initial["regDetail"]
+        )
+      ),
+      selectInput(
+        "metaAnalysis",
+        "Meta analysis",
+        choices = c(
+          "Not Included",
+          "Included"
+        ),
+        selected = rv$opts_initial["metaAnalysis"]
+      )
     )
   })
   # Set up default values in data entry boxes
@@ -743,6 +761,27 @@ server <- function(input, output, session) { #nolint
         )
       ),
       conditionalPanel(
+        condition = "input.metaAnalysis == 'Included'",
+        splitLayout(
+          textInput(
+            "total_studies_ma",
+            label = "Total studies (MA)",
+            value = rv$data_initial[
+              which(rv$data_initial$data == "total_studies_ma"),
+              "n"
+            ]
+          ),
+          textInput(
+            "total_reports_ma",
+            label = "Total Reports (MA)",
+            value = rv$data_initial[
+              which(rv$data_initial$data == "total_reports_ma"),
+              "n"
+            ]
+          )
+        )
+      ),
+      conditionalPanel(
         condition = "input.previous == 'Included'",
         splitLayout(
           textInput(
@@ -922,6 +961,18 @@ server <- function(input, output, session) { #nolint
       "n"
     ] <- input$total_reports
   })
+  observeEvent(input$total_studies_ma, {
+    rv$data[
+      which(rv$data$data == "total_studies_ma"),
+      "n"
+    ] <- input$total_studies_ma
+  })
+  observeEvent(input$total_reports_ma, {
+    rv$data[
+      which(rv$data$data == "total_reports_ma"),
+      "n"
+    ] <- input$total_reports_ma
+  })
   observeEvent(input$previous, {
     rv$opts["previous"] <- input$previous
   })
@@ -933,6 +984,9 @@ server <- function(input, output, session) { #nolint
   })
   observeEvent(input$regDetail, {
     rv$opts["regDetail"] <- input$regDetail
+  })
+  observeEvent(input$metaAnalysis, {
+    rv$opts["metaAnalysis"] <- input$metaAnalysis
   })
   # Define table proxy
   proxy <- DT::dataTableProxy("mytable")
@@ -1006,6 +1060,11 @@ server <- function(input, output, session) { #nolint
     } else {
       detail_registers <- FALSE
     }
+    if (rv$opts["metaAnalysis"] == "Included"){
+      meta_analysis <- TRUE
+    } else {
+      meta_analysis <- FALSE
+    }
     shinyjs::runjs(
       paste0(
         'const nodeMap = new Map([["node1","',
@@ -1026,6 +1085,7 @@ server <- function(input, output, session) { #nolint
       interactive = TRUE,
       previous = include_previous,
       other = include_other,
+      meta_analysis = meta_analysis,
       side_boxes = TRUE,
       detail_databases = detail_databases,
       detail_registers = detail_registers

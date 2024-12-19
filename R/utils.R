@@ -23,10 +23,15 @@ PRISMA_get_height_ <- function (n, offset, min = 2) { #nolint
 #' @param offset the offset from the first node
 #' @param length_orig the width/height of the original node
 #' @param length_new the width/height of the new node
+#' @param negative_offset is the offset negative (defaults to false)
 #' @return the position of the node
 #' @keywords internal
-PRISMA_get_pos_ <- function (first_box_location, offset, length_orig, length_new) { #nolint
-  pos <- first_box_location + offset + (length_orig / 2) + (length_new / 2)
+PRISMA_get_pos_ <- function (first_box_location, offset, length_orig, length_new, negative_offset = FALSE) { #nolint
+  if (negative_offset == FALSE) {
+    pos <- first_box_location + offset + (length_orig / 2) + (length_new / 2)
+  } else {
+    pos <- first_box_location - offset - (length_orig / 2) - (length_new / 2)
+  }
   return(pos)
 }
 

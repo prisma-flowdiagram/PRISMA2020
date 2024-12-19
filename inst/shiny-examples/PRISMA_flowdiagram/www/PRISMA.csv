@@ -31,3 +31,5 @@ total_reports,NA,box16,Reports of total included studies,Reports of total includ
 identification,node1,identification,Blue identification box,Identification,Blue identification box,identification.html,0
 screening,node2,screening,Blue screening box,Screening,Blue screening box,screening.html,0
 included,node3,included,Blue included box,Included,Blue included box,included.html,0
+total_studies_ma,node23,box17,Total studies included in meta-analysis,Total studies included in meta-analysis,Total studies included in meta-analysis,total_studies_meta_analysis.html,0
+total_reports_ma,NA,box17,Reports of total included studies in meta-analysis,Reports of total included studies in meta-analysis,NA,NA,0
