@@ -1257,126 +1257,180 @@ PRISMA_data <- function(data) { #nolint
   #Set parameters
   previous_studies <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "previous_studies",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "previous_studies",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "previous_studies"
+      )
     )
   )
   previous_reports <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "previous_reports",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "previous_reports",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "previous_reports"
+      )
     )
   )
   register_results <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "register_results",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "register_results",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "register_results"
+      )
     )
   )
   database_results <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "database_results",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "database_results",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "database_results"
+      )
     )
   )
-  database_specific_results <- PRISMA_parse_reasons_(data[ #nolint
-      grep(
-        "database_specific_results",
-        data[, 1]
-      ),
-    ]$n
+  database_specific_results <- PRISMA_parse_reasons_(
+    PRISMA_default_or_csv_(
+      expr = data[ #nolint
+        grep(
+          "database_specific_results",
+          data[, 1]
+        ),
+      ]$n,
+      default = "Database 1, xxx; Database 2, xxx; Database 3, xxx",
+      var_name = "database_specific_results"
+    )
   )
-  register_specific_results <- PRISMA_parse_reasons_(data[ #nolint
-      grep(
-        "register_specific_results",
-        data[, 1]
-      ),
-    ]$n
+  register_specific_results <- PRISMA_parse_reasons_(
+    PRISMA_default_or_csv_(
+      expr = data[ #nolint
+        grep(
+          "register_specific_results",
+          data[, 1]
+        ),
+      ]$n,
+      default = "Register 1, xxx; Register 2, xxx; Register 3, xxx",
+      var_name = "register_specific_results"
+    )
   )
   website_results <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "website_results",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "website_results",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "website_results"
+      )
     )
   )
   organisation_results <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "organisation_results",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "organisation_results",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "organisation_results"
+      )
     )
   )
   citations_results <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "citations_results",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "citations_results",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "citations_results"
+      )
     )
   )
   duplicates <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "duplicates",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "duplicates",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "duplicates"
+      )
     )
   )
-    excluded_automatic <- scales::comma(
+  excluded_automatic <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "excluded_automatic",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "excluded_automatic",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "excluded_automatic"
+      )
     )
   )
   excluded_other <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "excluded_other",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "excluded_other",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "excluded_other"
+      )
     )
   )
   records_screened <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "records_screened",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "records_screened",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "records_screened"
+      )
     )
   )
   records_excluded <- scales::comma(
@@ -1505,22 +1559,30 @@ PRISMA_data <- function(data) { #nolint
   )
   total_studies_ma <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "total_studies_ma",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "total_studies_ma",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "total_studies_ma"
+      )
     )
   )
   total_reports_ma <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "total_reports_ma",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "total_reports_ma",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "total_reports_ma"
+      )
     )
   )
   tooltips <- list()
