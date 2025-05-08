@@ -452,9 +452,9 @@ PRISMA_flowdiagram <- function( #nolint
   )
   dbr_notscreened_label <- paste0(
     "Records removed before screening:\n",
-      cond_duplicates,
-      cond_automatic,
-      cond_exclother
+    cond_duplicates,
+    cond_automatic,
+    cond_exclother
   )
   # we set the height of various nodes here
   newstudy_newreports_height <- PRISMA_get_height_(
@@ -1435,12 +1435,16 @@ PRISMA_data <- function(data) { #nolint
   )
   records_excluded <- scales::comma(
     PRISMA_format_number_( #nolint
-      data[
-        grep(
-          "records_excluded",
-          data[, 1]
-        ),
-      ]$n
+      PRISMA_default_or_csv_(
+        expr = data[
+          grep(
+            "records_excluded",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "records_excluded"
+      )
     )
   )
   dbr_sought_reports <- scales::comma(
@@ -1664,6 +1668,18 @@ PRISMA_data <- function(data) { #nolint
   included_text <- data[grep("included", data[, 1]), ]$boxtext
   total_studies_ma_text <- data[grep("total_studies_ma", data[, 1]), ]$boxtext
   total_reports_ma_text <- data[grep("total_reports_ma", data[, 1]), ]$boxtext
+  database_specific_results_text <- data[
+    grep(
+      "database_specific_results",
+      data[, 1]
+    ),
+  ]$boxtext
+  register_specific_results_text <- data[
+    grep(
+      "register_specific_results",
+      data[, 1]
+    ),
+  ]$boxtext
   x <- list(
     previous_studies = previous_studies,
     previous_reports = previous_reports,
@@ -1700,6 +1716,8 @@ PRISMA_data <- function(data) { #nolint
     previous_reports_text = previous_reports_text,
     register_results_text = register_results_text,
     database_results_text = database_results_text,
+    database_specific_results_text = database_specific_results_text,
+    register_specific_results_text = register_specific_results_text,
     website_results_text = website_results_text,
     organisation_results_text = organisation_results_text,
     citations_results_text = citations_results_text,
@@ -1875,6 +1893,330 @@ PRISMA_save <- function( #nolint
   } else {
     stop("File exists, please set overwite = TRUE to overwrite")
   }
+}
+
+#' Export the input data object as a CSV
+#' @description Save the output from [PRISMA_data()] to a CSV.
+#' @param prisma_data A data object produced by [PRISMA_flowdiagram()].
+#' @param filename The filename to save (including extension)
+#' @param overwrite if TRUE, will overwrite an existing file
+#' @return the absolute filename of the saved CSV.
+#' @examples
+#' csvFile <- system.file("extdata", "PRISMA.csv", package = "PRISMA2020")
+#' data <- read.csv(csvFile);
+#' data <- PRISMA_data(data);
+#' PRISMA_export_csv(data, filename = tempfile());
+#' @export
+PRISMA_export_csv <- function( #nolint
+  prisma_data,
+  filename = "PRISMA2020_flowdiagram.csv",
+  overwrite = FALSE
+) {
+  if (!file.exists(filename) || overwrite == TRUE) {
+    data <- c(
+      toString("NA"),
+      "previous_studies",
+      "previous_reports",
+      toString("NA"),
+      "database_results",
+      "database_specific_results",
+      "register_results",
+      "register_specific_results",
+      toString("NA"),
+      "website_results",
+      "organisation_results",
+      "citations_results",
+      "duplicates",
+      "excluded_automatic",
+      "excluded_other",
+      "records_screened",
+      "records_excluded",
+      "dbr_sought_reports",
+      "dbr_notretrieved_reports",
+      "other_sought_reports",
+      "other_notretrieved_reports",
+      "dbr_assessed",
+      "dbr_excluded",
+      "other_assessed",
+      "other_excluded",
+      "new_studies",
+      "new_reports",
+      "total_studies",
+      "total_reports",
+      "identification",
+      "screening",
+      "included",
+      "total_studies_ma",
+      "total_reports_ma"
+    ) #34 - 3 (31)
+    node <- c(
+      "node4",
+      "node5",
+      toString("NA"),
+      "node6",
+      "node7",
+      toString("NA"),
+      toString("NA"),
+      toString("NA"),
+      "node16",
+      "node17",
+      toString("NA"),
+      toString("NA"),
+      "node8",
+      toString("NA"),
+      toString("NA"),
+      "node9",
+      "node10",
+      "node11",
+      "node12",
+      "node18",
+      "node19",
+      "node13",
+      "node14",
+      "node20",
+      "node21",
+      "node15",
+      toString("NA"),
+      "node22",
+      toString("NA"),
+      "node1",
+      "node2",
+      "node3",
+      "node23",
+      toString("NA")
+    ) #34 - 11 (23)
+    box <- c(
+      "prevstud",
+      "box1",
+      "box1",
+      "newstud",
+      "box2",
+      "box2",
+      "box2",
+      "box2",
+      "othstud",
+      "box11",
+      "box11",
+      "box11",
+      "box3",
+      "box3",
+      "box3",
+      "box4",
+      "box5",
+      "box6",
+      "box7",
+      "box12",
+      "box13",
+      "box8",
+      "box9",
+      "box14",
+      "box15",
+      "box10",
+      "box10",
+      "box16",
+      "box16",
+      "identification",
+      "screening",
+      "included",
+      "box17",
+      "box17"
+    ) # 34 - 0 (34)
+    description <- c(
+      "Grey title box; Previous studies",
+      "Studies included in previous version of review",
+      "Reports of studies included in previous version of review",
+      "Yellow title box; Identification of new studies via databases and registers", #nolint
+      "Records identified from: Databases",
+      "Records identified from: specific databases",
+      "Records identified from: Registers",
+      "Records identified from: specific registers",
+      "Grey title box; Identification of new studies via other methods",
+      "Records identified from: Websites",
+      "Records identified from: Organisations",
+      "Records identified from: Citation searching",
+      "Duplicate records",
+      "Records marked as ineligible by automation tools",
+      "Records removed for other reasons",
+      "Records screened (databases and registers)",
+      "Records excluded (databases and registers)",
+      "Reports sought for retrieval (databases and registers)",
+      "Reports not retrieved (databases and registers)",
+      "Reports sought for retrieval (other)",
+      "Reports not retrieved (other)",
+      "Reports assessed for eligibility (databases and registers)",
+      "Reports excluded (databases and registers): [separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; Reason3, xxx]", #nolint
+      "Reports assessed for eligibility (other)",
+      "Reports excluded (other): [separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; Reason3, xxx]", #nolint
+      "New studies included in review",
+      "Reports of new included studies",
+      "Total studies included in review",
+      "Reports of total included studies",
+      "Blue identification box",
+      "Blue screening box",
+      "Blue included box",
+      "Total studies included in meta-analysis",
+      "Reports of total included studies in meta-analysis"
+    ) #34 - 0 (0)
+    boxtext <- c(
+      prisma_data$previous_text,
+      prisma_data$previous_studies_text,
+      prisma_data$previous_reports_text,
+      prisma_data$newstud_text,
+      prisma_data$database_results_text,
+      prisma_data$database_specific_results_text,
+      prisma_data$register_results_text,
+      prisma_data$register_specific_results_text,
+      prisma_data$other_text,
+      prisma_data$website_results_text,
+      prisma_data$organisation_results_text,
+      prisma_data$citations_results_text,
+      prisma_data$duplicates_text,
+      prisma_data$excluded_automatic_text,
+      prisma_data$excluded_other_text,
+      prisma_data$records_screened_text,
+      prisma_data$records_excluded_text,
+      prisma_data$dbr_sought_reports_text,
+      prisma_data$dbr_notretrieved_reports_text,
+      prisma_data$other_sought_reports_text,
+      prisma_data$other_notretrieved_reports_text,
+      prisma_data$dbr_assessed_text,
+      prisma_data$dbr_excluded_text,
+      prisma_data$other_assessed_text,
+      prisma_data$other_excluded_text,
+      prisma_data$new_studies_text,
+      prisma_data$new_reports_text,
+      prisma_data$total_studies_text,
+      prisma_data$total_reports_text,
+      prisma_data$identification_text,
+      prisma_data$screening_text,
+      prisma_data$included_text,
+      prisma_data$total_studies_ma_text,
+      prisma_data$total_reports_ma_text
+    ) #34
+    tooltips <- c(
+      prisma_data$tooltips$prevstud,
+      prisma_data$tooltips$previous_studies,
+      prisma_data$tooltips$previous_reports,
+      prisma_data$tooltips$newstud,
+      prisma_data$tooltips$database_results,
+      prisma_data$tooltips$database_specific_results,
+      prisma_data$tooltips$register_results,
+      prisma_data$tooltips$register_specific_results,
+      prisma_data$tooltips$othstud,
+      prisma_data$tooltips$website_results,
+      prisma_data$tooltips$organisation_results,
+      prisma_data$tooltips$citations_results,
+      prisma_data$tooltips$duplicates,
+      prisma_data$tooltips$excluded_automatic,
+      prisma_data$tooltips$excluded_other,
+      prisma_data$tooltips$records_screened,
+      prisma_data$tooltips$records_excluded,
+      prisma_data$tooltips$dbr_sought_reports,
+      prisma_data$tooltips$dbr_notretrieved_reports,
+      prisma_data$tooltips$other_sought_reports,
+      prisma_data$tooltips$other_notretrieved_reports,
+      prisma_data$tooltips$dbr_assessed,
+      prisma_data$tooltips$dbr_excluded,
+      prisma_data$tooltips$other_assessed,
+      prisma_data$tooltips$other_excluded,
+      prisma_data$tooltips$new_studies,
+      prisma_data$tooltips$new_reports,
+      prisma_data$tooltips$total_studies,
+      prisma_data$tooltips$total_reports,
+      prisma_data$tooltips$identification,
+      prisma_data$tooltips$screening,
+      prisma_data$tooltips$included,
+      prisma_data$tooltips$total_studies_ma,
+      prisma_data$tooltips$total_reports_ma
+    ) #34
+    url <- c(
+      prisma_data$urls[grep("prevstud", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box1", prisma_data$urls[, 1]), 2],
+      toString("NA"),
+      prisma_data$urls[grep("newstud", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box2", prisma_data$urls[, 1]), 2],
+      toString("NA"),
+      toString("NA"),
+      toString("NA"),
+      prisma_data$urls[grep("othstud", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box11", prisma_data$urls[, 1]), 2],
+      toString("NA"),
+      toString("NA"),
+      prisma_data$urls[grep("box3", prisma_data$urls[, 1]), 2],
+      toString("NA"),
+      toString("NA"),
+      prisma_data$urls[grep("box4", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box5", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box6", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box7", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box12", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box13", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box8", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box9", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box14", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box15", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box15", prisma_data$urls[, 1]), 2],
+      toString("NA"),
+      prisma_data$urls[grep("box16", prisma_data$urls[, 1]), 2],
+      toString("NA"),
+      prisma_data$urls[grep("identification", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("screening", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("included", prisma_data$urls[, 1]), 2],
+      prisma_data$urls[grep("box17", prisma_data$urls[, 1]), 2],
+      toString("NA")
+    ) #34 - 11 (23)
+    n <- c(
+      toString("NA"),
+      prisma_data$previous_studies,
+      prisma_data$previous_reports,
+      toString("NA"),
+      prisma_data$database_results,
+      PRISMA_parse_reasons_(prisma_data$database_specific_results, reverse = TRUE),
+      prisma_data$register_results,
+      PRISMA_parse_reasons_(prisma_data$register_specific_results, reverse = TRUE),
+      toString("NA"),
+      prisma_data$website_results,
+      prisma_data$organisation_results,
+      prisma_data$citations_results,
+      prisma_data$duplicates,
+      prisma_data$excluded_automatic,
+      prisma_data$excluded_other,
+      prisma_data$records_screened,
+      prisma_data$records_excluded,
+      prisma_data$dbr_sought_reports,
+      prisma_data$dbr_notretrieved_reports,
+      prisma_data$other_sought_reports,
+      prisma_data$other_notretrieved_reports,
+      prisma_data$dbr_assessed,
+      PRISMA_parse_reasons_(prisma_data$dbr_excluded, reverse = TRUE),
+      prisma_data$other_assessed,
+      PRISMA_parse_reasons_(prisma_data$other_excluded, reverse = TRUE),
+      prisma_data$new_studies,
+      prisma_data$new_reports,
+      prisma_data$total_studies,
+      prisma_data$total_reports,
+      toString("NA"),
+      toString("NA"),
+      toString("NA"),
+      prisma_data$total_studies_ma,
+      prisma_data$total_reports_ma
+    ) #34 - 6 = 28
+  df_for_export <- data.frame(
+    data,
+    node,
+    box,
+    description,
+    boxtext,
+    tooltips,
+    url,
+    n
+  )
+  df_for_export
+  write.csv(df_for_export, filename)
+  return(tools::file_path_as_absolute(filename))
+} else {
+  stop("File exists, please set overwite = TRUE to overwrite")
+}
 }
 
 #' Defunct function - replaced by "PRISMA_interactive_"

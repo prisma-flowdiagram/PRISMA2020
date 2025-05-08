@@ -401,11 +401,15 @@ PRISMA_format_number_ <- function(x) { #nolint
 #' @description Parse an exclusion reason string and returns a dataframe
 #' containing reasons and number
 #' @param reasons the string to parse
+#' @param reverse if true, parses a dataframe into an exclusion reason string
 #' @return a dataframe containing reasons and number applicable
 #' @keywords internal
 #'
-PRISMA_parse_reasons_ <- function(reasons) { #nolint
-    reasons_out <- NA
+PRISMA_parse_reasons_ <- function(reasons, reverse = FALSE) { #nolint
+  reasons_out <- NA
+  if (reverse == TRUE) {
+    return("PLACEHOLDER")
+  } else {
     if (grepl("[^0-9,]", as.character(reasons))) {
       reasons_out <- data.frame(
         reason = gsub(
@@ -441,9 +445,9 @@ PRISMA_parse_reasons_ <- function(reasons) { #nolint
         )
       )
     }
-    return(reasons_out)
+  }
+  return(reasons_out)
 }
-
 #' Formats multiple exclusion reasons properly for printing
 #'
 #' @description Parse an exclusion reason dataframe from

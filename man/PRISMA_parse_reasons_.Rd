@@ -4,10 +4,12 @@
 \alias{PRISMA_parse_reasons_}
 \title{Parse an exclusion reason into a data frame}
 \usage{
-PRISMA_parse_reasons_(reasons)
+PRISMA_parse_reasons_(reasons, reverse = FALSE)
 }
 \arguments{
 \item{reasons}{the string to parse}
+
+\item{reverse}{if true, parses a dataframe into an exclusion reason string}
 }
 \value{
 a dataframe containing reasons and number applicable

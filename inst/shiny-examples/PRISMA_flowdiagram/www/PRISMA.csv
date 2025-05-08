@@ -1,5 +1,5 @@
 data,node,box,description,boxtext,tooltips,url,n
-NA,node4,prevstud,Grey title box; Previous studies,Previous studies,Grey title box; Previous studies,prevstud.html,0
+NA,node4,prevstud,Grey title box; Previous studies,Previous studies,Grey title box; Previous studies,prevstud.html,NA
 previous_studies,node5,box1,Studies included in previous version of review,Studies included in previous version of review,Studies included in previous version of review,previous_studies.html,0
 previous_reports,NA,box1,Reports of studies included in previous version of review,Reports of studies included in previous version of review,NA,previous_reports.html,0
 NA,node6,newstud,Yellow title box; Identification of new studies via databases and registers,Identification of new studies via databases and registers,Yellow title box; Identification of new studies via databases and registers,newstud.html,0
