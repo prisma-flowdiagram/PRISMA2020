@@ -1656,68 +1656,167 @@ PRISMA_data <- function(data) { #nolint
     url = data[!duplicated(data$box), ]$url
   )
   #set text - if text >33 characters,
-  previous_text <- data[grep("prevstud", data[, 3]), ]$boxtext
-  newstud_text <- data[grep("newstud", data[, 3]), ]$boxtext
-  other_text <- data[grep("othstud", data[, 3]), ]$boxtext
-  previous_studies_text <- data[grep("previous_studies", data[, 1]), ]$boxtext
-  previous_reports_text <- data[grep("previous_reports", data[, 1]), ]$boxtext
-  register_results_text <- data[grep("register_results", data[, 1]), ]$boxtext
-  database_results_text <- data[grep("database_results", data[, 1]), ]$boxtext
-  website_results_text <- data[grep("website_results", data[, 1]), ]$boxtext
-  organisation_results_text <- data[
-    grep(
-      "organisation_results",
-      data[, 1]
-    ),
-  ]$boxtext
-  citations_results_text <- data[grep("citations_results", data[, 1]), ]$boxtext
-  duplicates_text <- data[grep("duplicates", data[, 1]), ]$boxtext
-  excluded_automatic_text <- data[
-    grep(
-      "excluded_automatic",
-      data[, 1]
-    ),
-  ]$boxtext
-  excluded_other_text <- data[grep("excluded_other", data[, 1]), ]$boxtext
-  records_screened_text <- data[grep("records_screened", data[, 1]), ]$boxtext
-  records_excluded_text <- data[grep("records_excluded", data[, 1]), ]$boxtext
-  dbr_sought_reports_text <- data[
-    grep(
-      "dbr_sought_reports",
-      data[, 1]
-    ),
-  ]$boxtext
-  dbr_notretrieved_reports_text <- data[
-    grep(
-      "dbr_notretrieved_reports",
-      data[, 1]
-    ),
-  ]$boxtext
-  other_sought_reports_text <- data[
-    grep(
-      "other_sought_reports",
-      data[, 1]
-    ),
-  ]$boxtext
-  other_notretrieved_reports_text <- data[ #nolint
-    grep(
-      "other_notretrieved_reports",
-      data[, 1]
-    ),
-  ]$boxtext
-  dbr_assessed_text <- data[grep("dbr_assessed", data[, 1]), ]$boxtext
-  dbr_excluded_text <- data[grep("dbr_excluded", data[, 1]), ]$boxtext
-  other_assessed_text <- data[grep("other_assessed", data[, 1]), ]$boxtext
-  other_excluded_text <- data[grep("other_excluded", data[, 1]), ]$boxtext
-  new_studies_text <- data[grep("new_studies", data[, 1]), ]$boxtext
-  new_reports_text <- data[grep("new_reports", data[, 1]), ]$boxtext
-  total_studies_text <- data[grep("total_studies$", data[, 1]), ]$boxtext
-  total_reports_text <- data[grep("total_reports$", data[, 1]), ]$boxtext
-  identification_text <- data[grep("identification", data[, 1]), ]$boxtext
-  screening_text <- data[grep("screening", data[, 1]), ]$boxtext
-  included_text <- data[grep("included", data[, 1]), ]$boxtext
-  total_studies_ma_text <- data[grep("total_studies_ma", data[, 1]), ]$boxtext
-  total_reports_ma_text <- data[grep("total_reports_ma", data[, 1]), ]$boxtext
+  previous_text <- PRISMA_default_or_csv_(
+    expr = data[grep("prevstud", data[, 3]), ]$boxtext,
+    default = "Previous studies",
+    var_name = previous_text
+  )
+  newstud_text <- PRISMA_default_or_csv_(
+    expr = data[grep("newstud", data[, 3]), ]$boxtext,
+    default = "Identification of new studies via databases and registers",
+    var_name = newstud_text
+  )
+  other_text <- PRISMA_default_or_csv_(
+    expr = data[grep("othstud", data[, 3]), ]$boxtext,
+    default = "Identification of new studies via other methods",
+    var_name = other_text
+  )
+  previous_studies_text <- PRISMA_default_or_csv_(
+    expr = data[grep("previous_studies", data[, 1]), ]$boxtext,
+    default = "Studies included in previous version of review",
+    var_name = previous_studies_text
+  )
+  previous_reports_text <- PRISMA_default_or_csv_(
+    expr = data[grep("previous_reports", data[, 1]), ]$boxtext,
+    default = "Reports of studies included in previous version of review",
+    var_name = previous_reports_text
+  )
+  register_results_text <- PRISMA_default_or_csv_(
+    expr = data[grep("register_results", data[, 1]), ]$boxtext,
+    default = "Registers",
+    var_name = register_results_text
+  )
+  database_results_text <- PRISMA_default_or_csv_(
+    expr = data[grep("database_results", data[, 1]), ]$boxtext,
+    default = "Databases",
+    var_name = database_results_text
+  )
+  website_results_text <- PRISMA_default_or_csv_(
+    expr = data[grep("website_results", data[, 1]), ]$boxtext,
+    default = "Websites",
+    var_name = website_results_text
+  )
+  organisation_results_text <- PRISMA_default_or_csv_(
+    expr = data[grep("organisation_results", data[, 1]),]$boxtext,
+    default = "Organisations",
+    var_name = organisation_results_text
+  )
+  citations_results_text <- PRISMA_default_or_csv_(
+    expr = data[grep("citations_results", data[, 1]), ]$boxtext, 
+    default = "Citation searching", 
+    var_name = citations_results_text
+  )
+  duplicates_text <- PRISMA_default_or_csv_(
+    expr = data[grep("duplicates", data[, 1]), ]$boxtext,
+    default = "Duplicate records",
+    var_name = duplicates_text
+  )
+  excluded_automatic_text <- PRISMA_default_or_csv_(
+    expr = data[grep("excluded_automatic", data[, 1]),]$boxtext,
+    default = "Records marked as ineligible by automation tools",
+    var_name = excluded_automatic_text
+  )
+  excluded_other_text <- PRISMA_default_or_csv_(
+    expr = data[grep("excluded_other", data[, 1]), ]$boxtext,
+    default = "Records removed for other reasons",
+    var_name = excluded_other_text
+  )
+  records_screened_text <- PRISMA_default_or_csv_(
+    expr = data[grep("records_screened", data[, 1]), ]$boxtext,
+    default = "Records screened",
+    var_name = records_screened_text
+  )
+  records_excluded_text <- PRISMA_default_or_csv_( 
+    expr = data[grep("records_excluded", data[, 1]), ]$boxtext,
+    default = "Records excluded",
+    var_name = records_excluded_text
+  )
+  dbr_sought_reports_text <- PRISMA_default_or_csv_( 
+    expr = data[grep("dbr_sought_reports", data[, 1]),]$boxtext,
+    default = "Reports sought for retrieval",
+    var_name = dbr_sought_reports_text
+  )
+  dbr_notretrieved_reports_text <- PRISMA_default_or_csv_(
+    expr = data[grep("dbr_notretrieved_reports", data[, 1]),]$boxtext,
+    default = "Reports not retrieved",
+    var_name = dbr_notretrieved_reports_text
+  )
+  other_sought_reports_text <- PRISMA_default_or_csv_(
+    expr = data[ grep("other_sought_reports", data[, 1]),]$boxtext,
+    default = "Reports sought for retrieval",
+    var_name = other_sought_reports_text
+  )
+  other_notretrieved_reports_text <- PRISMA_default_or_csv_(
+    expr = data[ #nolint
+    grep("other_notretrieved_reports",data[, 1]),]$boxtext,
+    default = "Reports not retrieved",
+    var_name = other_notretrieved_reports_text
+  )
+  dbr_assessed_text <- PRISMA_default_or_csv_(
+    expr = data[grep("dbr_assessed", data[, 1]), ]$boxtext,
+    default = "Reports assessed for eligibility", 
+    var_name = dbr_assessed_text
+  )
+  dbr_excluded_text <- PRISMA_default_or_csv_(
+    ecpr = data[grep("dbr_excluded", data[, 1]), ]$boxtext,
+    default = "Reports excluded",
+    var_name = dbr_excluded_text 
+  )
+  other_assessed_text <- PRISMA_default_or_csv_(
+    expr = data[grep("other_assessed", data[, 1]), ]$boxtext,
+    default = "Reports assessed for eligibility",
+    var_name = other_assessed_text
+  )
+  other_excluded_text <- PRISMA_default_or_csv_(
+    expr = data[grep("other_excluded", data[, 1]), ]$boxtext,
+    default = "Reports excluded", 
+    var_name = other_excluded_text
+  )
+  new_studies_text <- PRISMA_default_or_csv_(
+    expr = data[grep("new_studies", data[, 1]), ]$boxtext,
+    default = "New studies included in review",
+    var_name = new_studies_text
+  )
+  new_reports_text <- PRISMA_default_or_csv_(
+    expr = data[grep("new_reports", data[, 1]), ]$boxtext,
+    default = "Reports of new included studies",
+    var_name = new_reports_text
+  )
+  total_studies_text <- PRISMA_default_or_csv_(
+    expr = data[grep("total_studies$", data[, 1]), ]$boxtext,
+    default = "Total studies included in review",
+    var_name = total_studies_text
+  )
+  total_reports_text <- PRISMA_default_or_csv_(
+    expr = data[grep("total_reports$", data[, 1]), ]$boxtext,
+    default = "Reports of total included studies",
+    var_name = total_reports_text
+  )
+  identification_text <- PRISMA_default_or_csv_(
+    expr = data[grep("identification", data[, 1]), ]$boxtext,
+    default = "Identification",
+    var_name = identification_text
+  )
+  screening_text <- PRISMA_default_or_csv_(
+    expr = data[grep("screening", data[, 1]), ]$boxtext,
+    default = "Screening",
+    var_name = screening_text
+  )
+  included_text <- PRISMA_default_or_csv_(
+    expr = data[grep("included", data[, 1]), ]$boxtext,
+    default = "Included",
+    var_name = included_text
+  )
+  total_studies_ma_text <- PRISMA_default_or_csv_(
+    expr = data[grep("total_studies_ma", data[, 1]), ]$boxtext,
+    default = "Total studies included in meta-analysis",
+    var_name = total_studies_ma_text
+  )
+  total_reports_ma_text <- PRISMA_default_or_csv_(
+    expr = data[grep("total_reports_ma", data[, 1]), ]$boxtext,
+    default = "Reports of total included studies in meta-analysis",
+    var_name = total_reports_ma_text
+  )
   x <- list(
     previous_studies = previous_studies,
     previous_reports = previous_reports,
