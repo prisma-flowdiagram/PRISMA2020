@@ -9,7 +9,7 @@
 #' @keywords internal
 PRISMA_get_height_ <- function (n, offset, min = 2) { #nolint
   lines <- n + 1
-  if (lines > min) {
+  if (isTRUE(lines > min)) {       # Fix #52: prevent length >1 error when n==1 exclusion reason
     height <- offset + (lines * 0.25) - (min * 0.25)
   } else {
     height <- offset
