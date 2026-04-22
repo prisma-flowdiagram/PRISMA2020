@@ -33,6 +33,7 @@ Imports:
     htmltools,
     htmlwidgets,
     rsvg,
+    rmarkdown,
     scales,
     shiny,
     shinyjs,
