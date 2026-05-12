@@ -1,35 +1,35 @@
 data,node,box,description,boxtext,tooltips,url,n
-NA,node4,prevstud,Grey title box; Previous studies,Previous studies,Grey title box; Previous studies,prevstud.html,0
-previous_studies,node5,box1,Studies included in previous version of review,Studies included in previous version of review,Studies included in previous version of review,previous_studies.html,0
-previous_reports,NA,box1,Reports of studies included in previous version of review,Reports of studies included in previous version of review,NA,previous_reports.html,0
-NA,node6,newstud,Yellow title box; Identification of new studies via databases and registers,Identification of new studies via databases and registers,Yellow title box; Identification of new studies via databases and registers,newstud.html,0
-database_results,node7,box2,Records identified from: Databases,Databases,Records identified from: Databases and Registers,database_results.html,0
-database_specific_results,NA,box2,Records identified from: specific databases,Specific Databases,NA,database_results.html,"Database 1, xxx; Database 2, xxx; Database 3, xxx"
-register_results,NA,box2,Records identified from: Registers,Registers,NA,NA,0
-register_specific_results,NA,box2,Records identified from: specific registers,Specific Registers,NA,database_results.html,"Register 1, xxx; Register 2, xxx; Register 3, xxx"
-NA,node16,othstud,Grey title box; Identification of new studies via other methods,Identification of new studies via other methods,Grey title box; Identification of new studies via other methods,othstud.html,0
-website_results,node17,box11,Records identified from: Websites,Websites,"Records identified from: Websites, Organisations and Citation Searching",website_results.html,0
-organisation_results,,box11,Records identified from: Organisations,Organisations,NA,NA,0
-citations_results,NA,box11,Records identified from: Citation searching,Citation searching,NA,NA,0
-duplicates,node8,box3,Duplicate records,Duplicate records,Duplicate records,duplicates.html,0
-excluded_automatic,NA,box3,Records marked as ineligible by automation tools,Records marked as ineligible by automation tools,NA,NA,0
-excluded_other,NA,box3,Records removed for other reasons,Records removed for other reasons,NA,NA,0
-records_screened,node9,box4,Records screened (databases and registers),Records screened,Records screened (databases and registers),records_screened.html,0
-records_excluded,node10,box5,Records excluded (databases and registers),Records excluded,Records excluded (databases and registers),records_excluded.html,0
-dbr_sought_reports,node11,box6,Reports sought for retrieval (databases and registers),Reports sought for retrieval,Reports sought for retrieval (databases and registers),dbr_sought_reports.html,0
-dbr_notretrieved_reports,node12,box7,Reports not retrieved (databases and registers),Reports not retrieved,Reports not retrieved (databases and registers),dbr_notretrieved_reports.html,0
-other_sought_reports,node18,box12,Reports sought for retrieval (other),Reports sought for retrieval,Reports sought for retrieval (other),other_sought_reports.html,0
-other_notretrieved_reports,node19,box13,Reports not retrieved (other),Reports not retrieved,Reports not retrieved (other),other_notretrieved_reports.html,0
-dbr_assessed,node13,box8,Reports assessed for eligibility (databases and registers),Reports assessed for eligibility,Reports assessed for eligibility (databases and registers),dbr_assessed.html,0
-dbr_excluded,node14,box9,"Reports excluded (databases and registers): [separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; Reason3, xxx]",Reports excluded,Reports excluded (databases and registers),dbrexcludedrecords.html,"Reason1, xxx; Reason2, xxx; Reason3, xxx"
-other_assessed,node20,box14,Reports assessed for eligibility (other),Reports assessed for eligibility,Reports assessed for eligibility (other),other_assessed.html,0
-other_excluded,node21,box15,"Reports excluded (other): [separate reasons and numbers using ; e.g. Reason1, xxx; Reason2, xxx; Reason3, xxx]",Reports excluded,Reports excluded (other),other_excluded.html,"Reason1, xxx; Reason2, xxx; Reason3, xxx"
-new_studies,node15,box10,New studies included in review,New studies included in review,New studies included in review,new_studies.html,0
-new_reports,NA,box10,Reports of new included studies,Reports of new included studies,NA,NA,0
-total_studies,node22,box16,Total studies included in review,Total studies included in review,Total studies included in review,total_studies.html,0
-total_reports,NA,box16,Reports of total included studies,Reports of total included studies,NA,NA,0
-identification,node1,identification,Blue identification box,Identification,Blue identification box,identification.html,0
-screening,node2,screening,Blue screening box,Screening,Blue screening box,screening.html,0
-included,node3,included,Blue included box,Included,Blue included box,included.html,0
-total_studies_ma,node23,box17,Total studies included in meta-analysis,Total studies included in meta-analysis,Total studies included in meta-analysis,total_studies_meta_analysis.html,0
-total_reports_ma,NA,box17,Reports of total included studies in meta-analysis,Reports of total included studies in meta-analysis,NA,NA,0
+NA,node4,prevstud,"Caixa de título cinza; Estudos prévios",Estudos prévios,"Caixa de título cinza; Estudos prévios",prevstud.html,0
+previous_studies,node5,box1,Estudos incluídos em versões anteriores da revisão,Estudos incluídos em versões anteriores da revisão,Estudos incluídos em versões anteriores da revisão,previous_studies.html,0
+previous_reports,NA,box1,Publicações de estudos incluídas em versões anteriores da revisão,Publicações de estudos incluídas em versões anteriores da revisão,NA,previous_reports.html,0
+NA,node6,newstud,"Caixa de título amarela; Identificação de novos estudos via bases de dados e repositórios",Identificação de novos estudos via bases de dados e repositórios,"Caixa de título amarela; Identificação de novos estudos via bases de dados e repositórios",newstud.html,0
+database_results,node7,box2,"Registros identificados de: Bases de dados",Bases de dados,"Registros identificados de: Bases de dados e Repositórios",database_results.html,0
+database_specific_results,NA,box2,"Registros identificados de: bases de dados específicas",Bases de dados específicas,NA,database_results.html,"Base de dados 1, xxx; Base de dados 2, xxx; Base de dados 3, xxx"
+register_results,NA,box2,"Registros identificados de: Repositórios de registros",Repositórios de registros,NA,NA,0
+register_specific_results,NA,box2,"Registros identificados de: registros específicos",Registros específicos,NA,database_results.html,"Registro 1, xxx; Registro 2, xxx; Registro 3, xxx"
+NA,node16,othstud,"Caixa de título cinza; Identificação de novos estudos por outros métodos",Identificação de novos estudos por outros métodos,"Caixa de título cinza; Identificação de novos estudos por outros métodos",othstud.html,0
+website_results,node17,box11,"Registros identificados de: Sites",Sites,"Registros identificados de: Sites, Organizações e Buscas por citações",website_results.html,0
+organisation_results,,box11,"Registros identificados de: Organizações",Organizações,NA,NA,0
+citations_results,NA,box11,"Registros identificados de: Buscas por citações",Buscas por citações,NA,NA,0
+duplicates,node8,box3,Registros duplicados,Registros duplicados,Registros duplicados,duplicates.html,0
+excluded_automatic,NA,box3,Registros marcados como inelegíveis por ferramentas de automação,Registros marcados como inelegíveis por ferramentas de automação,NA,NA,0
+excluded_other,NA,box3,Registros removidos por outras razões,Registros removidos por outras razões,NA,NA,0
+records_screened,node9,box4,"Registros triados (bases de dados e repositórios)",Registros triados,"Registros triados (bases de dados e repositórios)",records_screened.html,0
+records_excluded,node10,box5,"Registros excluídos (bases de dados e repositórios)",Registros excluídos,"Registros excluídos (bases de dados e repositórios)",records_excluded.html,0
+dbr_sought_reports,node11,box6,"Publicações recuperadas (bases de dados e repositórios)",Publicações recuperadas,"Publicações recuperadas (bases de dados e repositórios)",dbr_sought_reports.html,0
+dbr_notretrieved_reports,node12,box7,"Publicações não recuperadas (bases de dados e repositórios)",Publicações não recuperadas,"Publicações não recuperadas (bases de dados e repositórios)",dbr_notretrieved_reports.html,0
+other_sought_reports,node18,box12,"Publicações recuperadas (outros métodos)",Publicações recuperadas,"Publicações recuperadas (outros métodos)",other_sought_reports.html,0
+other_notretrieved_reports,node19,box13,"Publicações não recuperadas (outros métodos)",Publicações não recuperadas,"Publicações não recuperadas (outros métodos)",other_notretrieved_reports.html,0
+dbr_assessed,node13,box8,"Publicações avaliadas para elegibilidade (bases de dados e repositórios)",Publicações avaliadas para elegibilidade,"Publicações avaliadas para elegibilidade (bases de dados e repositórios)",dbr_assessed.html,0
+dbr_excluded,node14,box9,"Publicações excluídas (bases de dados e repositórios): [separe as razões e números com ; ex.: Razão 1, xxx; Razão 2, xxx; Razão 3, xxx]",Publicações excluídas,"Publicações excluídas (bases de dados e repositórios)",dbrexcludedrecords.html,
+other_assessed,node20,box14,"Publicações avaliadas para elegibilidade (outros métodos)",Publicações avaliadas para elegibilidade,"Publicações avaliadas para elegibilidade (outros métodos)",other_assessed.html,0
+other_excluded,node21,box15,"Publicações excluídas (outros métodos): [separe as razões e números com ; ex.: Razão 1, xxx; Razão 2, xxx; Razão 3, xxx]",Publicações excluídas,"Publicações excluídas (outros métodos)",other_excluded.html,
+new_studies,node15,box10,Novos estudos incluídos na revisão,Novos estudos incluídos na revisão,Novos estudos incluídos na revisão,new_studies.html,0
+new_reports,NA,box10,Publicações de novos estudos incluídos,Publicações de novos estudos incluídos,NA,NA,0
+total_studies,node22,box16,Total de estudos incluídos na revisão,Total de estudos incluídos na revisão,Total de estudos incluídos na revisão,total_studies.html,0
+total_reports,NA,box16,Publicações do total de estudos incluídos,Publicações do total de estudos incluídos,NA,NA,0
+identification,node1,identification,"Caixa azul de identificação",Identificação,"Caixa azul de identificação",identification.html,0
+screening,node2,screening,"Caixa azul de triagem",Triagem,"Caixa azul de triagem",screening.html,0
+included,node3,included,"Caixa azul de incluídos",Incluídos,"Caixa azul de incluídos",included.html,0
+total_studies_ma,node23,box17,Total de estudos incluídos na meta-análise,Total de estudos incluídos na meta-análise,Total de estudos incluídos na meta-análise,total_studies_meta_analysis.html,0
+total_reports_ma,NA,box17,Publicações do total de estudos incluídos na meta-análise,Publicações do total de estudos incluídos na meta-análise,NA,NA,0

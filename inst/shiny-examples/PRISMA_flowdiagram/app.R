@@ -4,7 +4,13 @@ library(rsvg)
 library(DT) #nolint
 library(rio)
 library(devtools)
-library(PRISMA2020) #nolint
+library(stringr)
+library(scales)
+library(htmlwidgets)
+library(xml2)
+library(DiagrammeRsvg)
+library(zip)
+source("functions.R", local = TRUE)
 
 template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE) #nolint
 the_options <- c(
@@ -66,79 +72,60 @@ ui <- tagList( #nolint
     }
   ),
   navbarPage(
-    "PRISMA Flow Diagram",
+    "Fluxograma PRISMA",
     position = "fixed-top",
     # Tab 1 ----
-    tabPanel("Home",
+    tabPanel("Início",
       fluidRow(
         column(10, offset = 1,
-          h4("To get started, click \"Create flow diagram\" above,
-          or read the instructions below for more information."),
+          h4("Para começar, clique em \"Criar fluxograma\" acima ou leia as instruções abaixo para mais informações."),
           br(),
-          "Systematic reviews should be described in
-          a high degree of methodological detail. ",
+          "Revisões sistemáticas devem ser descritas com alto grau de detalhamento metodológico. ",
           tags$a(
             href = "http://prisma-statement.org/",
-            "The PRISMA Statement"
+            "A Declaração PRISMA"
           ),
-          "calls for a high level of reporting detail in
-          systematic reviews and meta-analyses. An integral
-          part of the methodological description of a review
-          is a flow diagram.",
+          "exige um alto nível de detalhamento na descrição de revisões sistemáticas e meta-análises. Uma parte integral da descrição metodológica de uma revisão é o fluxograma.",
           br(),
           br(),
-          "This tool allows you to produce a flow diagram
-          for your own review that conforms to ",
+          "Esta ferramenta permite produzir um fluxograma para sua própria revisão em conformidade com ",
           tags$a(
             href = "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003583", # nolint
-            "the PRISMA2020 Statement."
+            "a Declaração PRISMA 2020."
           ),
-          "You can provide the numbers in the data entry section
-          of the 'Create flow diagram' tab.
-          These numbers will be initialised to any values provided in the
-          URL query string. For example, if you provide the URL path:
-          '?website_results=100&organisation_results=200', this will initialise
-          the website results to 100 and the organisation results to 200.
-          The name of the query string parameter should match the name of the
-          'data' column in the template file below. The additional arguments
-          \"previous\", \"other\", \"dbDetail\", and \"regDetail\" can be
-          used to set the initial main options for further customisation.
-          Alternatively, you can use the template file below to specify any
-          values, and to change somé of the labels within the diagram.",
+          "Você pode fornecer os números na seção de entrada de dados da aba 'Criar fluxograma'. Esses números serão inicializados com quaisquer valores fornecidos na string de consulta da URL. Por exemplo, se você informar o caminho da URL: '?website_results=100&organisation_results=200', isso inicializará os resultados de websites com 100 e os resultados de organizações com 200. O nome do parâmetro da string de consulta deve corresponder ao nome da coluna 'data' no arquivo de modelo abaixo. Os argumentos adicionais \"previous\", \"other\", \"dbDetail\" e \"regDetail\" podem ser usados para definir as opções principais iniciais para personalização adicional. Alternativamente, você pode usar o arquivo de modelo abaixo para especificar quaisquer valores e alterar alguns dos rótulos dentro do diagrama.",
           br(),
           br(),
-          "This tool also allows you to download an interactive HTML
-          version of the plot, alongside several other common formats.",
+          "Esta ferramenta também permite baixar uma versão HTML interativa do gráfico, além de vários outros formatos comuns.",
           br(),
           br(),
-          "We also provide an R package:",
+          "Também fornecemos um pacote R:",
           tags$a(
             href = "https://github.com/prisma-flowdiagram/PRISMA2020",
-            "PRISMA2020 flow diagram R package on Github."
+            "Pacote R para fluxograma PRISMA2020 no Github."
           ),
           br(),
           br(),
-          "Please let us know if you have any feedback or
-          if you encounter an error by creating an",
+          "Por favor, informe-nos se tiver algum feedback ou encontrar algum erro criando uma",
           tags$a(
             href = "https://github.com/prisma-flowdiagram/PRISMA2020/issues",
-            "issue on GitHub"
+            "issue no GitHub"
           ),
           br(),
           br(),
           tags$a(
             href = "PRISMA.csv",
-            "Download the template CSV file",
+            "Baixar o arquivo CSV modelo",
             download = NA,
             target = "_blank"
           ),
           br(),
           br(),
-          "Upload your edited file here:",
+          "Faça upload do seu arquivo editado aqui:",
           br(),
           fileInput(
             "data_upload",
-            "Choose CSV File",
+            "Escolher arquivo CSV",
             multiple = FALSE,
             accept = c(
               "text/csv",
@@ -148,13 +135,9 @@ ui <- tagList( #nolint
             )
           ),
           hr(),
-          "Please cite as:",
+          "Por favor, cite como:",
           br(),
-          "Haddaway, N. R., Page, M. J., Pritchard, C. C., &
-          McGuinness, L. A. (2022). PRISMA2020: An R package
-          and Shiny app for producing PRISMA 2020-compliant flow
-          diagrams, with interactivity for optimised digital transparency
-          and Open Synthesis Campbell Systematic Reviews, 18, e1230.",
+          "Haddaway, N. R., Page, M. J., Pritchard, C. C., & McGuinness, L. A. (2022). PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis. Campbell Systematic Reviews, 18, e1230.",
           tags$a(
             href = "https://doi.org/10.1002/cl2.1230",
             "https://doi.org/10.1002/cl2.1230"
@@ -162,7 +145,7 @@ ui <- tagList( #nolint
           br(),
           tags$a(
             href = "Haddaway_et_al_2022.ris",
-            "Download citation (.ris)",
+            "Baixar citação (.ris)",
             download = NA,
             target = "_blank"
           )
@@ -173,17 +156,17 @@ ui <- tagList( #nolint
           10,
           offset = 1,
           br(),
-          "Credits:",
+          "Créditos:",
           br(),
-          "Neal R Haddaway (creator, author)",
+          "Neal R Haddaway (criador, autor)",
           br(),
-          "Luke A McGuinness (coder, author)",
+          "Luke A McGuinness (programador, autor)",
           br(),
-          "Chris C Pritchard (coder, author)",
+          "Chris C Pritchard (programador, autor)",
           br(),
-          "Matthew J Page (advisor)",
+          "Matthew J Page (consultor)",
           br(),
-          "Jack Wasey (advisor)",
+          "Jack Wasey (consultor)",
           br(),
           br(),
           tags$a(
@@ -194,7 +177,9 @@ ui <- tagList( #nolint
               src = "https://pngimg.com/uploads/github/github_PNG40.png"
             )
           ),
-          "Created November 2020, Updated June 2022"
+          "Criado em novembro de 2020, atualizado em junho de 2022",
+          br(),
+          "Tradução para português (Brasil) baseada em Galvão TF, Tiguman GMB. A declaração PRISMA 2020: diretriz atualizada para relatar revisões sistemáticas. Epidemiol Serv Saúde. 2022;31(2):e2022107."
         )
       ),
       kofi_load,
@@ -202,7 +187,7 @@ ui <- tagList( #nolint
     ),
     # Tab 2 ----
     tabPanel(
-      "Create flow diagram",
+      "Criar fluxograma",
       shinyjs::useShinyjs(),
       sidebarLayout(
         sidebarPanel(
@@ -221,7 +206,7 @@ ui <- tagList( #nolint
           hr(),
           actionButton(
             "reset",
-            "Click to reset"
+            "Clique para redefinir"
           ),
           hr(),
           div(
@@ -229,7 +214,7 @@ ui <- tagList( #nolint
             uiOutput("selection")
           ),
           hr(),
-          h3("Download"),
+          h3("Baixar"),
           downloadButton(
             "PRISMAflowdiagramPDF",
             "PDF"
@@ -244,11 +229,11 @@ ui <- tagList( #nolint
           ),
           downloadButton(
             "PRISMAflowdiagramHTML",
-            "Interactive HTML"
+            "HTML interativo"
           ),
           downloadButton(
             "PRISMAflowdiagramZIP",
-            "Interactive HTML (ZIP)"
+            "HTML interativo (ZIP)"
           )
         ),
         mainPanel(
@@ -267,7 +252,7 @@ ui <- tagList( #nolint
     # environment variable is set at runtime
     anaytics_info <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) {
       tabPanel(
-        "Privacy & Impact",
+        "Privacidade e Impacto",
         tags$script(
           "async",
           "src" = "https://badge.dimensions.ai/badge.js",
@@ -281,34 +266,28 @@ ui <- tagList( #nolint
           column(
             width = 10,
             offset = 1,
-            "We use",
+            "Utilizamos",
             tags$a(
               href = "https://umami.is",
               "Umami"
             ),
-            "analytics to identify how our website
-            is used and accessed. We do not collect any
-            personally identifiable data, nor do we use cookies
-            or local browser storage. All data collected for this purpose
-            is anonymised. We also respect the 'do-not-track' header that can
-            be set within your browser preferences.",
+            "analytics para identificar como nosso site é usado e acessado. Não coletamos nenhum dado pessoalmente identificável, nem usamos cookies ou armazenamento local no navegador. Todos os dados coletados para essa finalidade são anonimizados. Também respeitamos o cabeçalho 'do-not-track' que pode ser configurado nas preferências do seu navegador.",
             br(),
             br(),
-            "The site's usage can be viewed",
+            "O uso do site pode ser visualizado",
             tags$a(
               href =
                 "https://umami.christopherpritchard.co.uk/share/DaPFWd0Q/Prisma%20Flow%20Diagram", #nolint
-              "on the public dashboard."
+              "no painel público."
             ),
             br(),
             br(),
-            "RStudio collects data in line with their",
+            "O RStudio coleta dados de acordo com sua",
             tags$a(
               href = "https://www.rstudio.com/legal/privacy-policy/",
-              "Privacy Policy"
+              "Política de Privacidade"
             ),
-            "for the neccesary functioning of their cloud products,
-            including our hosting provider,",
+            "para o funcionamento necessário de seus produtos em nuvem, incluindo nossa hospedagem,",
             tags$a(
               href = "https://shinyapps.io",
               "shinyapps.io"
@@ -316,12 +295,12 @@ ui <- tagList( #nolint
             br(),
             br(),
             hr(),
-            "Our",
+            "Nossas métricas do",
             tags$a(
               href = "https://doi.org/10.1002/cl2.1230",
-              "article"
+              "artigo"
             ),
-            "metrics are:",
+            "são:",
             br()
           ),
         ),
@@ -347,12 +326,12 @@ ui <- tagList( #nolint
         fluidRow(
           column(10, offset = 1,
             br(),
-            "We also published a",
+            "Também publicamos um",
             tags$a(
               href = "https://doi.org/10.1002/cl2.1230",
               "preprint."
             ),
-            "Our metrics for the preprint are:",
+            "Nossas métricas do preprint são:",
             br(),
             br()
           )
@@ -472,23 +451,23 @@ server <- function(input, output, session) { #nolint
   # Set up default options
   output$options <- renderUI({
     tagList(
-      h3("Main options"),
+      h3("Opções principais"),
       splitLayout(
         selectInput(
           "previous",
-          "Previous studies",
+          "Estudos prévios",
           choices = c(
-            "Not Included",
-            "Included"
+            "Não incluído" = "Not Included",
+            "Incluído" = "Included"
           ),
           selected = rv$opts_initial["previous"]
         ),
         selectInput(
           "other",
-          "Other searches for studies",
+          "Outros métodos",
           choices = c(
-            "Not Included",
-            "Included"
+            "Não incluído" = "Not Included",
+            "Incluído" = "Included"
           ),
           selected = rv$opts_initial["other"]
         )
@@ -496,29 +475,29 @@ server <- function(input, output, session) { #nolint
       splitLayout(
         selectInput(
           "dbDetail",
-          "Individual databases",
+          "Bases de dados individuais",
           choices = c(
-            "Not Included",
-            "Included"
+            "Não incluído" = "Not Included",
+            "Incluído" = "Included"
           ),
           selected = rv$opts_initial["dbDetail"]
         ),
         selectInput(
           "regDetail",
-          "Individual registers",
+          "Registros individuais",
           choices = c(
-            "Not Included",
-            "Included"
+            "Não incluído" = "Not Included",
+            "Incluído" = "Included"
           ),
           selected = rv$opts_initial["regDetail"]
         )
       ),
       selectInput(
         "metaAnalysis",
-        "Meta analysis",
+        "Meta-análise",
         choices = c(
-          "Not Included",
-          "Included"
+          "Não incluído" = "Not Included",
+          "Incluído" = "Included"
         ),
         selected = rv$opts_initial["metaAnalysis"]
       )
@@ -527,13 +506,13 @@ server <- function(input, output, session) { #nolint
   # Set up default values in data entry boxes
   output$selection <- renderUI({
     tagList(
-      h3("Identification"),
+      h3("Identificação"),
       conditionalPanel(
         condition = "input.previous == 'Included'",
         splitLayout(
           textInput(
             "previous_studies",
-            label = "Previous studies",
+            label = "Estudos prévios",
             value = rv$data_initial[
               which(rv$data_initial$data == "previous_studies"),
                 "n"
@@ -541,7 +520,7 @@ server <- function(input, output, session) { #nolint
           ),
           textInput(
             "previous_reports",
-            label = "Previous reports",
+            label = "Publicações prévias",
             value = rv$data_initial[
               which(rv$data_initial$data == "previous_reports"),
               "n"
@@ -552,7 +531,7 @@ server <- function(input, output, session) { #nolint
       splitLayout(
         textInput(
           "database_results",
-          label = "Databases",
+          label = "Bases de dados",
           value = rv$data_initial[
             which(rv$data_initial$data == "database_results"),
             "n"
@@ -560,7 +539,7 @@ server <- function(input, output, session) { #nolint
         ),
         textInput(
           "register_results",
-          label = "Registers",
+          label = "Repositórios de registros",
           value = rv$data_initial[
             which(rv$data_initial$data == "register_results"),
             "n"
@@ -574,7 +553,7 @@ server <- function(input, output, session) { #nolint
         splitLayout(
           textInput(
             "database_specific_results",
-            label = "Specific Database Results",
+            label = "Resultados específicos de bases de dados",
             value = rv$data_initial[
               which(rv$data_initial$data == "database_specific_results"),
               "n"
@@ -582,7 +561,7 @@ server <- function(input, output, session) { #nolint
           ),
           textInput(
             "register_specific_results",
-            label = "Specific Register Results",
+            label = "Resultados específicos de registros",
             value = rv$data_initial[
               which(rv$data_initial$data == "register_specific_results"),
               "n"
@@ -595,7 +574,7 @@ server <- function(input, output, session) { #nolint
         splitLayout(
           textInput(
             "website_results",
-            label = "Websites",
+            label = "Sites",
             value = rv$data_initial[
               which(rv$data_initial$data == "website_results"),
               "n"
@@ -603,7 +582,7 @@ server <- function(input, output, session) { #nolint
           ),
           textInput(
             "organisation_results",
-            label = "Organisations",
+            label = "Organizações",
             value = rv$data_initial[
               which(rv$data_initial$data == "organisation_results"), "n"
             ]
@@ -611,7 +590,7 @@ server <- function(input, output, session) { #nolint
         ),
         textInput(
           "citations_results",
-          label = "Citations",
+          label = "Buscas por citações",
           value = rv$data_initial[
             which(rv$data_initial$data == "citations_results"),
             "n"
@@ -620,7 +599,7 @@ server <- function(input, output, session) { #nolint
       ),
       textInput(
         "duplicates",
-        label = "Duplicates removed",
+        label = "Registros duplicados removidos",
         value = rv$data_initial[
           which(rv$data_initial$data == "duplicates"),
           "n"
@@ -629,7 +608,7 @@ server <- function(input, output, session) { #nolint
       splitLayout(
         textInput(
           "excluded_automatic",
-          label = "Automatically excluded",
+          label = "Excluídos automaticamente",
           value = rv$data_initial[
             which(rv$data_initial$data == "excluded_automatic"),
             "n"
@@ -637,18 +616,18 @@ server <- function(input, output, session) { #nolint
         ),
         textInput(
           "excluded_other",
-          label = "Other exclusions",
+          label = "Removidos por outras razões",
           value = rv$data_initial[
             which(rv$data_initial$data == "excluded_other"),
             "n"
           ]
         )
       ),
-      h3("Screening"),
+      h3("Triagem"),
       splitLayout(
         textInput(
           "records_screened",
-          label = "Records screened",
+          label = "Registros triados",
           value = rv$data_initial[
             which(rv$data_initial$data == "records_screened"),
             "n"
@@ -656,7 +635,7 @@ server <- function(input, output, session) { #nolint
         ),
         textInput(
           "records_excluded",
-          label = "Records excluded",
+          label = "Registros excluídos",
           value = rv$data_initial[
             which(rv$data_initial$data == "records_excluded"),
             "n"
@@ -666,7 +645,7 @@ server <- function(input, output, session) { #nolint
       splitLayout(
         textInput(
           "dbr_sought_reports",
-          label = "Reports sought",
+          label = "Publicações recuperadas",
           value = rv$data_initial[
             which(rv$data_initial$data == "dbr_sought_reports"),
             "n"
@@ -674,7 +653,7 @@ server <- function(input, output, session) { #nolint
         ),
         textInput(
           "dbr_notretrieved_reports",
-          label = "Reports not retrieved",
+          label = "Publicações não recuperadas",
           value = rv$data_initial[
             which(rv$data_initial$data == "dbr_notretrieved_reports"),
             "n"
@@ -686,7 +665,7 @@ server <- function(input, output, session) { #nolint
         splitLayout(
           textInput(
             "other_sought_reports",
-            label = "Other reports sought",
+            label = "Publ. recuperadas (outros)",
             value = rv$data_initial[
               which(rv$data_initial$data == "other_sought_reports"),
               "n"
@@ -694,7 +673,7 @@ server <- function(input, output, session) { #nolint
           ),
           textInput(
             "other_notretrieved_reports",
-            label = "Other reports not retrieved",
+            label = "Publ. não recuperadas (outros)",
             value = rv$data_initial[
               which(rv$data_initial$data == "other_notretrieved_reports"),
               "n"
@@ -705,7 +684,7 @@ server <- function(input, output, session) { #nolint
       splitLayout(
         textInput(
           "dbr_assessed",
-          label = "Reports assessed",
+          label = "Publ. avaliadas para el.",
           value = rv$data_initial[
             which(rv$data_initial$data == "dbr_assessed"),
             "n"
@@ -713,7 +692,7 @@ server <- function(input, output, session) { #nolint
         ),
         textInput(
           "dbr_excluded",
-          label = "Reports excluded",
+          label = "Publicações excluídas",
           value = rv$data_initial[
             which(rv$data_initial$data == "dbr_excluded"),
             "n"
@@ -725,7 +704,7 @@ server <- function(input, output, session) { #nolint
         splitLayout(
           textInput(
             "other_assessed",
-            label = "Other reports assessed",
+            label = "Publ. avaliadas (outros)",
             value = rv$data_initial[
               which(rv$data_initial$data == "other_assessed"),
               "n"
@@ -733,7 +712,7 @@ server <- function(input, output, session) { #nolint
           ),
           textInput(
             "other_excluded",
-            label = "Other reports excluded",
+            label = "Publ. excluídas (outros)",
             value = rv$data_initial[
               which(rv$data_initial$data == "other_excluded"),
               "n"
@@ -741,11 +720,11 @@ server <- function(input, output, session) { #nolint
           )
         )
       ),
-      h3("Included"),
+      h3("Incluídos"),
       splitLayout(
         textInput(
           "new_studies",
-          label = "New studies",
+          label = "Novos estudos",
           value = rv$data_initial[
             which(rv$data_initial$data == "new_studies"),
             "n"
@@ -753,7 +732,7 @@ server <- function(input, output, session) { #nolint
         ),
         textInput(
           "new_reports",
-          label = "New reports",
+          label = "Novas publicações",
           value = rv$data_initial[
             which(rv$data_initial$data == "new_reports"),
             "n"
@@ -765,7 +744,7 @@ server <- function(input, output, session) { #nolint
         splitLayout(
           textInput(
             "total_studies_ma",
-            label = "Total studies (MA)",
+            label = "Total de estudos (MA)",
             value = rv$data_initial[
               which(rv$data_initial$data == "total_studies_ma"),
               "n"
@@ -773,7 +752,7 @@ server <- function(input, output, session) { #nolint
           ),
           textInput(
             "total_reports_ma",
-            label = "Total Reports (MA)",
+            label = "Total de publicações (MA)",
             value = rv$data_initial[
               which(rv$data_initial$data == "total_reports_ma"),
               "n"
@@ -786,7 +765,7 @@ server <- function(input, output, session) { #nolint
         splitLayout(
           textInput(
             "total_studies",
-            label = "Total studies",
+            label = "Total de estudos",
             value = rv$data_initial[
               which(rv$data_initial$data == "total_studies"),
               "n"
@@ -794,7 +773,7 @@ server <- function(input, output, session) { #nolint
           ),
           textInput(
             "total_reports",
-            label = "Total reports",
+            label = "Total de publicações",
             value = rv$data_initial[
               which(rv$data_initial$data == "total_reports"),
               "n"
@@ -1013,17 +992,12 @@ server <- function(input, output, session) { #nolint
   # Define thank you modal
   thank_you_modal <- modalDialog(
           easyClose = TRUE,
-          title = "Thank You",
-          "Thank you for using the PRISMA Flow Diagram tool.
-          Your flow diagram is being downloaded.",
+          title = "Obrigado",
+          "Obrigado por utilizar a ferramenta Fluxograma PRISMA. Seu fluxograma está sendo baixado.",
           hr(),
-          "Please remember to cite the tool as: ",
+          "Por favor, lembre-se de citar a ferramenta como: ",
           br(),
-          "Haddaway, N. R., Page, M. J., Pritchard, C. C., &
-          McGuinness, L. A. (2022). PRISMA2020: An R package
-          and Shiny app for producing PRISMA 2020-compliant flow
-          diagrams, with interactivity for optimised digital transparency
-          and Open Synthesis Campbell Systematic Reviews, 18, e1230.",
+          "Haddaway, N. R., Page, M. J., Pritchard, C. C., & McGuinness, L. A. (2022). PRISMA2020: An R package and Shiny app for producing PRISMA 2020-compliant flow diagrams, with interactivity for optimised digital transparency and Open Synthesis. Campbell Systematic Reviews, 18, e1230.",
           tags$a(
             href = "https://doi.org/10.1002/cl2.1230",
             "https://doi.org/10.1002/cl2.1230"
@@ -1031,7 +1005,7 @@ server <- function(input, output, session) { #nolint
           br(),
           tags$a(
             href = "Haddaway_et_al_2022.ris",
-            "Download citation (.ris)",
+            "Baixar citação (.ris)",
             download = NA,
             target = "_blank"
           )
@@ -1039,7 +1013,7 @@ server <- function(input, output, session) { #nolint
   # Reactive plot ----
   # Create plot
   plot <- reactive({
-    data <- PRISMA2020::PRISMA_data(rv$data)
+    data <- PRISMA_data(rv$data)
     if (rv$opts["previous"] == "Included") {
       include_previous <- TRUE
     } else {
@@ -1078,9 +1052,9 @@ server <- function(input, output, session) { #nolint
         "createLabels(nodeMap)"
       )
     )
-    plot <- PRISMA2020::PRISMA_flowdiagram(
+    plot <- PRISMA_flowdiagram(
       data,
-      fontsize = 12,
+      fontsize = 10,
       font = "Helvetica",
       interactive = TRUE,
       previous = include_previous,
@@ -1102,7 +1076,7 @@ server <- function(input, output, session) { #nolint
       showModal(
         thank_you_modal
       )
-      PRISMA2020::PRISMA_save(plot(),
+      PRISMA_save(plot(),
                  filename = file, filetype = "PDF")
     }
   )
@@ -1112,7 +1086,7 @@ server <- function(input, output, session) { #nolint
       showModal(
         thank_you_modal
       )
-      PRISMA2020::PRISMA_save(plot(),
+      PRISMA_save(plot(),
                  filename = file, filetype = "PNG")
     }
   )
@@ -1122,7 +1096,7 @@ server <- function(input, output, session) { #nolint
       showModal(
         thank_you_modal
       )
-      PRISMA2020::PRISMA_save(plot(),
+      PRISMA_save(plot(),
                  filename = file, filetype = "SVG")
     }
   )
@@ -1132,7 +1106,7 @@ server <- function(input, output, session) { #nolint
       showModal(
         thank_you_modal
       )
-      PRISMA2020::PRISMA_save(plot(),
+      PRISMA_save(plot(),
                  filename = file, filetype = "html")
     }
   )
@@ -1142,7 +1116,7 @@ server <- function(input, output, session) { #nolint
       showModal(
         thank_you_modal
       )
-      PRISMA2020::PRISMA_save(plot(),
+      PRISMA_save(plot(),
                  filename = file, filetype = "zip")
     }
   )
