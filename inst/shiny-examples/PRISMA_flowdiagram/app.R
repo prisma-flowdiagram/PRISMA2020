@@ -23,13 +23,14 @@ names(the_options) <- c(
 )
 
 # Define UI for application that draws a histogram
-ui <- tagList( #nolint
+ui <- tagList(
+  #nolint
   tags$head(
     tags$script(
       src = "labels.js"
     ),
     tags$style(
-      type = "text/css", #nolint
+      type = "text/css",  #nolint
       "body {padding-top: 70px;}", #nolint
       "body {padding-bottom: 50px;}" #nolint
     ),
@@ -43,7 +44,8 @@ ui <- tagList( #nolint
     # the EU GDPR. we use a self-hosted version of umami,
     # configured not to store any cookies or personally identifiable data.
     # We also respect the "do-not-track" header.
-    analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) { #nolint
+    analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) {
+      #nolint
       tags$script(
         src = "https://umami.christopherpritchard.co.uk/umami.js", # nolint
         "async",
@@ -407,7 +409,8 @@ ui <- tagList( #nolint
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output, session) { #nolint
+server <- function(input, output, session) {
+  #nolint
   # Define reactive values
   rv <- shiny::reactiveValues()
   # Data Handling ----
@@ -1127,7 +1130,8 @@ server <- function(input, output, session) { #nolint
     plot <- plot()
   })
   # Handle downloads ----
-  output$PRISMAflowdiagramPDF <- downloadHandler( #nolint
+  output$PRISMAflowdiagramPDF <- downloadHandler(
+    #nolint
     filename = "prisma.pdf",
     content = function(file) {
       showModal(
@@ -1136,7 +1140,8 @@ server <- function(input, output, session) { #nolint
       PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "PDF")
     }
   )
-  output$PRISMAflowdiagramPNG <- downloadHandler( #nolint
+  output$PRISMAflowdiagramPNG <- downloadHandler(
+    #nolint
     filename = "prisma.png",
     content = function(file) {
       showModal(
@@ -1145,7 +1150,8 @@ server <- function(input, output, session) { #nolint
       PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "PNG")
     }
   )
-  output$PRISMAflowdiagramSVG <- downloadHandler( #nolint
+  output$PRISMAflowdiagramSVG <- downloadHandler(
+    #nolint
     filename = "prisma.svg",
     content = function(file) {
       showModal(
@@ -1154,7 +1160,8 @@ server <- function(input, output, session) { #nolint
       PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "SVG")
     }
   )
-  output$PRISMAflowdiagramHTML <- downloadHandler( #nolint
+  output$PRISMAflowdiagramHTML <- downloadHandler(
+    #nolint
     filename = "prisma.html",
     content = function(file) {
       showModal(
@@ -1163,7 +1170,8 @@ server <- function(input, output, session) { #nolint
       PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "html")
     }
   )
-  output$PRISMAflowdiagramZIP <- downloadHandler( #nolint
+  output$PRISMAflowdiagramZIP <- downloadHandler(
+    #nolint
     filename = "prisma.zip",
     content = function(file) {
       showModal(
@@ -1173,7 +1181,8 @@ server <- function(input, output, session) { #nolint
     }
   )
 
-  output$PRISMAflowdiagramCSV <- downloadHandler( #nolint
+  output$PRISMAflowdiagramCSV <- downloadHandler(
+    #nolint
     filename = "prisma.csv",
     content = function(file) {
       write.csv(rv$data, file, row.names = FALSE)
