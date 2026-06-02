@@ -43,8 +43,7 @@ ui <- tagList( #nolint
     # the EU GDPR. we use a self-hosted version of umami,
     # configured not to store any cookies or personally identifiable data.
     # We also respect the "do-not-track" header.
-    analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) {
-      #nolint
+    analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) { #nolint
       tags$script(
         src = "https://umami.christopherpritchard.co.uk/umami.js", # nolint
         "async",
@@ -55,14 +54,12 @@ ui <- tagList( #nolint
         "data-domains" = "estech.shinyapps.io" # nolint
       )
     },
-    kofi_load <- if (Sys.getenv("KOFI_DONATE") == TRUE) {
-      #nolint
+    kofi_load <- if (Sys.getenv("KOFI_DONATE") == TRUE) {   #nolint
       tags$script(
         src = 'https://storage.ko-fi.com/cdn/scripts/overlay-widget.js' # nolint
       )
     },
-    kofi_show <- if (Sys.getenv("KOFI_DONATE") == TRUE) {
-      #nolint
+    kofi_show <- if (Sys.getenv("KOFI_DONATE") == TRUE) {  #nolint
       tags$script(
         src = "kofi.js"
       )
@@ -264,6 +261,10 @@ ui <- tagList( #nolint
           downloadButton(
             "PRISMAflowdiagramZIP",
             "Interactive HTML (ZIP)"
+          ),
+          downloadButton(
+            "PRISMAflowdiagramCSV",
+            "CVS"
           )
         ),
         mainPanel(
@@ -406,8 +407,7 @@ ui <- tagList( #nolint
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output, session) {
-  #nolint
+server <- function(input, output, session) { #nolint
   # Define reactive values
   rv <- shiny::reactiveValues()
   # Data Handling ----
@@ -1170,6 +1170,13 @@ server <- function(input, output, session) {
         thank_you_modal
       )
       PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "zip")
+    }
+  )
+
+  output$PRISMAflowdiagramCSV <- downloadHandler( #nolint
+    filename = "prisma.csv",
+    content = function(file) {
+      write.csv(rv$data, file, row.names = FALSE)
     }
   )
 }
