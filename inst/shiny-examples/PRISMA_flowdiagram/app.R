@@ -23,13 +23,14 @@ names(the_options) <- c(
 )
 
 # Define UI for application that draws a histogram
-ui <- tagList( #nolint
+ui <- tagList(
+  #nolint
   tags$head(
     tags$script(
       src = "labels.js"
     ),
     tags$style(
-      type = "text/css",#nolint
+      type = "text/css", #nolint
       "body {padding-top: 70px;}", #nolint
       "body {padding-bottom: 50px;}" #nolint
     ),
@@ -43,7 +44,8 @@ ui <- tagList( #nolint
     # the EU GDPR. we use a self-hosted version of umami,
     # configured not to store any cookies or personally identifiable data.
     # We also respect the "do-not-track" header.
-    analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) { #nolint
+    analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) {
+      #nolint
       tags$script(
         src = "https://umami.christopherpritchard.co.uk/umami.js", # nolint
         "async",
@@ -54,12 +56,14 @@ ui <- tagList( #nolint
         "data-domains" = "estech.shinyapps.io" # nolint
       )
     },
-    kofi_load <- if (Sys.getenv("KOFI_DONATE") == TRUE) { #nolint
+    kofi_load <- if (Sys.getenv("KOFI_DONATE") == TRUE) {
+      #nolint
       tags$script(
-        src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js' # nolint
+        src = 'https://storage.ko-fi.com/cdn/scripts/overlay-widget.js' # nolint
       )
     },
-    kofi_show <- if (Sys.getenv("KOFI_DONATE") == TRUE) { #nolint
+    kofi_show <- if (Sys.getenv("KOFI_DONATE") == TRUE) {
+      #nolint
       tags$script(
         src = "kofi.js"
       )
@@ -69,11 +73,16 @@ ui <- tagList( #nolint
     "PRISMA Flow Diagram",
     position = "fixed-top",
     # Tab 1 ----
-    tabPanel("Home",
+    tabPanel(
+      "Home",
       fluidRow(
-        column(10, offset = 1,
-          h4("To get started, click \"Create flow diagram\" above,
-          or read the instructions below for more information."),
+        column(
+          10,
+          offset = 1,
+          h4(
+            "To get started, click \"Create flow diagram\" above,
+          or read the instructions below for more information."
+          ),
           br(),
           "Systematic reviews should be described in
           a high degree of methodological detail. ",
@@ -126,12 +135,16 @@ ui <- tagList( #nolint
           ),
           br(),
           br(),
+          "The flowcharts can be created from scratch by entering numbers into the 'Create flow diagram' tab. You can also create the same flowchart directly from R, using",
+          tags$code("PRISMA2020::PRISMA_flowdiagram()"),
+          ". The flowchart is initiated with the values from a template csv file, which you can",
           tags$a(
             href = "PRISMA.csv",
-            "Download the template CSV file",
+            "download.",
             download = NA,
             target = "_blank"
           ),
+          "Although you can edit this csv file manually, it's not very convenient. But if you want to translate the text in the flowchart to another language, you can do it there. In the near future you will be able to export a csv after creating you flowchart so that you can upload it here and recreate the exact same figure.",
           br(),
           br(),
           "Upload your edited file here:",
@@ -296,8 +309,7 @@ ui <- tagList( #nolint
             br(),
             "The site's usage can be viewed",
             tags$a(
-              href =
-                "https://umami.christopherpritchard.co.uk/share/DaPFWd0Q/Prisma%20Flow%20Diagram", #nolint
+              href = "https://umami.christopherpritchard.co.uk/share/DaPFWd0Q/Prisma%20Flow%20Diagram", #nolint
               "on the public dashboard."
             ),
             br(),
@@ -326,7 +338,9 @@ ui <- tagList( #nolint
           ),
         ),
         fluidRow(
-          column(1, offset = 1,
+          column(
+            1,
+            offset = 1,
             tags$div(
               "class" = "__dimensions_badge_embed__",
               "data-doi" = "10.1002/cl2.1230",
@@ -335,7 +349,9 @@ ui <- tagList( #nolint
               "width" = "64"
             )
           ),
-          column(1, offset = 0,
+          column(
+            1,
+            offset = 0,
             tags$div(
               "class" = "altmetric-embed",
               "data-badge-type" = "donut",
@@ -345,7 +361,9 @@ ui <- tagList( #nolint
           ),
         ),
         fluidRow(
-          column(10, offset = 1,
+          column(
+            10,
+            offset = 1,
             br(),
             "We also published a",
             tags$a(
@@ -358,7 +376,9 @@ ui <- tagList( #nolint
           )
         ),
         fluidRow(
-          column(1, offset = 1,
+          column(
+            1,
+            offset = 1,
             tags$div(
               "class" = "__dimensions_badge_embed__",
               "data-doi" = "10.1101/2021.07.14.21260492",
@@ -367,7 +387,9 @@ ui <- tagList( #nolint
               "width" = "64"
             )
           ),
-          column(1, offset = 0,
+          column(
+            1,
+            offset = 0,
             tags$div(
               "class" = "altmetric-embed",
               "data-badge-type" = "donut",
@@ -382,7 +404,8 @@ ui <- tagList( #nolint
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output, session) { #nolint
+server <- function(input, output, session) {
+  #nolint
   # Define reactive values
   rv <- shiny::reactiveValues()
   # Data Handling ----
@@ -451,7 +474,8 @@ server <- function(input, output, session) { #nolint
 
   # Reset to upload button
   observeEvent(
-    input$reset, {
+    input$reset,
+    {
       if (is.null(input$data_upload)) {
         # Create version that is edited and passed to graphing function
         rv$data <- template
@@ -465,7 +489,8 @@ server <- function(input, output, session) { #nolint
   )
   # Reset to blank button
   observeEvent(
-    input$reset_data_upload, {
+    input$reset_data_upload,
+    {
       shinyjs::reset("data_upload")
     }
   )
@@ -536,7 +561,7 @@ server <- function(input, output, session) { #nolint
             label = "Previous studies",
             value = rv$data_initial[
               which(rv$data_initial$data == "previous_studies"),
-                "n"
+              "n"
             ]
           ),
           textInput(
@@ -605,7 +630,8 @@ server <- function(input, output, session) { #nolint
             "organisation_results",
             label = "Organisations",
             value = rv$data_initial[
-              which(rv$data_initial$data == "organisation_results"), "n"
+              which(rv$data_initial$data == "organisation_results"),
+              "n"
             ]
           )
         ),
@@ -992,7 +1018,8 @@ server <- function(input, output, session) { #nolint
   proxy <- DT::dataTableProxy("mytable")
   # Update reactive dataset on cell edit
   observeEvent(
-    input$mytable_cell_edit, {
+    input$mytable_cell_edit,
+    {
       info <- input$mytable_cell_edit
       # Define edited row
       i <- info$row
@@ -1008,33 +1035,35 @@ server <- function(input, output, session) { #nolint
         proxy,
         rv$data,
         resetPaging = FALSE,
-        rownames = FALSE)  # important
-  })
+        rownames = FALSE
+      ) # important
+    }
+  )
   # Define thank you modal
   thank_you_modal <- modalDialog(
-          easyClose = TRUE,
-          title = "Thank You",
-          "Thank you for using the PRISMA Flow Diagram tool.
+    easyClose = TRUE,
+    title = "Thank You",
+    "Thank you for using the PRISMA Flow Diagram tool.
           Your flow diagram is being downloaded.",
-          hr(),
-          "Please remember to cite the tool as: ",
-          br(),
-          "Haddaway, N. R., Page, M. J., Pritchard, C. C., &
+    hr(),
+    "Please remember to cite the tool as: ",
+    br(),
+    "Haddaway, N. R., Page, M. J., Pritchard, C. C., &
           McGuinness, L. A. (2022). PRISMA2020: An R package
           and Shiny app for producing PRISMA 2020-compliant flow
           diagrams, with interactivity for optimised digital transparency
           and Open Synthesis Campbell Systematic Reviews, 18, e1230.",
-          tags$a(
-            href = "https://doi.org/10.1002/cl2.1230",
-            "https://doi.org/10.1002/cl2.1230"
-          ),
-          br(),
-          tags$a(
-            href = "Haddaway_et_al_2022.ris",
-            "Download citation (.ris)",
-            download = NA,
-            target = "_blank"
-          )
+    tags$a(
+      href = "https://doi.org/10.1002/cl2.1230",
+      "https://doi.org/10.1002/cl2.1230"
+    ),
+    br(),
+    tags$a(
+      href = "Haddaway_et_al_2022.ris",
+      "Download citation (.ris)",
+      download = NA,
+      target = "_blank"
+    )
   )
   # Reactive plot ----
   # Create plot
@@ -1060,7 +1089,7 @@ server <- function(input, output, session) { #nolint
     } else {
       detail_registers <- FALSE
     }
-    if (rv$opts["metaAnalysis"] == "Included"){
+    if (rv$opts["metaAnalysis"] == "Included") {
       meta_analysis <- TRUE
     } else {
       meta_analysis <- FALSE
@@ -1096,54 +1125,54 @@ server <- function(input, output, session) { #nolint
     plot <- plot()
   })
   # Handle downloads ----
-  output$PRISMAflowdiagramPDF <- downloadHandler( #nolint
+  output$PRISMAflowdiagramPDF <- downloadHandler(
+    #nolint
     filename = "prisma.pdf",
     content = function(file) {
       showModal(
         thank_you_modal
       )
-      PRISMA2020::PRISMA_save(plot(),
-                 filename = file, filetype = "PDF")
+      PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "PDF")
     }
   )
-  output$PRISMAflowdiagramPNG <- downloadHandler( #nolint
+  output$PRISMAflowdiagramPNG <- downloadHandler(
+    #nolint
     filename = "prisma.png",
     content = function(file) {
       showModal(
         thank_you_modal
       )
-      PRISMA2020::PRISMA_save(plot(),
-                 filename = file, filetype = "PNG")
+      PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "PNG")
     }
   )
-  output$PRISMAflowdiagramSVG <- downloadHandler( #nolint
+  output$PRISMAflowdiagramSVG <- downloadHandler(
+    #nolint
     filename = "prisma.svg",
     content = function(file) {
       showModal(
         thank_you_modal
       )
-      PRISMA2020::PRISMA_save(plot(),
-                 filename = file, filetype = "SVG")
+      PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "SVG")
     }
   )
-  output$PRISMAflowdiagramHTML <- downloadHandler( #nolint
+  output$PRISMAflowdiagramHTML <- downloadHandler(
+    #nolint
     filename = "prisma.html",
     content = function(file) {
       showModal(
         thank_you_modal
       )
-      PRISMA2020::PRISMA_save(plot(),
-                 filename = file, filetype = "html")
+      PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "html")
     }
   )
-  output$PRISMAflowdiagramZIP <- downloadHandler( #nolint
+  output$PRISMAflowdiagramZIP <- downloadHandler(
+    #nolint
     filename = "prisma.zip",
     content = function(file) {
       showModal(
         thank_you_modal
       )
-      PRISMA2020::PRISMA_save(plot(),
-                 filename = file, filetype = "zip")
+      PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "zip")
     }
   )
 }
