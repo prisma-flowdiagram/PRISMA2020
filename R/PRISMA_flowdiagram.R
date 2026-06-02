@@ -523,7 +523,7 @@ PRISMA_flowdiagram <- function( #nolint
       )
     ) +
     default_box_spacing * 2
-  identification_box_height <- 
+  identification_box_height <-
     max(
       c(
         dbr_identified_height,
@@ -1256,7 +1256,7 @@ PRISMA_data <- function(data) { #nolint
   data <- as.data.frame(data)
   #Set parameters
   previous_studies <- scales::comma(
-    PRISMA_format_number_( #nolint
+    PRISMA_format_number_(
       PRISMA_default_or_csv_(
         expr = data[
           grep(
@@ -1270,7 +1270,7 @@ PRISMA_data <- function(data) { #nolint
     )
   )
   previous_reports <- scales::comma(
-    PRISMA_format_number_( #nolint
+    PRISMA_format_number_(
       PRISMA_default_or_csv_(
         expr = data[
           grep(
@@ -1758,7 +1758,7 @@ PRISMA_data <- function(data) { #nolint
     var_name = dbr_assessed_text
   )
   dbr_excluded_text <- PRISMA_default_or_csv_(
-    ecpr = data[grep("dbr_excluded", data[, 1]), ]$boxtext,
+    expr = data[grep("dbr_excluded", data[, 1]), ]$boxtext,
     default = "Reports excluded",
     var_name = dbr_excluded_text 
   )
