@@ -28,10 +28,12 @@ Description: Systematic reviews should be described in a high degree of
     whilst static versions for inclusion in manuscripts can be saved as 
     HTML, PDF, PNG, SVG, PS or WEBP files.
 Imports:
+    cpp11,
     DiagrammeR,
     DiagrammeRsvg,
     htmltools,
     htmlwidgets,
+    progress,
     rsvg,
     scales,
     shiny,
