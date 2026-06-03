@@ -1252,6 +1252,8 @@ PRISMA_flowdiagram <- function( #nolint
 #' data <- PRISMA_data(data);
 #' @export
 PRISMA_data <- function(data, flow_or_check = c('flow','check')) { #nolint
+  
+  if (flow_or_check=='flow'){
   # Ensure data is a df, not a tibble;
   # tibbles do not return vectors using df[, 1].
   data <- as.data.frame(data)
@@ -1882,6 +1884,11 @@ PRISMA_data <- function(data, flow_or_check = c('flow','check')) { #nolint
     tooltips = tooltips,
     urls = urls
   )
+  }
+  
+  if (flow_or_check=='check'){
+    data <- as.data.frame(data)
+    }
   return(x)
 }
 
