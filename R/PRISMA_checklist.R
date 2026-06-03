@@ -1,7 +1,6 @@
 #' Save PRISMA2020 flow diagram
-#' @description Save the output from [PRISMA_flowdiagram()] to the
-#' working directory.
-#' @param plotobj A plot produced using [PRISMA_flowdiagram()].
+#' @description Make a table from a PRISMA checklist read in from a completed Excel template.
+#' @param plotobj A flextable object made using [PRISMA_checklist()].
 #' @param filename The filename of the checklist (including extension)
 #' @param h Height of the page (default to just below A4 height)
 #' @param w Width of the page (default to just below A4 height)
@@ -24,7 +23,7 @@
 # fontsize=6
 
 #' @export
-PRISMA_checklistdata <- function(filename,
+PRISMA_checklist <- function(filename,
                                  filetype,
                                  h=8,
                                  w=11,
