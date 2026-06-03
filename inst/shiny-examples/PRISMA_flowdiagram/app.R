@@ -83,6 +83,7 @@ ui <- tagList( #nolint
           or read the instructions below for more information."
           ),
           br(),
+          h4("Introduction"),
           "Systematic reviews should be described in
           a high degree of methodological detail. ",
           tags$a(
@@ -92,51 +93,19 @@ ui <- tagList( #nolint
           "calls for a high level of reporting detail in
           systematic reviews and meta-analyses. An integral
           part of the methodological description of a review
-          is a flow diagram.",
-          br(),
-          br(),
-          "This tool allows you to produce a flow diagram
+          is a flow diagram. This tool allows you to produce a flow diagram
           for your own review that conforms to ",
           tags$a(
             href = "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003583", # nolint
             "the PRISMA2020 Statement."
           ),
+          br(),
+          br(),
+          h4("General workflow"),
           "You can provide the numbers in the data entry section
           of the 'Create flow diagram' tab.
-          These numbers will be initialised to any values provided in the
-          URL query string. For example, if you provide the URL path:
-          '?website_results=100&organisation_results=200', this will initialise
-          the website results to 100 and the organisation results to 200.
-          The name of the query string parameter should match the name of the
-          'data' column in the template file below. The additional arguments
-          \"previous\", \"other\", \"dbDetail\", and \"regDetail\" can be
-          used to set the initial main options for further customisation.
-          Alternatively, you can use the template file below to specify any
-          values, and to change some of the labels within the diagram.",
-          br(),
-          br(),
-          "This tool also allows you to download an interactive HTML
-          version of the plot, alongside several other common formats.",
-          br(),
-          br(),
-          "We also provide an R package:",
-          tags$a(
-            href = "https://github.com/prisma-flowdiagram/PRISMA2020",
-            "PRISMA2020 flow diagram R package on Github."
-          ),
-          br(),
-          br(),
-          "Please let us know if you have any feedback or
-          if you encounter an error by creating an",
-          tags$a(
-            href = "https://github.com/prisma-flowdiagram/PRISMA2020/issues",
-            "issue on GitHub"
-          ),
-          br(),
-          br(),
-          "The flowcharts can be created from scratch by entering numbers into the 'Create flow diagram' tab. You can also create the same flowchart directly from R, using",
-          tags$code("PRISMA2020::PRISMA_flowdiagram()"),
-          ". The flowchart is initiated with the values from a template csv file, which you can",
+          The app allows you to export the flowchart in a variety of formats.
+          The flowchart is initiated with the values from a template csv file, which you can",
           tags$a(
             href = "PRISMA.csv",
             "download.",
@@ -146,7 +115,41 @@ ui <- tagList( #nolint
           "Although you can edit this csv file manually, it's not very convenient. But if you want to translate the text in the flowchart to another language, you can do it there. After creating your flowchart in the web app, you can also export it as a csv. Then when you upload that csv file below and open the 'Create flow diagram' tab, you will see the same flowchart again.",
           br(),
           br(),
-          "Upload your edited file here:",
+          h4("Initite the web app using custom url's"),
+          "These numbers will be initialised to any values provided in the
+          URL query string. For example, if you provide the URL path:
+          '?website_results=100&organisation_results=200', this will initialise
+          the website results to 100 and the organisation results to 200.
+          The name of the query string parameter should match the name of the
+          'data' column in the template file below. The additional arguments
+          \"previous\", \"other\", \"dbDetail\", and \"regDetail\" can be
+          used to set the initial main options for further customisation.
+          Alternatively, you can use the template file to specify any
+          values, and to change some of the labels within the diagram (see above). ",
+          br(),
+          br(),
+          h4("R package", tags$code("PRISMA2020")),
+          "We also provide an R package:",
+          tags$a(
+            href = "https://github.com/prisma-flowdiagram/PRISMA2020",
+            "PRISMA2020 flow diagram R package on Github."
+          ),
+          "This package contain the function", 
+          tags$code("PRISMA2020::PRISMA_flowdiagram()"),
+          "which is the backbone function for this web app. You can use this function to programmatically create the same flowcharts as inthe web app.",
+          br(),
+          br(),
+          h4("Feedback and comments"),
+          "Please let us know if you have any feedback or
+          if you encounter an error by creating an",
+          tags$a(
+            href = "https://github.com/prisma-flowdiagram/PRISMA2020/issues",
+            "issue on GitHub"
+          ),
+          br(),
+          br(),
+          h4("Upload csv"),
+          "If you have created a flowchart using the web app, and exported it as a csv, you can upload it here to recreate the exact same figure. Also,If you have downloaded the csv template and modified it directly, you can upload that file.",
           br(),
           fileInput(
             "data_upload",
