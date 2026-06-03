@@ -55,6 +55,6 @@ checklist_flextable<-
   bold(i = subheaderrows, bold= TRUE, part = "body") %>% #make subheader rows bold
   width(j = 1:4, width=c(1,0.5,5.5,4), unit = "in") #adjust widths of box
 
-
+#return the checklist
 return(checklist_flextable)
 }
