@@ -28,7 +28,41 @@
 #'                 previous = FALSE,
 #'                 other = TRUE);
 #' PRISMA_checklist(plot, filename = tempfile(), filetype="html");
+
+library(dplyr)
+library(flextable)
+
+filename='inst/extdata/PRISMAchecklist.xlsx';
+h=8;
+w=11;
+fontsize=6
+
 #' @export
-PRISMA_checklist <- function()
-  }
+PRISMA_checklistdata <- function(filename, 
+                                 h=8,
+                                 w=11,
+                                 fontsize=6){
+
+#read in the data  
+checklist<-readxl::read_excel(filename)
+
+#replace semicolons with newlines
+checklist<-as.data.frame(apply(checklist,2,function(x){stringr::str_replace_all(x,'; ','\n \n')}))
+
+#specify subheader row names
+subheaders<-c("TITLE","ABSTRACT","INTRODUCTION","METHODS","RESULTS","DISCUSSION","OTHER INFORMATION")
+#find subheader row numbers
+subheaderrows<-which(checklist$`Section and topic`%in%subheaders)
+
+#pipe checklist to flextable 
+checklist %>% 
+  flextable() %>% #make flextable
+  fontsize(., size=fontsize, part='all') %>% #set fontsize
+  height(., height = (h/(nrow(checklist)))) %>% #set height
+  width(., width = (w/(ncol(checklist)))) %>% #set width
+  theme_box() %>% #add box grid
+  flextable::merge_h_range(i = c(subheaderrows), j1=1, j2=4, part = "body") %>% #merge subheader rows
+  bold(i = subheaderrows, bold= TRUE, part = "body") %>% #make subheader rows bold
+  width(j = 1:4, width=c(1,0.5,5.5,4), unit = "in") #adjust widths of box
+
 }
