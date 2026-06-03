@@ -264,7 +264,7 @@ ui <- tagList( #nolint
           ),
           downloadButton(
             "PRISMAflowdiagramCSV",
-            "CVS"
+            "CSV"
           )
         ),
         mainPanel(
