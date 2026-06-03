@@ -23,8 +23,7 @@ names(the_options) <- c(
 )
 
 # Define UI for application that draws a histogram
-ui <- tagList(
-  #nolint
+ui <- tagList( #nolint
   tags$head(
     tags$script(
       src = "labels.js"
@@ -1125,8 +1124,7 @@ server <- function(input, output, session) {
     plot <- plot()
   })
   # Handle downloads ----
-  output$PRISMAflowdiagramPDF <- downloadHandler(
-    #nolint
+  output$PRISMAflowdiagramPDF <- downloadHandler( #nolint
     filename = "prisma.pdf",
     content = function(file) {
       showModal(
@@ -1135,8 +1133,7 @@ server <- function(input, output, session) {
       PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "PDF")
     }
   )
-  output$PRISMAflowdiagramPNG <- downloadHandler(
-    #nolint
+  output$PRISMAflowdiagramPNG <- downloadHandler( #nolint
     filename = "prisma.png",
     content = function(file) {
       showModal(
@@ -1145,8 +1142,7 @@ server <- function(input, output, session) {
       PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "PNG")
     }
   )
-  output$PRISMAflowdiagramSVG <- downloadHandler(
-    #nolint
+  output$PRISMAflowdiagramSVG <- downloadHandler( #nolint
     filename = "prisma.svg",
     content = function(file) {
       showModal(
@@ -1155,8 +1151,7 @@ server <- function(input, output, session) {
       PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "SVG")
     }
   )
-  output$PRISMAflowdiagramHTML <- downloadHandler(
-    #nolint
+  output$PRISMAflowdiagramHTML <- downloadHandler( #nolint
     filename = "prisma.html",
     content = function(file) {
       showModal(
@@ -1165,8 +1160,7 @@ server <- function(input, output, session) {
       PRISMA2020::PRISMA_save(plot(), filename = file, filetype = "html")
     }
   )
-  output$PRISMAflowdiagramZIP <- downloadHandler(
-    #nolint
+  output$PRISMAflowdiagramZIP <- downloadHandler( #nolint
     filename = "prisma.zip",
     content = function(file) {
       showModal(
