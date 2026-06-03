@@ -112,7 +112,7 @@ ui <- tagList( #nolint
           \"previous\", \"other\", \"dbDetail\", and \"regDetail\" can be
           used to set the initial main options for further customisation.
           Alternatively, you can use the template file below to specify any
-          values, and to change somé of the labels within the diagram.",
+          values, and to change some of the labels within the diagram.",
           br(),
           br(),
           "This tool also allows you to download an interactive HTML
@@ -143,7 +143,7 @@ ui <- tagList( #nolint
             download = NA,
             target = "_blank"
           ),
-          "Although you can edit this csv file manually, it's not very convenient. But if you want to translate the text in the flowchart to another language, you can do it there. In the near future you will be able to export a csv after creating you flowchart so that you can upload it here and recreate the exact same figure.",
+          "Although you can edit this csv file manually, it's not very convenient. But if you want to translate the text in the flowchart to another language, you can do it there. After creating your flowchart in the web app, you can also export it as a csv. Then when you upload that csv file below and open the 'Create flow diagram' tab, you will see the same flowchart again.",
           br(),
           br(),
           "Upload your edited file here:",
