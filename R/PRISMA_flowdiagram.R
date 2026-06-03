@@ -1244,13 +1244,14 @@ PRISMA_flowdiagram <- function( #nolint
 #'
 #' @description Read in a template CSV containing data for the flow diagram
 #' @param data File to read in.
+#' @param flow_or_check Is the input file a flow diagram ('flow') or checklist ('check')?
 #' @return A list of objects needed to plot the flow diagram
 #' @examples
 #' csvFile <- system.file("extdata", "PRISMA.csv", package = "PRISMA2020")
 #' data <- read.csv(csvFile);
 #' data <- PRISMA_data(data);
 #' @export
-PRISMA_data <- function(data) { #nolint
+PRISMA_data <- function(data, flow_or_check = c('flow','check')) { #nolint
   # Ensure data is a df, not a tibble;
   # tibbles do not return vectors using df[, 1].
   data <- as.data.frame(data)
