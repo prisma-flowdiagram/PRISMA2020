@@ -15,8 +15,6 @@
 #' @param css passed as the css argument to
 #' [rsvg::rsvg()] and similar functions
 #' @return the absolute filename of the saved diagram plot.
-#' @examples
-
 
 # library(dplyr)
 # library(flextable)
