@@ -7,19 +7,33 @@ library(devtools)
 library(PRISMA2020) #nolint
 
 template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE) #nolint
+
+previous_load <- template |> 
+  dplyr::filter(data == "previous_studies" | data == "previous_reports") |> 
+  dplyr::summarise(included = any(n != "0")) |>
+  dplyr::pull(included)
+
+dbDetail_load <- template |> 
+  dplyr::filter(data == "database_specific_results") |> 
+  dplyr::summarise(included = any(n != "Database 1, xxx; Database 2, xxx; Database 3, xxx")) |>
+  dplyr::pull(included)
+
+regDetail_load <- template |> 
+  dplyr::filter(data == "register_specific_results") |> 
+  dplyr::summarise(included = any(n != "Register 1, xxx; Register 2, xxx; Register 3, xxx")) |>
+  dplyr::pull(included)
+
+metaAnalysis_load <- template |> 
+  dplyr::filter(data == "total_studies_ma" | data == "total_reports_ma") |> 
+  dplyr::summarise(included = any(n != "0")) |>
+  dplyr::pull(included)
+
 the_options <- c(
-  "Not Included",
-  "Included",
-  "Not Included",
-  "Not Included",
-  "Not Included"
-)
-names(the_options) <- c(
-  "previous",
-  "other",
-  "dbDetail",
-  "regDetail",
-  "metaAnalysis"
+  previous = if(previous_load) "Included" else "Not Included",
+  other = "Included",
+  dbDetail = if(dbDetail_load) "Included" else "Not Included",
+  regDetail = if(regDetail_load) "Included" else "Not Included",
+  metaAnalysis = if(metaAnalysis_load) "Included" else "Not Included"
 )
 
 # Define UI for application that draws a histogram
