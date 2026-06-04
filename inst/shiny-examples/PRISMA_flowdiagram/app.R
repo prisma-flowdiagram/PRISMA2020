@@ -7,33 +7,19 @@ library(devtools)
 library(PRISMA2020) #nolint
 
 template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE) #nolint
-
-previous_load <- template |> 
-  dplyr::filter(data == "previous_studies" | data == "previous_reports") |> 
-  dplyr::summarise(included = any(n != "0")) |>
-  dplyr::pull(included)
-
-dbDetail_load <- template |> 
-  dplyr::filter(data == "database_specific_results") |> 
-  dplyr::summarise(included = any(n != "Database 1, xxx; Database 2, xxx; Database 3, xxx")) |>
-  dplyr::pull(included)
-
-regDetail_load <- template |> 
-  dplyr::filter(data == "register_specific_results") |> 
-  dplyr::summarise(included = any(n != "Register 1, xxx; Register 2, xxx; Register 3, xxx")) |>
-  dplyr::pull(included)
-
-metaAnalysis_load <- template |> 
-  dplyr::filter(data == "total_studies_ma" | data == "total_reports_ma") |> 
-  dplyr::summarise(included = any(n != "0")) |>
-  dplyr::pull(included)
-
 the_options <- c(
-  previous = if(previous_load) "Included" else "Not Included",
-  other = "Included",
-  dbDetail = if(dbDetail_load) "Included" else "Not Included",
-  regDetail = if(regDetail_load) "Included" else "Not Included",
-  metaAnalysis = if(metaAnalysis_load) "Included" else "Not Included"
+  "Not Included",
+  "Included",
+  "Not Included",
+  "Not Included",
+  "Not Included"
+)
+names(the_options) <- c(
+  "previous",
+  "other",
+  "dbDetail",
+  "regDetail",
+  "metaAnalysis"
 )
 
 # Define UI for application that draws a histogram
@@ -424,7 +410,8 @@ ui <- tagList( #nolint
 server <- function(input, output, session) { #nolint
   # Define reactive values
   rv <- shiny::reactiveValues()
-  # Data Handling ----
+
+# Data Handling ----
   # Use template data to populate editable table
   observe({
     if (is.null(input$data_upload)) {
@@ -472,21 +459,50 @@ server <- function(input, output, session) { #nolint
           }
         }
       }
-      # Create inital value that is passed to UI
+      # Create initial value that is passed to UI
       rv$data_initial <- template
       rv$opts_initial <- the_options
       # Create version that is edited and passed to graphing function
       rv$data <- template
       rv$opts <- the_options
     } else {
-      # Create inital value that is passed to UI
+      # Create initial value that is passed to UI
       rv$data_initial <- read.csv(input$data_upload$datapath)
+      previous_load <- rv$data_initial |> 
+        dplyr::filter(data == "previous_studies" | data == "previous_reports") |> 
+        dplyr::summarise(included = any(n != "0")) |>
+        dplyr::pull(included)
+
+      dbDetail_load <- rv$data_initial |> 
+        dplyr::filter(data == "database_specific_results") |> 
+        dplyr::summarise(included = any(n != "Database 1, xxx; Database 2, xxx; Database 3, xxx")) |>
+        dplyr::pull(included)
+
+      regDetail_load <- rv$data_initial |> 
+        dplyr::filter(data == "register_specific_results") |> 
+        dplyr::summarise(included = any(n != "Register 1, xxx; Register 2, xxx; Register 3, xxx")) |>
+        dplyr::pull(included)
+
+      metaAnalysis_load <- rv$data_initial |> 
+        dplyr::filter(data == "total_studies_ma" | data == "total_reports_ma") |> 
+        dplyr::summarise(included = any(n != "0")) |>
+        dplyr::pull(included)
+
+      the_options <- c(
+        previous = if(previous_load) "Included" else "Not Included",
+        other = "Included",
+        dbDetail = if(dbDetail_load) "Included" else "Not Included",
+        regDetail = if(regDetail_load) "Included" else "Not Included",
+        metaAnalysis = if(metaAnalysis_load) "Included" else "Not Included"
+      )
       rv$opts_initial <- the_options
       # Create version that is edited and passed to graphing function
       rv$data <- read.csv(input$data_upload$datapath)
       rv$opts <- the_options
     }
   })
+
+
 
   # Reset to upload button
   observeEvent(
