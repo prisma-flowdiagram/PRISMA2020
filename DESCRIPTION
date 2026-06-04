@@ -18,7 +18,6 @@ Authors@R: c(
     person("Anders", "Kolstad", role = "ctb", comment = c(ORCID = "0000-0002-9623-9491")),
     person("Shreya", "Dimri", role = "ctb", comment = c(ORCID = "0009-0009-2155-7506")),
     person("Matt Lloyd", "Jones", role = "ctb", comment = c(ORCID = "0000-0001-5841-4554")))
-    
 Description: Systematic reviews should be described in a high degree of 
     methodological detail. The 'PRISMA' Statement calls for a high level of 
     reporting detail in systematic reviews and meta-analyses. An integral part 
