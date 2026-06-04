@@ -3,7 +3,6 @@ library(shinyjs)
 library(rsvg)
 library(DT) #nolint
 library(rio)
-library(devtools)
 library(PRISMA2020) #nolint
 
 template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE) #nolint
