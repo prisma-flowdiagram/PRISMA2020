@@ -190,7 +190,7 @@ ui <- tagList( #nolint
           br(),
           "Luke A McGuinness (coder, author)",
           br(),
-          "Chris C Pritchard (coder, author)",
+          "Chris C Pritchard (coder, author, maintainer)",
           br(),
           "Brennan Chapman (coder, contributor)",
           br(),
