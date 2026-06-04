@@ -40,6 +40,7 @@ Imports:
     rmarkdown,
     rsvg,
     scales,
+    sessioninfo,
     shiny,
     shinyjs,
     stats,
