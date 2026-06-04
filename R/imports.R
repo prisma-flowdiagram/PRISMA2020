@@ -6,4 +6,7 @@
 #' @importFrom stats median
 #' @importFrom utils apropos
 #' @importFrom webp read_webp
+#' @import dplyr
+#' @import cpp11
+#' @import progress
 NULL
