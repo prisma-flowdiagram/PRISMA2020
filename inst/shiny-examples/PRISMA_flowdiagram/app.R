@@ -202,7 +202,7 @@ ui <- tagList( #nolint
           "Shreya Dimri (coder, contributor)",
           br(),
           "Matt Lloyd Jones (coder, contributor)",
-          br()
+          br(),
           "Matthew J Page (advisor)",
           br(),
           "Jack Wasey (advisor)",
