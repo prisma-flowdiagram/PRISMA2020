@@ -9,4 +9,5 @@
 #' @import dplyr
 #' @import cpp11
 #' @import progress
+#' @import sessioninfo
 NULL
