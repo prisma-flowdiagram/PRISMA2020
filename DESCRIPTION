@@ -38,6 +38,7 @@ Imports:
     htmltools,
     htmlwidgets,
     progress,
+    rmarkdown,
     rsvg,
     scales,
     sessioninfo,
