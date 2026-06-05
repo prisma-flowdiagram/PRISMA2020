@@ -215,7 +215,7 @@ ui <- tagList( #nolint
               src = "https://pngimg.com/uploads/github/github_PNG40.png"
             )
           ),
-          "Created November 2020, Updated June 2022"
+          "Created November 2020, Updated June 2026"
         )
       ),
       kofi_load,
