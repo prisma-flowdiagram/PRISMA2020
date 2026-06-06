@@ -194,14 +194,14 @@ PRISMA_data <- function(data) { #nolint
   records_excluded <- scales::comma(
     PRISMA_format_number_( #nolint
       PRISMA_default_or_csv_(
-       expr = data[
-        grep(
-          "records_excluded",
-          data[, 1]
-        ),
-      ]$n,
-      default = 0,
-      var_name = "records_excluded"
+        expr = data[
+          grep(
+            "records_excluded",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "records_excluded"
       )
     )
   )
@@ -209,13 +209,13 @@ PRISMA_data <- function(data) { #nolint
     PRISMA_format_number_( #nolint
       PRISMA_default_or_csv_(
         expr = data[
-        grep(
-          "dbr_sought_reports",
-          data[, 1]
-        ),
-      ]$n,
-      default = 0,
-      var_name = "dbr_sought_reports"
+          grep(
+            "dbr_sought_reports",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "dbr_sought_reports"
       )
     )
   )
@@ -223,27 +223,27 @@ PRISMA_data <- function(data) { #nolint
     PRISMA_format_number_( #nolint
       PRISMA_default_or_csv_(
         expr = data[
-        grep(
-          "dbr_notretrieved_reports",
-          data[, 1]
-        ),
-      ]$n,
-      default = 0,
-      var_name = "dbr_notretrieved_reports"
+          grep(
+            "dbr_notretrieved_reports",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "dbr_notretrieved_reports"
       )
     )
   )
   other_sought_reports <- scales::comma(
     PRISMA_format_number_( #nolint
       PRISMA_default_or_csv_(
-      expr = data[
-        grep(
-          "other_sought_reports",
-          data[, 1]
-        ),
-      ]$n,
-      default = 0,
-      var_name = "other_sought_reports"
+        expr = data[
+          grep(
+            "other_sought_reports",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "other_sought_reports"
       )
     )
   )
@@ -251,27 +251,27 @@ PRISMA_data <- function(data) { #nolint
     PRISMA_format_number_( #nolint
       PRISMA_default_or_csv_(
         expr = data[
-        grep(
-          "other_notretrieved_reports",
-          data[, 1]
-        ),
-      ]$n,
-      default = 0,
-      var_name = "other_notretrieved_reports"
+          grep(
+            "other_notretrieved_reports",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "other_notretrieved_reports"
       )
     )
   )
   dbr_assessed <- scales::comma(
     PRISMA_format_number_( #nolint
       PRISMA_default_or_csv_(
-      expr = data[
-        grep(
-          "dbr_assessed",
-          data[, 1]
-        ),
-      ]$n,
-      default = 0,
-      var_name = "dbr_assessed"
+        expr = data[
+          grep(
+            "dbr_assessed",
+            data[, 1]
+          ),
+        ]$n,
+        default = 0,
+        var_name = "dbr_assessed"
       )
     )
   )
@@ -281,7 +281,7 @@ PRISMA_data <- function(data) { #nolint
         grep(
           "dbr_excluded",
           data[, 1]
-       ),
+        ),
       ]$n,
       default = "Reason1, xxx; Reason2, xxx; Reason3, xxx",
       var_name = "dbr_excluded"
@@ -361,11 +361,11 @@ PRISMA_data <- function(data) { #nolint
         expr = data[
           grep(
             "total_reports$",
-          data[, 1]
+            data[, 1]
           ),
-      ]$n,
-      default = 0,
-      var_name = "total_reports$"
+        ]$n,
+        default = 0,
+        var_name = "total_reports$"
       )
     )
   )
@@ -455,13 +455,13 @@ PRISMA_data <- function(data) { #nolint
     var_name = website_results_text
   )
   organisation_results_text <- PRISMA_default_or_csv_(
-    expr = data[grep("organisation_results", data[, 1]),]$boxtext,
+    expr = data[grep("organisation_results", data[, 1]), ]$boxtext,
     default = "Organisations",
     var_name = organisation_results_text
   )
   citations_results_text <- PRISMA_default_or_csv_(
-    expr = data[grep("citations_results", data[, 1]), ]$boxtext, 
-    default = "Citation searching", 
+    expr = data[grep("citations_results", data[, 1]), ]$boxtext,
+    default = "Citation searching",
     var_name = citations_results_text
   )
   duplicates_text <- PRISMA_default_or_csv_(
@@ -470,7 +470,7 @@ PRISMA_data <- function(data) { #nolint
     var_name = duplicates_text
   )
   excluded_automatic_text <- PRISMA_default_or_csv_(
-    expr = data[grep("excluded_automatic", data[, 1]),]$boxtext,
+    expr = data[grep("excluded_automatic", data[, 1]), ]$boxtext,
     default = "Records marked as ineligible by automation tools",
     var_name = excluded_automatic_text
   )
@@ -484,41 +484,40 @@ PRISMA_data <- function(data) { #nolint
     default = "Records screened",
     var_name = records_screened_text
   )
-  records_excluded_text <- PRISMA_default_or_csv_( 
+  records_excluded_text <- PRISMA_default_or_csv_(
     expr = data[grep("records_excluded", data[, 1]), ]$boxtext,
     default = "Records excluded",
     var_name = records_excluded_text
   )
-  dbr_sought_reports_text <- PRISMA_default_or_csv_( 
-    expr = data[grep("dbr_sought_reports", data[, 1]),]$boxtext,
+  dbr_sought_reports_text <- PRISMA_default_or_csv_(
+    expr = data[grep("dbr_sought_reports", data[, 1]), ]$boxtext,
     default = "Reports sought for retrieval",
     var_name = dbr_sought_reports_text
   )
   dbr_notretrieved_reports_text <- PRISMA_default_or_csv_(
-    expr = data[grep("dbr_notretrieved_reports", data[, 1]),]$boxtext,
+    expr = data[grep("dbr_notretrieved_reports", data[, 1]), ]$boxtext,
     default = "Reports not retrieved",
     var_name = dbr_notretrieved_reports_text
   )
   other_sought_reports_text <- PRISMA_default_or_csv_(
-    expr = data[ grep("other_sought_reports", data[, 1]),]$boxtext,
+    expr = data[grep("other_sought_reports", data[, 1]), ]$boxtext,
     default = "Reports sought for retrieval",
     var_name = other_sought_reports_text
   )
   other_notretrieved_reports_text <- PRISMA_default_or_csv_(
-    expr = data[ #nolint
-    grep("other_notretrieved_reports",data[, 1]),]$boxtext,
+    expr = data[grep("other_notretrieved_reports", data[, 1]), ]$boxtext,
     default = "Reports not retrieved",
     var_name = other_notretrieved_reports_text
   )
   dbr_assessed_text <- PRISMA_default_or_csv_(
     expr = data[grep("dbr_assessed", data[, 1]), ]$boxtext,
-    default = "Reports assessed for eligibility", 
+    default = "Reports assessed for eligibility",
     var_name = dbr_assessed_text
   )
   dbr_excluded_text <- PRISMA_default_or_csv_(
     expr = data[grep("dbr_excluded", data[, 1]), ]$boxtext,
     default = "Reports excluded",
-    var_name = dbr_excluded_text 
+    var_name = dbr_excluded_text
   )
   other_assessed_text <- PRISMA_default_or_csv_(
     expr = data[grep("other_assessed", data[, 1]), ]$boxtext,
@@ -527,7 +526,7 @@ PRISMA_data <- function(data) { #nolint
   )
   other_excluded_text <- PRISMA_default_or_csv_(
     expr = data[grep("other_excluded", data[, 1]), ]$boxtext,
-    default = "Reports excluded", 
+    default = "Reports excluded",
     var_name = other_excluded_text
   )
   new_studies_text <- PRISMA_default_or_csv_(
@@ -639,5 +638,5 @@ PRISMA_data <- function(data) { #nolint
     tooltips = tooltips,
     urls = urls
   )
-  return(x)
+  x
 }

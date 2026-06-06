@@ -11,21 +11,21 @@ PRISMA_add_hyperlink_ <- function( #nolint
 ) {
   t <- paste0( #nolint
     "const ",
-      node,
+    node,
     ' = document.getElementById("',
-      node,
+    node,
     '");
     var link',
-      node,
+    node,
     ' = "<a href=\'',
-      url,
+    url,
     '\' target=\'_blank\'>" + ',
-      node,
+    node,
     '.innerHTML + "</a>";',
     "\n",
-      node,
+    node,
     ".innerHTML = link",
-      node,
+    node,
     ";"
   )
 }

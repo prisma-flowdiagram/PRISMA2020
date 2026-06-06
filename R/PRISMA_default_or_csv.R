@@ -18,7 +18,7 @@ PRISMA_default_or_csv_ <- function (expr, default, var_name = "not provided") { 
         default
       )
     )
-    return(default)
+    result <- default
   }
-  return(result)
+  result
 }
