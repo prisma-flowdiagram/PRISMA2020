@@ -7,12 +7,12 @@
 #' @keywords internal
 PRISMA_get_height_ <- function (n, offset, min = 2) { #nolint
   lines <- n + 1
-  if (lines > min) {
+  if (isTRUE(lines > min)) {
     height <- offset + (lines * 0.25) - (min * 0.25)
   } else {
     height <- offset
   }
-  return(height)
+  height
 }
 
 #' Calculate the correct position of a node
@@ -30,5 +30,5 @@ PRISMA_get_pos_ <- function (first_box_location, offset, length_orig, length_new
   } else {
     pos <- first_box_location - offset - (length_orig / 2) - (length_new / 2)
   }
-  return(pos)
+  pos
 }

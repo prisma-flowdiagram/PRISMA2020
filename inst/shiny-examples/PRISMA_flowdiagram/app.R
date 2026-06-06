@@ -4,6 +4,12 @@ library(rsvg)
 library(DT) #nolint
 library(rio)
 library(PRISMA2020) #nolint
+library(dplyr)
+
+utils::globalVariables(c(
+  "n",
+  "included"
+))
 
 template <- read.csv("www/PRISMA.csv", stringsAsFactors = FALSE) #nolint
 the_options <- c(
@@ -101,14 +107,23 @@ ui <- tagList( #nolint
           "You can provide the numbers in the data entry section
           of the 'Create flow diagram' tab.
           The app allows you to export the flowchart in a variety of formats.
-          The flowchart is initiated with the values from a template csv file, which you can",
+          The flowchart is initiated with the values from a template csv file,
+          which you can",
           tags$a(
             href = "PRISMA.csv",
             "download.",
             download = NA,
             target = "_blank"
           ),
-          "Although you can edit this csv file manually, it's not very convenient. But if you want to translate the text in the flowchart to another language, you can do it there. After creating your flowchart in the web app, you can also export it as a csv. Then when you upload that csv file below and open the 'Create flow diagram' tab, you will see the same flowchart again.",
+          "Although you can edit this csv file manually,
+          it's not very convenient.
+          But if you want to translate the text in the
+          flowchart to another language,
+          you can do it there. After creating your flowchart in the web app,
+          you can also export it as a csv.
+          Then when you upload that csv file below
+          and open the 'Create flow diagram' tab,
+          you will see the same flowchart again.",
           br(),
           br(),
           h4("Initite the web app using custom url's"),
@@ -121,7 +136,8 @@ ui <- tagList( #nolint
           \"previous\", \"other\", \"dbDetail\", and \"regDetail\" can be
           used to set the initial main options for further customisation.
           Alternatively, you can use the template file to specify any
-          values, and to change some of the labels within the diagram (see above). ",
+          values, and to change some of the labels
+          within the diagram (see above). ",
           br(),
           br(),
           h4("R package", tags$code("PRISMA2020")),
@@ -130,9 +146,11 @@ ui <- tagList( #nolint
             href = "https://github.com/prisma-flowdiagram/PRISMA2020",
             "PRISMA2020 flow diagram R package on Github."
           ),
-          "This package contain the function", 
+          "This package contain the function",
           tags$code("PRISMA2020::PRISMA_flowdiagram()"),
-          "which is the backbone function for this web app. You can use this function to programmatically create the same flowcharts as inthe web app.",
+          "which is the backbone function for this web app.
+          You can use this function to programmatically create
+          the same flowcharts as in the web app.",
           br(),
           br(),
           h4("Feedback and comments"),
@@ -145,7 +163,11 @@ ui <- tagList( #nolint
           br(),
           br(),
           h4("Upload csv"),
-          "If you have created a flowchart using the web app, and exported it as a csv, you can upload it here to recreate the exact same figure. Also,If you have downloaded the csv template and modified it directly, you can upload that file.",
+          "If you have created a flowchart using the web app,
+          and exported it as a csv,
+          you can upload it here to recreate the exact same figure.
+          Also,If you have downloaded the csv template and modified it directly,
+          you can upload that file.",
           br(),
           fileInput(
             "data_upload",
@@ -420,7 +442,7 @@ server <- function(input, output, session) { #nolint
   # Define reactive values
   rv <- shiny::reactiveValues()
 
-# Data Handling ----
+  # Data Handling ----
   # Use template data to populate editable table
   observe({
     if (is.null(input$data_upload)) {
@@ -477,32 +499,48 @@ server <- function(input, output, session) { #nolint
     } else {
       # Create initial value that is passed to UI
       rv$data_initial <- read.csv(input$data_upload$datapath)
-      previous_load <- rv$data_initial |> 
-        dplyr::filter(data == "previous_studies" | data == "previous_reports") |> 
+      previous_load <- rv$data_initial |>
+        dplyr::filter(
+          data == "previous_studies" | data == "previous_reports"
+        ) |>
+        dplyr::summarise(
+          included = any(n != "0")
+        ) |>
+        dplyr::pull(.data$included)
+
+      db_detail_load <- rv$data_initial |>
+        dplyr::filter(
+          data == "database_specific_results"
+        ) |>
+        dplyr::summarise(
+          included = any(
+            n != "Database 1, xxx; Database 2, xxx; Database 3, xxx"
+          )
+        ) |>
+        dplyr::pull(.data$included)
+
+      reg_detail_load <- rv$data_initial |>
+        dplyr::filter(data == "register_specific_results") |>
+        dplyr::summarise(
+          included = any(
+            n != "Register 1, xxx; Register 2, xxx; Register 3, xxx"
+          )
+        ) |>
+        dplyr::pull(.data$included)
+
+      meta_analysis_load <- rv$data_initial |>
+        dplyr::filter(
+          data == "total_studies_ma" | data == "total_reports_ma"
+        ) |>
         dplyr::summarise(included = any(n != "0")) |>
-        dplyr::pull(included)
-
-      dbDetail_load <- rv$data_initial |> 
-        dplyr::filter(data == "database_specific_results") |> 
-        dplyr::summarise(included = any(n != "Database 1, xxx; Database 2, xxx; Database 3, xxx")) |>
-        dplyr::pull(included)
-
-      regDetail_load <- rv$data_initial |> 
-        dplyr::filter(data == "register_specific_results") |> 
-        dplyr::summarise(included = any(n != "Register 1, xxx; Register 2, xxx; Register 3, xxx")) |>
-        dplyr::pull(included)
-
-      metaAnalysis_load <- rv$data_initial |> 
-        dplyr::filter(data == "total_studies_ma" | data == "total_reports_ma") |> 
-        dplyr::summarise(included = any(n != "0")) |>
-        dplyr::pull(included)
+        dplyr::pull(.data$included)
 
       the_options <- c(
-        previous = if(previous_load) "Included" else "Not Included",
+        previous = if (previous_load) "Included" else "Not Included",
         other = "Included",
-        dbDetail = if(dbDetail_load) "Included" else "Not Included",
-        regDetail = if(regDetail_load) "Included" else "Not Included",
-        metaAnalysis = if(metaAnalysis_load) "Included" else "Not Included"
+        dbDetail = if (db_detail_load) "Included" else "Not Included",
+        regDetail = if (reg_detail_load) "Included" else "Not Included",
+        metaAnalysis = if (meta_analysis_load) "Included" else "Not Included"
       )
       rv$opts_initial <- the_options
       # Create version that is edited and passed to graphing function
