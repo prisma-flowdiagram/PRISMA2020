@@ -10,5 +10,4 @@
 #' @import cpp11
 #' @import progress
 #' @import rmarkdown
-#' @import sessioninfo
 NULL
