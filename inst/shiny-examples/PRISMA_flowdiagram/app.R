@@ -224,6 +224,8 @@ ui <- tagList( #nolint
           br(),
           "Matt Lloyd Jones (coder, contributor)",
           br(),
+          "John-o Kulas (coder, contributor)",
+          br(),
           "Matthew J Page (advisor)",
           br(),
           "Jack Wasey (advisor)",
