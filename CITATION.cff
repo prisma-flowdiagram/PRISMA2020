@@ -7,15 +7,30 @@ authors:
   - family-names: McGuinness
     given-names: Luke A
     orcid: https://orcid.org/0000-0001-8730-9761
+  - family-names: Chapman
+    given-names: Brennan
+  - family-names: Hammady
+    given-names: Hossam
+  - family-names: Kolstad
+    given-names: Anders
+    orcid: https://orcid.org/0000-0002-9623-9491
+  - family-names: Dimri
+    given-names: Shreya
+    orcid: https://orcid.org/0009-0009-2155-7506
+  - family-names: Jones
+    given-names: Matt Lloyd
+    orcid: https://orcid.org/0000-0001-5841-4554
+  - family-names: Kulas
+    given-names: John-o
   - family-names: Pritchard
     given-names: Chris C
     orcid: https://orcid.org/0000-0002-1143-9751
 title: "PRISMA2020: R package and ShinyApp for producing PRISMA 2020 compliant flow diagrams"
-version: 1.1.0
+version: 1.1.4
 doi: 10.5281/zenodo.4287834
-date-released: 2023-02-06
+date-released: 2026-06-26
 license: MIT
-url: "https://github.com/prisma-flowdiagram/PRISMA2020"
+url: "https://zenodo.org/records/11429174"
 preferred-citation:
   type: article
   authors:
