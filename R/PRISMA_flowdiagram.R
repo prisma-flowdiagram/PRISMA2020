@@ -27,22 +27,22 @@
 #' @param fontsize The font size for text in each box. The default is '12'.
 #' @param title_colour The colour for the upper middle title box (new studies).
 #' The default is 'Goldenrod1'. See 'DiagrammeR' colour scheme.
-#' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors>.
+#' <https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#colors>.
 #' @param greybox_colour The colour for the left and right column boxes. The
 #' default is 'Gainsboro'. See 'DiagrammeR' colour scheme
-#' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors>.
+#' <https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#colors>.
 #' @param main_colour The colour for the main box borders. The default is
 #' 'Black'. See 'DiagrammeR' colour scheme
-#' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors>.
+#' <https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#colors>.
 #' @param arrow_colour The colour for the connecting lines. The default
 #' is 'Black'. See 'DiagrammeR' colour scheme
-#' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors>.
+#' <https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#colors>.
 #' @param arrow_head The head shape for the line connectors. The default is
 #' 'normal'. See DiagrammeR arrow shape specification
-#' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes>. #nolint
+#' <https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#arrow-shapes>. #nolint
 #' @param arrow_tail The tail shape for the line connectors. The default is
 #' 'none'. See DiagrammeR arrow shape specification
-#' <http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes>. #nolint
+#' <https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#arrow-shapes>. #nolint
 #' @param side_boxes Whether or not to include the
 #' blue label boxes along the side
 #' @return A flow diagram plot.

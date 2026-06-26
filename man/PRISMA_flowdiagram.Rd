@@ -55,27 +55,27 @@ display a box for meta-analysis}
 
 \item{title_colour}{The colour for the upper middle title box (new studies).
 The default is 'Goldenrod1'. See 'DiagrammeR' colour scheme.
-\url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors}.}
+\url{https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#colors}.}
 
 \item{greybox_colour}{The colour for the left and right column boxes. The
 default is 'Gainsboro'. See 'DiagrammeR' colour scheme
-\url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors}.}
+\url{https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#colors}.}
 
 \item{main_colour}{The colour for the main box borders. The default is
 'Black'. See 'DiagrammeR' colour scheme
-\url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors}.}
+\url{https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#colors}.}
 
 \item{arrow_colour}{The colour for the connecting lines. The default
 is 'Black'. See 'DiagrammeR' colour scheme
-\url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#colors}.}
+\url{https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#colors}.}
 
 \item{arrow_head}{The head shape for the line connectors. The default is
 'normal'. See DiagrammeR arrow shape specification
-\url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes}. #nolint}
+\url{https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#arrow-shapes}. #nolint}
 
 \item{arrow_tail}{The tail shape for the line connectors. The default is
 'none'. See DiagrammeR arrow shape specification
-\url{http://rich-iannone.github.io/DiagrammeR/graphviz_and_mermaid.html#arrow-shapes}. #nolint}
+\url{https://rich-iannone.github.io/DiagrammeR/articles/graphviz-mermaid.html#arrow-shapes}. #nolint}
 
 \item{side_boxes}{Whether or not to include the
 blue label boxes along the side}
