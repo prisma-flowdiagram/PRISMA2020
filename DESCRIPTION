@@ -11,7 +11,7 @@ Authors@R: c(
            email = "luke.mcguinness@bristol.ac.uk",
            comment = c(ORCID = "0000-0001-8730-9761")),
     person("Chris", "Pritchard", role = c("aut", "cre"),
-            email = "chris.pritchard@ntu.ac.uk",
+            email = "chris@christopherpritchard.co.uk",
             comment = c(ORCID = "0000-0002-1143-9751")),
     person("Brennan", "Chapman", role = "ctb"),
     person("Hossam", "Hammady", role = "ctb"),

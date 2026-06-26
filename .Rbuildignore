@@ -9,3 +9,4 @@ code-of-conduct.md
 contributing.md
 Dockerfile
 shiny-server.conf
+.lintr
