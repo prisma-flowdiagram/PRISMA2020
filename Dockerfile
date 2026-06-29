@@ -1,4 +1,4 @@
-FROM rocker/shiny:latest
+FROM rocker-org/shiny:latest
 
 LABEL maintainer="Hossam Hammady <hossam@rayyan.ai>"
 
