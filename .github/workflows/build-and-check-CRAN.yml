@@ -36,6 +36,9 @@ jobs:
           use-public-rspm: true
       - uses: r-lib/actions/setup-pandoc@v2
       - uses: r-lib/actions/setup-tinytex@v2
+      - name: Install HTML Tidy & TeXLive
+        run: |
+          sudo apt-get install tidy texinfo texlive
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
@@ -44,9 +47,6 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: package
-      - name: install html tidy
-        run: |
-          sudo apt-get install tidy texinfo
       - name: Check
         run: R CMD check --as-cran *.tar.gz
       - uses: actions/upload-artifact@v7
