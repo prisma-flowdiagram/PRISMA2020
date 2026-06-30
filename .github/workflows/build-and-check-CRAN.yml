@@ -44,6 +44,8 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: package
+      - name: install html tidy
+        run: sudo apt-get install tidy
       - name: Check
         run: R CMD check --as-cran *.tar.gz
       - uses: actions/upload-artifact@v4
