@@ -21,7 +21,7 @@ jobs:
             rcmdcheck
       - name: Build
         run: R CMD build .
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: package
           path: "*.tar.gz"
@@ -44,9 +44,11 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: package
+      - name: install tidy
+        run: sudo apt-get install tidy
       - name: Check
         run: R CMD check --as-cran *.tar.gz
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: check
           path: "*.Rcheck"
