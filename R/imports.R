@@ -10,4 +10,5 @@
 #' @import cpp11
 #' @import progress
 #' @import rmarkdown
+#' @import bslib
 NULL

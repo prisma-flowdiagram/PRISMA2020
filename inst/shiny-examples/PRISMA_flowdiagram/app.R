@@ -5,6 +5,7 @@ library(DT) #nolint
 library(rio)
 library(PRISMA2020) #nolint
 library(dplyr)
+library(bslib)
 
 utils::globalVariables(c(
   "n",
@@ -27,68 +28,145 @@ names(the_options) <- c(
   "metaAnalysis"
 )
 
-# Define UI for application that draws a histogram
+PRISMA2020_theme <- bs_theme() #nolint
+PRISMA2020_theme <- bs_add_rules(theme = PRISMA2020_theme, ".kofi-donate-popover { max-width: none; }") #nolint
+
+# the below enables us to utilise analytics when pushing to shinyapps.io.
+# if self hosting you can insert your own analytics code here
+# it is your responsibility to ensure compliance with regulations such as
+# the EU GDPR. we use a self-hosted version of umami,
+# configured not to store any cookies or personally identifiable data.
+# We also respect the "do-not-track" header.
+
+prisma_citation <- "Haddaway, N. R., Page, M. J., Pritchard, C. C., &
+          McGuinness, L. A. (2022). PRISMA2020: An R package
+          and Shiny app for producing PRISMA 2020-compliant flow
+          diagrams, with interactivity for optimised digital transparency
+          and Open Synthesis. Campbell Systematic Reviews, 18, e1230."
+analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) { #nolint
+  tagList(
+    tags$script(
+      src = "https://u.210812.xyz/script.js", # nolint
+      "async",
+      "defer",
+      "data-website-id" = "01a071e6-45f0-76f2-9934-25178c77923b", # nolint
+      "data-do-not-track" = "true", # nolint
+      "data-host-url" = "https://u.210812.xyz", # nolint
+      "data-domains" = "estech.shinyapps.io" # nolint
+    ),
+    tags$script(
+      "async",
+      "defer",
+      "src" = "https://badge.dimensions.ai/badge.js",
+      "charset" = "utf-8"
+    ),
+    tags$script(
+      "async",
+      "defer",
+      "type" = "text/javascript",
+      "src" = "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"
+    )
+  )
+}
+kofi_load <- if (Sys.getenv("KOFI_DONATE") == TRUE) {
+  tags$script(
+    type = "text/javascript",
+    src = "kofi_Widget_2.js",
+    "async",
+    "defer"
+  )
+}
+kofi_show <- if (Sys.getenv("KOFI_DONATE") == TRUE) {
+  tagList(
+    tags$script(
+      type = "text/javascript",
+      src = "kofi.js",
+    ),
+    popover(
+      actionLink(
+        inputId = "kofi_donate",
+        label = tagList(
+          span(
+            class = "kofitext",
+            tagList(
+              img(
+                src = "https://storage.ko-fi.com/cdn/cup-border.png",
+                alt = "Ko-fi donations",
+                class = "kofiimg"
+              ),
+              "Support me"
+            )
+          )
+        ),
+        class = "kofi-button",
+        style = "background-color:#794bc4;"
+      ),
+      tags$iframe(
+        id = "kofiframe",
+        src = "https://ko-fi.com/chriscpritchard/?hidefeed=true&widget=true&embed=true&preview=true",
+        style = "border:none;width:100%;padding:4px",
+        height = 712,
+        title = "chriscpritchard"
+      ),
+      options = list(customClass = "kofi-donate-popover")
+    )
+  )
+  #<span class="kofitext"><img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="Ko-fi donations" class="kofiimg">Support me</span>
+}
 ui <- tagList( #nolint
   tags$head(
     tags$script(
       src = "labels.js"
     ),
-    tags$style(
-      type = "text/css",  #nolint
-      "body {padding-top: 70px;}", #nolint
-      "body {padding-bottom: 50px;}" #nolint
-    ),
     tags$link(
       rel = "shortcut icon", #nolint
       href = "favicon.ico" #nolint
     ),
-    # the below enables us to utilise analytics when pushing to shinyapps.io.
-    # if self hosting you can insert your own analytics code here
-    # it is your responsibility to ensure compliance with regulations such as
-    # the EU GDPR. we use a self-hosted version of umami,
-    # configured not to store any cookies or personally identifiable data.
-    # We also respect the "do-not-track" header.
-    analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) { #nolint
-      tags$script(
-        src = "https://umami.christopherpritchard.co.uk/umami.js", # nolint
-        "async",
-        "defer",
-        "data-website-id" = "72f80a48-0dea-4914-9619-465de3df82a4", # nolint
-        "data-do-not-track" = "true", # nolint
-        "data-host-url" = "https://umami.christopherpritchard.co.uk", # nolint
-        "data-domains" = "estech.shinyapps.io" # nolint
-      )
-    },
-    kofi_load <- if (Sys.getenv("KOFI_DONATE") == TRUE) {   #nolint
-      tags$script(
-        src = 'https://storage.ko-fi.com/cdn/scripts/overlay-widget.js' # nolint
-      )
-    },
-    kofi_show <- if (Sys.getenv("KOFI_DONATE") == TRUE) {  #nolint
-      tags$script(
-        src = "kofi.js"
-      )
-    }
+    kofi_load,
+    analytics
   ),
-  navbarPage(
-    "PRISMA Flow Diagram",
-    position = "fixed-top",
+  page_navbar(
+    theme = PRISMA2020_theme,
+    title = tagList(
+      img(
+        src = "PRISMA2020-hex.png",
+        width = "45px",
+      ),
+      "PRISMA2020 Flow Diagram"
+    ),
+    navbar_options = navbar_options(position = "fixed-top"),
+    padding = c(70, 0, 0, 0),
+    footer = div(
+      style = "padding-top:5px; padding-bottom:2px; padding-left:5px; display: flex;",
+      div(
+        style = "flex-grow:1;",
+        a(
+          href = "https://github.com/prisma-flowdiagram/PRISMA2020",
+          style = "text-decoration: none;",
+          img(
+            style = "height:40px;width:40px",
+            src = "https://pngimg.com/uploads/github/github_PNG40.png"
+          )
+        ),
+        "Created November 2020, Updated June 2026"
+      ),
+      div(
+        kofi_show
+      )
+    ),
     # Tab 1 ----
-    tabPanel(
+    nav_panel(
       "Home",
-      fluidRow(
-        column(
-          10,
-          offset = 1,
-          h4(
-            "To get started, click \"Create flow diagram\" above,
+      card(
+        h4(
+          "To get started, click \"Create flow diagram\" above,
           or read the instructions below for more information."
-          ),
-          br(),
-          h4("Introduction"),
+        ),
+        h4("Introduction"),
+        p(
           "Systematic reviews should be described in
           a high degree of methodological detail. ",
-          tags$a(
+          a(
             href = "http://prisma-statement.org/",
             "The PRISMA Statement"
           ),
@@ -97,19 +175,19 @@ ui <- tagList( #nolint
           part of the methodological description of a review
           is a flow diagram. This tool allows you to produce a flow diagram
           for your own review that conforms to ",
-          tags$a(
+          a(
             href = "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1003583", # nolint
             "the PRISMA2020 Statement."
           ),
-          br(),
-          br(),
-          h4("General workflow"),
+        ),
+        h4("General workflow"),
+        p(
           "You can provide the numbers in the data entry section
           of the 'Create flow diagram' tab.
           The app allows you to export the flowchart in a variety of formats.
           The flowchart is initiated with the values from a template csv file,
           which you can",
-          tags$a(
+          a(
             href = "PRISMA.csv",
             "download.",
             download = NA,
@@ -123,10 +201,10 @@ ui <- tagList( #nolint
           you can also export it as a csv.
           Then when you upload that csv file below
           and open the 'Create flow diagram' tab,
-          you will see the same flowchart again.",
-          br(),
-          br(),
-          h4("Initite the web app using custom url's"),
+          you will see the same flowchart again."
+        ),
+        h4("Initite the web app using custom URLs"),
+        p(
           "These numbers will be initialised to any values provided in the
           URL query string. For example, if you provide the URL path:
           '?website_results=100&organisation_results=200', this will initialise
@@ -137,38 +215,37 @@ ui <- tagList( #nolint
           used to set the initial main options for further customisation.
           Alternatively, you can use the template file to specify any
           values, and to change some of the labels
-          within the diagram (see above). ",
-          br(),
-          br(),
-          h4("R package", tags$code("PRISMA2020")),
+          within the diagram (see above). "
+        ),
+        h4("R package", code("PRISMA2020")),
+        p(
           "We also provide an R package:",
-          tags$a(
+          a(
             href = "https://github.com/prisma-flowdiagram/PRISMA2020",
             "PRISMA2020 flow diagram R package on Github."
           ),
           "This package contain the function",
-          tags$code("PRISMA2020::PRISMA_flowdiagram()"),
+          code("PRISMA2020::PRISMA_flowdiagram()"),
           "which is the backbone function for this web app.
           You can use this function to programmatically create
           the same flowcharts as in the web app.",
-          br(),
-          br(),
-          h4("Feedback and comments"),
+        ),
+        h4("Feedback and comments"),
+        p(
           "Please let us know if you have any feedback or
           if you encounter an error by creating an",
-          tags$a(
+          a(
             href = "https://github.com/prisma-flowdiagram/PRISMA2020/issues",
             "issue on GitHub"
           ),
-          br(),
-          br(),
-          h4("Upload csv"),
+        ),
+        h4("Upload csv"),
+        p(
           "If you have created a flowchart using the web app,
           and exported it as a csv,
           you can upload it here to recreate the exact same figure.
           Also,If you have downloaded the csv template and modified it directly,
           you can upload that file.",
-          br(),
           fileInput(
             "data_upload",
             "Choose CSV File",
@@ -179,35 +256,24 @@ ui <- tagList( #nolint
               "text/plain",
               ".csv"
             )
-          ),
-          hr(),
-          "Please cite as:",
-          br(),
-          "Haddaway, N. R., Page, M. J., Pritchard, C. C., &
-          McGuinness, L. A. (2022). PRISMA2020: An R package
-          and Shiny app for producing PRISMA 2020-compliant flow
-          diagrams, with interactivity for optimised digital transparency
-          and Open Synthesis Campbell Systematic Reviews, 18, e1230.",
-          tags$a(
+          )
+        ),
+        h4("Citing Us"),
+        p(
+          prisma_citation,
+          a(
             href = "https://doi.org/10.1002/cl2.1230",
             "https://doi.org/10.1002/cl2.1230"
           ),
-          br(),
-          tags$a(
-            href = "Haddaway_et_al_2022.ris",
-            "Download citation (.ris)",
-            download = NA,
-            target = "_blank"
-          )
-        )
-      ),
-      fluidRow(
-        column(
-          10,
-          offset = 1,
-          br(),
-          "Credits:",
-          br(),
+        ),
+        a(
+          href = "Haddaway_et_al_2022.ris",
+          "Download citation (.ris)",
+          download = NA,
+          target = "_blank"
+        ),
+        h4("Credits:"),
+        p(
           "Neal R Haddaway (creator, author)",
           br(),
           "Luke A McGuinness (coder, author)",
@@ -229,29 +295,19 @@ ui <- tagList( #nolint
           "Matthew J Page (advisor)",
           br(),
           "Jack Wasey (advisor)",
-          br(),
-          br(),
-          tags$a(
-            href = "https://github.com/prisma-flowdiagram/PRISMA2020",
-            tags$img(
-              height = 40,
-              width = 40,
-              src = "https://pngimg.com/uploads/github/github_PNG40.png"
-            )
-          ),
-          "Created November 2020, Updated June 2026"
-        )
-      ),
-      kofi_load,
-      kofi_show
+        ),
+      )
     ),
     # Tab 2 ----
-    tabPanel(
+    nav_panel(
       "Create flow diagram",
       shinyjs::useShinyjs(),
-      sidebarLayout(
-        sidebarPanel(
-          style = "overflow-y:scroll; max-height: 900px; position:relative;",
+      card(
+      layout_sidebar(
+        sidebar = sidebar(
+          width = "25%",
+          resizable = FALSE,
+          open = "always",
           tags$head(
             tags$style(
               HTML(
@@ -263,12 +319,6 @@ ui <- tagList( #nolint
             id = "options",
             uiOutput("options")
           ),
-          hr(),
-          actionButton(
-            "reset",
-            "Click to reset"
-          ),
-          hr(),
           div(
             id = "inputs",
             uiOutput("selection")
@@ -298,15 +348,19 @@ ui <- tagList( #nolint
           downloadButton(
             "PRISMAflowdiagramCSV",
             "CSV"
-          )
+          ),
+          h3("Reset"),
+          actionButton(
+            "reset",
+            "Click to reset"
+          ),
         ),
-        mainPanel(
-          DiagrammeR::grVizOutput(
-            outputId = "plot1",
-            width = "100%",
-            height = "700px"
-          )
+        DiagrammeR::grVizOutput(
+          outputId = "plot1",
+          width = "100%",
+          height = "700px"
         )
+      )
       )
     ),
     # the below analytics information should be updated to reflect
@@ -315,21 +369,11 @@ ui <- tagList( #nolint
     # this section will not be shown unless the PRISMA_ANALYTICS
     # environment variable is set at runtime
     anaytics_info <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) {
-      tabPanel(
+      nav_panel(
         "Privacy & Impact",
-        tags$script(
-          "async",
-          "src" = "https://badge.dimensions.ai/badge.js",
-          "charset" = "utf-8"
-        ),
-        tags$script(
-          "type" = "text/javascript",
-          "src" = "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"
-        ),
-        fluidRow(
-          column(
-            width = 10,
-            offset = 1,
+        card(
+          h4("Privacy"),
+          p(
             "We use",
             tags$a(
               href = "https://umami.is",
@@ -340,16 +384,9 @@ ui <- tagList( #nolint
             personally identifiable data, nor do we use cookies
             or local browser storage. All data collected for this purpose
             is anonymised. We also respect the 'do-not-track' header that can
-            be set within your browser preferences.",
-            br(),
-            br(),
-            "The site's usage can be viewed",
-            tags$a(
-              href = "https://umami.christopherpritchard.co.uk/share/DaPFWd0Q/Prisma%20Flow%20Diagram", #nolint
-              "on the public dashboard."
-            ),
-            br(),
-            br(),
+            be set within your browser preferences."
+          ),
+          p(
             "RStudio collects data in line with their",
             tags$a(
               href = "https://www.rstudio.com/legal/privacy-policy/",
@@ -361,89 +398,94 @@ ui <- tagList( #nolint
               href = "https://shinyapps.io",
               "shinyapps.io"
             ),
-            br(),
-            br(),
-            hr(),
+          ),
+          h4("Impact"),
+          p(
+            "The site's usage can be viewed",
+            tags$a(
+              href = "https://u.210812.xyz/share/IR8kPofbDG6rT0F9", #nolint
+              "on the public dashboard."
+            ),
+          ),
+          p(
             "Our",
             tags$a(
               href = "https://doi.org/10.1002/cl2.1230",
               "article"
             ),
             "metrics are:",
-            br()
-          ),
-        ),
-        fluidRow(
-          column(
-            1,
-            offset = 1,
-            tags$div(
-              "class" = "__dimensions_badge_embed__",
-              "data-doi" = "10.1002/cl2.1230",
-              "data-legend" = "hover-right",
-              "data-style" = "small_circle",
-              "width" = "64"
+            div(
+              style = "display: flex;gap: 100px",
+              div(
+                "class" = "__dimensions_badge_embed__",
+                "data-doi" = "10.1002/cl2.1230",
+                "data-legend" = "hover-right",
+                "data-style" = "small_circle",
+                "width" = "64"
+              ),
+              div(
+                "class" = "altmetric-embed",
+                "data-badge-type" = "donut",
+                "data-doi" = "10.1002/cl2.1230",
+                "width" = "64"
+              )
             )
           ),
-          column(
-            1,
-            offset = 0,
-            tags$div(
-              "class" = "altmetric-embed",
-              "data-badge-type" = "donut",
-              "data-doi" = "10.1002/cl2.1230",
-              "width" = "64"
-            )
-          ),
-        ),
-        fluidRow(
-          column(
-            10,
-            offset = 1,
-            br(),
+          p(
             "We also published a",
-            tags$a(
+            a(
               href = "https://doi.org/10.1002/cl2.1230",
               "preprint."
             ),
             "Our metrics for the preprint are:",
-            br(),
-            br()
+            div(
+              style = "display: flex; gap:100px;",
+              div(
+                "class" = "__dimensions_badge_embed__",
+                "data-doi" = "10.1101/2021.07.14.21260492",
+                "data-legend" = "hover-right",
+                "data-style" = "small_circle",
+                "width" = "64"
+              ),
+              div(
+                "class" = "altmetric-embed",
+                "data-badge-type" = "donut",
+                "data-doi" = "10.1101/2021.07.14.21260492",
+                "width" = "64"
+              )
+            )
           )
-        ),
-        fluidRow(
-          column(
-            1,
-            offset = 1,
-            tags$div(
-              "class" = "__dimensions_badge_embed__",
-              "data-doi" = "10.1101/2021.07.14.21260492",
-              "data-legend" = "hover-right",
-              "data-style" = "small_circle",
-              "width" = "64"
-            )
-          ),
-          column(
-            1,
-            offset = 0,
-            tags$div(
-              "class" = "altmetric-embed",
-              "data-badge-type" = "donut",
-              "data-doi" = "10.1101/2021.07.14.21260492",
-              "width" = "64"
-            )
-          ),
         )
       )
     }
   )
 )
-
 # Define server logic required to draw a histogram
 server <- function(input, output, session) { #nolint
   # Define reactive values
   rv <- shiny::reactiveValues()
-
+  # Define modals
+  thank_you_modal <- modalDialog(
+    easyClose = TRUE,
+    title = "Thank You",
+    "Thank you for using the PRISMA Flow Diagram tool.
+          Your flow diagram is being downloaded.",
+    hr(),
+    "Please remember to cite the tool as: ",
+    br(),
+    prisma_citation,
+    tags$a(
+      href = "https://doi.org/10.1002/cl2.1230",
+      "https://doi.org/10.1002/cl2.1230"
+    ),
+    br(),
+    tags$a(
+      href = "Haddaway_et_al_2022.ris",
+      "Download citation (.ris)",
+      download = NA,
+      target = "_blank"
+    )
+  )
   # Data Handling ----
   # Use template data to populate editable table
   observe({
@@ -550,9 +592,6 @@ server <- function(input, output, session) { #nolint
       rv$opts <- the_options
     }
   })
-
-
-
   # Reset to upload button
   observeEvent(
     input$reset,
@@ -1120,32 +1159,6 @@ server <- function(input, output, session) { #nolint
       ) # important
     }
   )
-  # Define thank you modal
-  thank_you_modal <- modalDialog(
-    easyClose = TRUE,
-    title = "Thank You",
-    "Thank you for using the PRISMA Flow Diagram tool.
-          Your flow diagram is being downloaded.",
-    hr(),
-    "Please remember to cite the tool as: ",
-    br(),
-    "Haddaway, N. R., Page, M. J., Pritchard, C. C., &
-          McGuinness, L. A. (2022). PRISMA2020: An R package
-          and Shiny app for producing PRISMA 2020-compliant flow
-          diagrams, with interactivity for optimised digital transparency
-          and Open Synthesis Campbell Systematic Reviews, 18, e1230.",
-    tags$a(
-      href = "https://doi.org/10.1002/cl2.1230",
-      "https://doi.org/10.1002/cl2.1230"
-    ),
-    br(),
-    tags$a(
-      href = "Haddaway_et_al_2022.ris",
-      "Download citation (.ris)",
-      download = NA,
-      target = "_blank"
-    )
-  )
   # Reactive plot ----
   # Create plot
   plot <- reactive({
@@ -1256,6 +1269,9 @@ server <- function(input, output, session) { #nolint
     #nolint
     filename = "prisma.csv",
     content = function(file) {
+      showModal(
+        thank_you_modal
+      )
       write.csv(rv$data, file, row.names = FALSE)
     }
   )
