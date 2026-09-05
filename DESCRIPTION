@@ -1,6 +1,6 @@
 Package: PRISMA2020
 Title: Make Interactive 'PRISMA' Flow Diagrams
-Version: 1.1.4
+Version: 1.1.5
 Authors@R: c(
     person(given = "Neal",
            family = "Haddaway",
@@ -52,10 +52,11 @@ Imports:
     DT,
     rio,
     tools,
-    zip
+    zip,
+    bslib
 License: MIT + file LICENSE
 URL: https://github.com/prisma-flowdiagram/PRISMA2020
 BugReports: https://github.com/prisma-flowdiagram/PRISMA2020/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0

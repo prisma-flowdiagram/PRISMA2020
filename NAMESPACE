@@ -3,6 +3,7 @@
 export(PRISMA_data)
 export(PRISMA_flowdiagram)
 export(PRISMA_save)
+import(bslib)
 import(cpp11)
 import(dplyr)
 import(progress)
