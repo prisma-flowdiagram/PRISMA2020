@@ -49,7 +49,6 @@ analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) { #nolint
     tags$script(
       src = "https://u.210812.xyz/script.js", # nolint
       "async",
-      "defer",
       "data-website-id" = "01a071e6-45f0-76f2-9934-25178c77923b", # nolint
       "data-do-not-track" = "true", # nolint
       "data-host-url" = "https://u.210812.xyz", # nolint
@@ -57,13 +56,11 @@ analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) { #nolint
     ),
     tags$script(
       "async",
-      "defer",
       "src" = "https://badge.dimensions.ai/badge.js",
       "charset" = "utf-8"
     ),
     tags$script(
       "async",
-      "defer",
       "type" = "text/javascript",
       "src" = "https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"
     )
@@ -73,8 +70,7 @@ kofi_load <- if (Sys.getenv("KOFI_DONATE") == TRUE) {
   tags$script(
     type = "text/javascript",
     src = "kofi_Widget_2.js",
-    "async",
-    "defer"
+    "async"
   )
 }
 kofi_show <- if (Sys.getenv("KOFI_DONATE") == TRUE) {
@@ -82,6 +78,7 @@ kofi_show <- if (Sys.getenv("KOFI_DONATE") == TRUE) {
     tags$script(
       type = "text/javascript",
       src = "kofi.js",
+      "async"
     ),
     popover(
       actionLink(
