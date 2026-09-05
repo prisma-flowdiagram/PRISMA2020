@@ -43,6 +43,7 @@ prisma_citation <- "Haddaway, N. R., Page, M. J., Pritchard, C. C., &
           and Shiny app for producing PRISMA 2020-compliant flow
           diagrams, with interactivity for optimised digital transparency
           and Open Synthesis. Campbell Systematic Reviews, 18, e1230."
+updated_date <- "September 2026"
 analytics <- if (Sys.getenv("PRISMA_ANALYTICS") == TRUE) { #nolint
   tagList(
     tags$script(
@@ -111,7 +112,6 @@ kofi_show <- if (Sys.getenv("KOFI_DONATE") == TRUE) {
       options = list(customClass = "kofi-donate-popover")
     )
   )
-  #<span class="kofitext"><img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="Ko-fi donations" class="kofiimg">Support me</span>
 }
 ui <- tagList( #nolint
   tags$head(
@@ -148,7 +148,8 @@ ui <- tagList( #nolint
             src = "https://pngimg.com/uploads/github/github_PNG40.png"
           )
         ),
-        "Created November 2020, Updated June 2026"
+        "Created November 2020, Updated ",
+        updated_date
       ),
       div(
         kofi_show
